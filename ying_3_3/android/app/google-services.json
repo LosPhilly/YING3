@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "693015356320",
+    "project_id": "ying3-3",
+    "storage_bucket": "ying3-3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693015356320:android:0f8676819d000829197ac5",
+        "android_client_info": {
+          "package_name": "app.ying_3_3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuc8VKHqwQEbM_mheA1SiEECHhffLk_Ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
