@@ -24,6 +24,7 @@ class CustomSearchView extends StatelessWidget {
     this.fillColor,
     this.filled = true,
     this.validator,
+    this.onFieldSubmitted,
   }) : super(
           key: key,
         );
@@ -68,6 +69,8 @@ class CustomSearchView extends StatelessWidget {
 
   final FormFieldValidator<String>? validator;
 
+  final Function(String)? onFieldSubmitted;
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -90,6 +93,7 @@ class CustomSearchView extends StatelessWidget {
           maxLines: maxLines ?? 1,
           decoration: decoration,
           validator: validator,
+          onFieldSubmitted: onFieldSubmitted,
         ),
       );
   InputDecoration get decoration => InputDecoration(
