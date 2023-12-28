@@ -16,14 +16,16 @@ class StoriescolumnItemWidget extends StatefulWidget {
 
 class UserModel {
   final String name;
-
+  final String uid;
   final String userPhotoUrl;
 
-  UserModel({required this.name, required this.userPhotoUrl});
+  UserModel(
+      {required this.name, required this.userPhotoUrl, required this.uid});
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       name: map['name'] ?? '',
+      uid: map['id'] ?? '',
       userPhotoUrl: map['userImage'] ?? '',
     );
   }
@@ -83,48 +85,64 @@ class _StoriescolumnItemWidgetState extends State<StoriescolumnItemWidget> {
         if (snapshot.hasData && snapshot.data != null) {
           UserModel user = snapshot.data!;
 
-          return Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.h,
-              vertical: 15.v,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadiusStyle.roundedBorder16,
-              image: DecorationImage(
-                image: NetworkImage(user.userPhotoUrl),
-                fit: BoxFit.cover,
+          return GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                showDragHandle: true,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20))),
+                context: context,
+                builder: (BuildContext context) {
+                  return UserProfileClientViewScreen(userId: user.uid);
+                },
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.h,
+                vertical: 15.v,
               ),
-            ),
-            foregroundDecoration: AppDecoration.gradientBlackToBlack.copyWith(
-              borderRadius: BorderRadiusStyle.roundedBorder16,
-            ),
-            width: 152.h,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(height: 157.v),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      user.name ?? 'No Name',
-                      style: CustomTextStyles.titleSmallPrimaryContainer,
-                    ),
-                    Text(
-                      'No Date',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          CustomTextStyles.bodySmallPrimaryContainer.copyWith(
-                        height: 1.70,
-                      ),
-                    ),
-                  ],
+              decoration: BoxDecoration(
+                borderRadius: BorderRadiusStyle.roundedBorder16,
+                image: DecorationImage(
+                  image: NetworkImage(user.userPhotoUrl),
+                  fit: BoxFit.cover,
                 ),
-              ],
+              ),
+              foregroundDecoration: AppDecoration.gradientBlackToBlack.copyWith(
+                borderRadius: BorderRadiusStyle.roundedBorder16,
+              ),
+              width: 152.h,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(height: 157.v),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.name ?? 'No Name',
+                        style: CustomTextStyles.titleSmallPrimaryContainer,
+                      ),
+                      Text(
+                        'No Date',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            CustomTextStyles.bodySmallPrimaryContainer.copyWith(
+                          height: 1.70,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         }
