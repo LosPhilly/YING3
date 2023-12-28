@@ -15,6 +15,10 @@ import 'package:flutter/material.dart';
 import 'package:ying_3_3/widgets/job_widget.dart';
 
 import '../../../core/constants/color_map.dart';
+import 'package:flutter/src/widgets/gesture_detector.dart'
+    as flutter_gesture_detector;
+import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/widgets/storiescolumn_item_widget.dart'
+    as storiescolumn_item_widget;
 
 // ignore_for_file: must_be_immutable
 class SearchPage extends StatefulWidget {
@@ -47,7 +51,7 @@ class _SearchPageState extends State<SearchPage> {
     mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: GestureDetector(
+      body: flutter_gesture_detector.GestureDetector(
         onTap: () {
           // Remove focus when tapping outside of text fields
           FocusScope.of(context).requestFocus(FocusNode());
@@ -95,7 +99,8 @@ class _SearchPageState extends State<SearchPage> {
                       },
                       itemCount: 3,
                       itemBuilder: (context, index) {
-                        return StoriescolumnItemWidget();
+                        return storiescolumn_item_widget
+                            .StoriescolumnItemWidget();
                       },
                     ),
                   ),
