@@ -108,7 +108,7 @@ class _UserProfileSettingsMainScreenState
 
   /// to navigate back to the previous screen.
   void onTapArrowleftone(BuildContext context) {
-    Navigator.pop(context);
+    Navigator.pushNamed(context, AppRoutes.userState);
   }
 
   @override
