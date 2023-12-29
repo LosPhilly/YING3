@@ -34,11 +34,26 @@ import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/sear
 
 // Search Pages End
 
+// User Account Settings Start
+
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PersonalDataScreen/user_profile_settings_data_screen.dart';
+
+// User Account Settings End
+
 class AppRoutes {
   static const String forgotPasswordScreen = '/forgot_password_screen';
   static const String loginOneScreen = '/login_one_screen';
   static const String gigFeedOneScreen = '/gig_feed_1_feed_screen';
   static const String userState = '/user_state';
+
+  /// USER ACCOUNT SETTINGS ///
+  static const String userProfileSettingsDataScreen =
+      '/user_profile_settings_data_screen';
+  static const String userProfileSettingsMainScreen =
+      '/user_profile_settings_main_screen';
+
+  /// USER ACCOUNT SETTINGS END ///
 
   /// REGISTER INDIVIDUAL ///
   static const String registerIndividualOneScreen =
@@ -122,6 +137,15 @@ class AppRoutes {
     setupGAccountOneScreen: (context) => const SetupGAccountOneScreen(),
     welcomeMainScreen: (context) => const WelcomeMainScreen(),
     individualMainMenuScreen: (context) => const IndividualMainMenuOneScreen(),
+
+    /// User Account Settings
+    userProfileSettingsDataScreen: (context) =>
+        const UserProfileSettingsDataScreen(),
+    userProfileSettingsMainScreen: (context) =>
+        const UserProfileSettingsMainScreen(),
+
+    /// User Account Settings End
+
 // Register Individual Start Map
     registerIndividualVerifyEmailScreen: (context) =>
         const RegisterIndividualVerifyEmailScreen(),

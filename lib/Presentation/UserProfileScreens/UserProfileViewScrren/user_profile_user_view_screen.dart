@@ -475,7 +475,7 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen> {
   /// When the action is triggered, this function uses the [Navigator] widget
   /// to push the named route for the userProfileSettingsOneScreen.
   onTapOutlinesettings(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.userState);
+    Navigator.pushNamed(context, AppRoutes.userProfileSettingsMainScreen);
   }
 
   /// Navigates to the taskScheduleOneScreen when the action is triggered.
