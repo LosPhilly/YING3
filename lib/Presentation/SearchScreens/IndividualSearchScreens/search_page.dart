@@ -30,6 +30,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  //TODO: Implement a menu bar
+
   late MediaQueryData mediaQueryData;
   late FocusNode _focusNode;
   TextEditingController searchController = TextEditingController();
@@ -191,7 +193,7 @@ class _SearchPageState extends State<SearchPage> {
                               },
                             );
                           } else {
-                            return Text('No users found');
+                            return const Text('No users found');
                           }
                         },
                       )
@@ -207,8 +209,7 @@ class _SearchPageState extends State<SearchPage> {
                     },
                     itemCount: 3,
                     itemBuilder: (context, index) {
-                      return storiescolumn_item_widget
-                          .StoriescolumnItemWidget();
+                      return const StoriescolumnItemWidget();
                     },
                   ),
                 ),
@@ -222,6 +223,8 @@ class _SearchPageState extends State<SearchPage> {
                           padding: EdgeInsets.only(top: 6.v),
                           child: Text("For you",
                               style: theme.textTheme.titleLarge)),
+
+                      //TODO: Implement Filter for specific tasks
                       CustomOutlinedButton(
                           height: 34.v,
                           width: 118.h,
