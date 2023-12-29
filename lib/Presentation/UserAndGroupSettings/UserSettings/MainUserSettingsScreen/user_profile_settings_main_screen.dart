@@ -4,7 +4,9 @@ import 'package:ying_3_3/core/utils/size_utils.dart';
 import 'package:ying_3_3/routes/app_routes.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
 import 'package:ying_3_3/theme/custom_text_style.dart';
+import 'package:ying_3_3/widgets/app_bar/appbar_button.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_circleimage_1.dart';
+import 'package:ying_3_3/widgets/app_bar/appbar_iconbutton.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_subtitle_1.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_subtitle_7.dart';
 import 'package:ying_3_3/widgets/app_bar/custom_app_bar.dart';
@@ -33,6 +35,11 @@ class UserProfileSettingsMainScreen extends StatefulWidget {
 class _UserProfileSettingsMainScreenState
     extends State<UserProfileSettingsMainScreen> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+  /// to navigate back to the previous screen.
+  void onTapArrowleftone(BuildContext context) {
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +83,18 @@ class _UserProfileSettingsMainScreenState
                         ],
                       ),
                     ),
+                    actions: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: AppbarIconbutton(
+                            svgPath: ImageConstant.imgArrowleftOnprimary,
+                            margin: EdgeInsets.only(
+                                left: 5.h, top: 8.v, bottom: 8.v, right: 20.v),
+                            onTap: () {
+                              onTapArrowleftone(context);
+                            }),
+                      ),
+                    ],
                   ),
                   Align(
                     alignment: Alignment.bottomLeft,
