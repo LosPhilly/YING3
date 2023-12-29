@@ -39,6 +39,9 @@ import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/sear
 //import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
 //import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PersonalDataScreen/user_profile_settings_data_screen.dart';
 
+// Account Settings
+//import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/AccountSettingsScreen/account_settings_screen.dart';
+
 // User Account Settings End
 
 class AppRoutes {
@@ -53,6 +56,8 @@ class AppRoutes {
       '/user_profile_settings_data_screen';
   static const String userProfileSettingsMainScreen =
       '/user_profile_settings_main_screen';
+
+static const String accountSettingsScreen = '/account_settings_screen';
 */
   /// USER ACCOUNT SETTINGS END ///
 
@@ -145,6 +150,8 @@ class AppRoutes {
         const UserProfileSettingsDataScreen(userId:,),
     userProfileSettingsMainScreen: (context) =>
         const UserProfileSettingsMainScreen(),
+
+accountSettingsScreen:(context) => const AccountSettingsScreen(),
 */
     /// User Account Settings End
 

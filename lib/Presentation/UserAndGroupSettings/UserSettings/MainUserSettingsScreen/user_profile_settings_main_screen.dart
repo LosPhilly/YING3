@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/AccountSettingsScreen/account_settings_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PersonalDataScreen/user_profile_settings_data_screen.dart';
 import 'package:ying_3_3/core/utils/image_constant.dart';
 import 'package:ying_3_3/core/utils/size_utils.dart';
@@ -109,6 +110,13 @@ class _UserProfileSettingsMainScreenState
   /// to navigate back to the previous screen.
   void onTapArrowleftone(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.userState);
+  }
+
+  onTapAccountSettings(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) =>
+          AccountSettingsScreen(), // Replace YourNewPage with the actual page you want to navigate to
+    ));
   }
 
   @override
@@ -220,7 +228,7 @@ class _UserProfileSettingsMainScreenState
                     alignment: Alignment.bottomLeft,
                     child: GestureDetector(
                       onTap: () {
-                        onTapBasiclist1(context);
+                        onTapAccountSettings(context);
                       },
                       child: Padding(
                         padding: EdgeInsets.only(top: 203.v, right: 30.h),
@@ -463,9 +471,6 @@ class _UserProfileSettingsMainScreenState
   /// The [BuildContext] parameter is used to build the navigation stack.
   /// When the action is triggered, this function uses the [Navigator] widget
   /// to push the named route for the accountSettingsOneScreen.
-  onTapBasiclist1(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.userState);
-  }
 
   /// Navigates to the userProfileYingProfileScreen when the action is triggered.
   ///
