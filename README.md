@@ -1,6 +1,6 @@
 # ying_3_3
 
-A new Flutter project.
+All Source files are located in the lib folder. 
 
 ## Getting Started
 
