@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/AccountSettingsScreen/account_settings_screen.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_tab_container_screen/my_cards_bank_account_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PersonalDataScreen/user_profile_settings_data_screen.dart';
 import 'package:ying_3_3/core/utils/image_constant.dart';
 import 'package:ying_3_3/core/utils/size_utils.dart';
@@ -116,6 +117,13 @@ class _UserProfileSettingsMainScreenState
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) =>
           AccountSettingsScreen(), // Replace YourNewPage with the actual page you want to navigate to
+    ));
+  }
+
+  onTapPaymentSettings(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) =>
+          const MyCardsBankAccountScreen(), // Replace YourNewPage with the actual page you want to navigate to
     ));
   }
 
@@ -287,12 +295,17 @@ class _UserProfileSettingsMainScreenState
                                   svgPath: ImageConstant
                                       .imgOutlinebankcardPurple400),
                             ),
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    left: 16.h, top: 13.v, bottom: 9.v),
-                                child: Text("Payments",
-                                    style: CustomTextStyles
-                                        .bodyMediumOnPrimary_3)),
+                            GestureDetector(
+                              onTap: () {
+                                onTapPaymentSettings(context);
+                              },
+                              child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 16.h, top: 13.v, bottom: 9.v),
+                                  child: Text("Payments",
+                                      style: CustomTextStyles
+                                          .bodyMediumOnPrimary_3)),
+                            ),
                             Spacer(),
                             CustomImageView(
                               svgPath:
