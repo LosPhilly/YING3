@@ -1,4 +1,11 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PersonalDataScreen/user_profile_settings_data_screen.dart';
 import 'package:ying_3_3/core/utils/image_constant.dart';
 import 'package:ying_3_3/core/utils/size_utils.dart';
 import 'package:ying_3_3/routes/app_routes.dart';
@@ -25,7 +32,9 @@ import 'package:ying_3_3/widgets/custom_icon_button.dart';
 
 // ignore_for_file: must_be_immutable
 class UserProfileSettingsMainScreen extends StatefulWidget {
-  const UserProfileSettingsMainScreen({Key? key}) : super(key: key);
+  final String userId;
+  const UserProfileSettingsMainScreen({Key? key, required this.userId})
+      : super(key: key);
 
   @override
   State<UserProfileSettingsMainScreen> createState() =>
@@ -35,6 +44,67 @@ class UserProfileSettingsMainScreen extends StatefulWidget {
 class _UserProfileSettingsMainScreenState
     extends State<UserProfileSettingsMainScreen> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  String? name;
+  String email = '';
+  List<List> intrestList = [];
+  String imageUrl = '';
+  String uid = '';
+  String joinedAt = '';
+  bool _isLoading = false;
+  bool _isSameUser = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  getUserData() async {
+    try {
+      _isLoading = true;
+      final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userId)
+          .get();
+
+      if (userDoc == null) {
+        return CircularProgressIndicator();
+      } else {
+        setState(() {
+          name = userDoc.get('name');
+          email = userDoc.get('email');
+          imageUrl = userDoc.get('userImage');
+          uid = userDoc.get('id');
+          Timestamp joinedAtTimeStamp = userDoc.get('createdAt');
+
+          dynamic intrestData = userDoc.get('interest');
+          intrestList.add(intrestData);
+
+          var joinedDate = joinedAtTimeStamp.toDate();
+          joinedAt =
+              '${joinedDate.year} - ${joinedDate.month} - ${joinedDate.day}';
+        });
+
+        User? user = _auth.currentUser;
+        final _uid = user!.uid;
+        setState(() {
+          _isSameUser = _uid == widget.userId;
+        });
+      }
+      // ignore: empty_catches
+    } catch (error) {
+    } finally {
+      _isLoading = false;
+    }
+  }
 
   /// to navigate back to the previous screen.
   void onTapArrowleftone(BuildContext context) {
@@ -62,24 +132,36 @@ class _UserProfileSettingsMainScreenState
                       width: 227.h,
                       alignment: Alignment.centerRight),
                   Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                          padding: EdgeInsets.only(top: 106.v),
-                          child: SizedBox(width: 319.h, child: Divider()))),
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 115.v),
+                      child: SizedBox(
+                        width: 319.h,
+                        child: const Divider(),
+                      ),
+                    ),
+                  ),
                   CustomAppBar(
                     height: 77.v,
                     leadingWidth: 76.h,
-                    leading: AppbarCircleimage1(
-                        imagePath: ImageConstant.imgEllipse1548x48,
-                        margin: EdgeInsets.only(left: 28.h)),
+                    leading: imageUrl.isEmpty
+                        ? const CircularProgressIndicator()
+                        : CircleAvatar(
+                            radius: 55,
+                            backgroundImage: NetworkImage(imageUrl),
+                          ),
                     title: Padding(
                       padding: EdgeInsets.only(left: 12.h),
                       child: Column(
                         children: [
                           AppbarSubtitle1(
-                              text: "Joshua King",
-                              margin: EdgeInsets.only(right: 3.h)),
-                          AppbarSubtitle7(text: "UX/UI Designer")
+                            text: name.toString(),
+                            margin: EdgeInsets.only(right: 3.h),
+                          ),
+                          AppbarSubtitle7(
+                              text: intrestList.isEmpty
+                                  ? 'Loading..'
+                                  : intrestList[0][0].toString())
                         ],
                       ),
                     ),
@@ -248,39 +330,39 @@ class _UserProfileSettingsMainScreenState
                       SizedBox(height: 28.v),
                       Divider(),
                       GestureDetector(
-                          onTap: () {
-                            onTapBasiclist2(context);
-                          },
-                          child: Padding(
-                              padding: EdgeInsets.only(top: 28.v, right: 2.h),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CustomIconButton(
-                                        height: 44.adaptSize,
-                                        width: 44.adaptSize,
-                                        padding: EdgeInsets.all(12.h),
-                                        decoration: IconButtonStyleHelper
-                                            .gradientCyanToGreenTL16,
-                                        child: CustomImageView(
-                                            svgPath: ImageConstant.imgInfo)),
-                                    Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 16.h,
-                                            top: 11.v,
-                                            bottom: 11.v),
-                                        child: Text("About YING",
-                                            style: CustomTextStyles
-                                                .bodyMediumOnPrimary_3)),
-                                    Spacer(),
-                                    CustomImageView(
-                                        svgPath: ImageConstant
-                                            .imgOutlinerightarrowOnprimary,
-                                        height: 24.adaptSize,
-                                        width: 24.adaptSize,
-                                        margin: EdgeInsets.symmetric(
-                                            vertical: 10.v))
-                                  ]))),
+                        onTap: () {
+                          onTapBasiclist2(context);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 28.v, right: 2.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomIconButton(
+                                  height: 44.adaptSize,
+                                  width: 44.adaptSize,
+                                  padding: EdgeInsets.all(12.h),
+                                  decoration: IconButtonStyleHelper
+                                      .gradientCyanToGreenTL16,
+                                  child: CustomImageView(
+                                      svgPath: ImageConstant.imgInfo)),
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 16.h, top: 11.v, bottom: 11.v),
+                                  child: Text("About YING",
+                                      style: CustomTextStyles
+                                          .bodyMediumOnPrimary_3)),
+                              Spacer(),
+                              CustomImageView(
+                                  svgPath: ImageConstant
+                                      .imgOutlinerightarrowOnprimary,
+                                  height: 24.adaptSize,
+                                  width: 24.adaptSize,
+                                  margin: EdgeInsets.symmetric(vertical: 10.v))
+                            ],
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: EdgeInsets.only(top: 24.v, right: 2.h),
                         child: Row(
@@ -367,8 +449,13 @@ class _UserProfileSettingsMainScreenState
   /// The [BuildContext] parameter is used to build the navigation stack.
   /// When the action is triggered, this function uses the [Navigator] widget
   /// to push the named route for the userProfileSettingsTwoScreen.
+
   onTapBasiclist(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.userProfileSettingsDataScreen);
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => UserProfileSettingsDataScreen(
+          userId:
+              uid), // Replace YourNewPage with the actual page you want to navigate to
+    ));
   }
 
   /// Navigates to the accountSettingsOneScreen when the action is triggered.

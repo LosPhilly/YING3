@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:radio_grouped_buttons/custom_buttons/custom_radio_buttons_group.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
 import 'package:ying_3_3/Presentation/UserProfileScreens/UserProfileViewScrren/widgets/chipviewchips8_item_widget.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/core/constants/persistant.dart';
@@ -35,6 +36,7 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen> {
   List<String> buttonList = [];
   List<List> buttonIndex = [];
   String imageUrl = '';
+  String uid = '';
   String joinedAt = '';
   bool _isLoading = false;
   bool _isSameUser = false;
@@ -58,6 +60,7 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen> {
           name = userDoc.get('name');
           email = userDoc.get('email');
           imageUrl = userDoc.get('userImage');
+          uid = userDoc.get('id');
           Timestamp joinedAtTimeStamp = userDoc.get('createdAt');
 
           dynamic skillsData = userDoc.get('skills');
@@ -475,7 +478,11 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen> {
   /// When the action is triggered, this function uses the [Navigator] widget
   /// to push the named route for the userProfileSettingsOneScreen.
   onTapOutlinesettings(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.userProfileSettingsMainScreen);
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => UserProfileSettingsMainScreen(
+          userId:
+              uid), // Replace YourNewPage with the actual page you want to navigate to
+    ));
   }
 
   /// Navigates to the taskScheduleOneScreen when the action is triggered.

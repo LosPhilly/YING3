@@ -36,8 +36,8 @@ import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/sear
 
 // User Account Settings Start
 
-import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
-import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PersonalDataScreen/user_profile_settings_data_screen.dart';
+//import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
+//import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PersonalDataScreen/user_profile_settings_data_screen.dart';
 
 // User Account Settings End
 
@@ -48,11 +48,12 @@ class AppRoutes {
   static const String userState = '/user_state';
 
   /// USER ACCOUNT SETTINGS ///
+  /*
   static const String userProfileSettingsDataScreen =
       '/user_profile_settings_data_screen';
   static const String userProfileSettingsMainScreen =
       '/user_profile_settings_main_screen';
-
+*/
   /// USER ACCOUNT SETTINGS END ///
 
   /// REGISTER INDIVIDUAL ///
@@ -139,11 +140,12 @@ class AppRoutes {
     individualMainMenuScreen: (context) => const IndividualMainMenuOneScreen(),
 
     /// User Account Settings
+    /*
     userProfileSettingsDataScreen: (context) =>
-        const UserProfileSettingsDataScreen(),
+        const UserProfileSettingsDataScreen(userId:,),
     userProfileSettingsMainScreen: (context) =>
         const UserProfileSettingsMainScreen(),
-
+*/
     /// User Account Settings End
 
 // Register Individual Start Map
