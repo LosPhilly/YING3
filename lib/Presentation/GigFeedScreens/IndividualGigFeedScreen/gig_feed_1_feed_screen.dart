@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
 import 'package:ying_3_3/core/constants/color_map.dart';
 import 'package:ying_3_3/core/constants/global_variables.dart';
 import 'package:ying_3_3/core/constants/persistant.dart';
@@ -173,6 +174,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen> {
   final GlobalKey<SliderDrawerState> _sliderDrawerKey =
       GlobalKey<SliderDrawerState>();
   late String title;
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +193,13 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen> {
               if (title == 'Add Post') {
                 Navigator.pushNamed(
                     context, AppRoutes.individualPostTask1Screen2);
+              }
+              if (title == 'Settings') {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => UserProfileSettingsMainScreen(
+                      userId: user!
+                          .uid), // Replace YourNewPage with the actual page you want to navigate to
+                ));
               }
               if (title == 'LogOut') {
                 onTapLogout(context);
@@ -698,7 +707,7 @@ class _SliderViewState extends State<_SliderView> {
             Menu(Icons.payments, 'Transaction History'),
             Menu(Icons.notifications_active, 'Notification'),
             Menu(Icons.favorite, 'Likes'),
-            Menu(Icons.settings, 'Setting'),
+            Menu(Icons.settings, 'Settings'),
             Menu(Icons.info, 'Tutorials'),
             Menu(Icons.info_outlined, 'About YING'),
             Menu(
