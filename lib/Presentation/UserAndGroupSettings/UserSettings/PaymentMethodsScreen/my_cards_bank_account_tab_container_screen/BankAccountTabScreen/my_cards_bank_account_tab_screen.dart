@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
-import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_page.dart';
+import 'package:ying_3_3/core/utils/size_utils.dart';
 import 'package:ying_3_3/core/app_export.dart';
-import 'package:ying_3_3/widgets/app_bar/appbar_image_1.dart';
-import 'package:ying_3_3/core/app_export.dart';
-
+//import 'package:ying_3_3/presentation/my_cards_bank_account_page/my_cards_bank_account_page.dart';
 //import 'package:ying_3_3/presentation/my_cards_debit_card_page/my_cards_debit_card_page.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_image_1.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_subtitle_3.dart';
 import 'package:ying_3_3/widgets/app_bar/custom_app_bar.dart';
 
-class MyCardsBankAccountScreen extends StatefulWidget {
-  const MyCardsBankAccountScreen({Key? key}) : super(key: key);
+class MyCardsBankAccountTabScreen extends StatefulWidget {
+  const MyCardsBankAccountTabScreen({Key? key}) : super(key: key);
 
   @override
-  MyCardsBankAccountScreenState createState() =>
-      MyCardsBankAccountScreenState();
+  MyCardsBankAccountTabScreenState createState() =>
+      MyCardsBankAccountTabScreenState();
 }
 
 // ignore_for_file: must_be_immutable
-class MyCardsBankAccountScreenState extends State<MyCardsBankAccountScreen>
-    with TickerProviderStateMixin {
+class MyCardsBankAccountTabScreenState
+    extends State<MyCardsBankAccountTabScreen> with TickerProviderStateMixin {
   late TabController tabviewController;
 
   @override
@@ -91,27 +89,26 @@ class MyCardsBankAccountScreenState extends State<MyCardsBankAccountScreen>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      height: 44.v,
-                      width: 296.h,
-                      child: TabBar(
-                        controller: tabviewController,
-                        labelPadding: EdgeInsets.zero,
-                        labelColor:
-                            theme.colorScheme.onPrimary.withOpacity(0.42),
-                        unselectedLabelColor: appTheme.cyan700.withOpacity(0.5),
-                        tabs: [
-                          Tab(child: Text("Bank Account")),
-                          Tab(child: Text("Debit Card"))
-                        ],
-                      ),
-                    ),
+                        height: 44.v,
+                        width: 296.h,
+                        child: TabBar(
+                            controller: tabviewController,
+                            labelPadding: EdgeInsets.zero,
+                            labelColor:
+                                theme.colorScheme.onPrimary.withOpacity(0.42),
+                            unselectedLabelColor:
+                                appTheme.cyan700.withOpacity(0.5),
+                            tabs: [
+                              Tab(child: Text("Bank Account")),
+                              Tab(child: Text("Debit Card"))
+                            ])),
                     SizedBox(
                       height: 565.v,
                       child: TabBarView(
                         controller: tabviewController,
                         children: [
-                          MyCardsBankAccountPage(),
-                          Container(), //MyCardsDebitCardPage()
+                          Container(), // MyCardsBankAccountPage(),
+                          Container(), // MyCardsDebitCardPage()
                         ],
                       ),
                     )
