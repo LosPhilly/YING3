@@ -46,6 +46,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               setState(() {
                 this.title = title;
               });
+              if (title == 'Home') {
+                Navigator.pushNamed(context, AppRoutes.userState);
+              }
               if (title == 'Add Post') {
                 Navigator.pushNamed(
                     context, AppRoutes.individualPostTask1Screen2);

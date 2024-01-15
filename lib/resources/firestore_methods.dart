@@ -141,6 +141,8 @@ class FirestoreMethods {
         message = '$username liked your gig.';
       } else if (type == 'comment') {
         message = '$username commented on your gig.';
+      } else if (type == 'participate') {
+        message = '$username applied to your gig.';
       }
 
       // Add the notification to the post owner's notifications subcollection

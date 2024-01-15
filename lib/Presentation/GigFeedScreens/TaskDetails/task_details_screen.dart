@@ -283,6 +283,16 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     getTaskData();
   }
 
+  // Request Participation
+  void requestParticipation() async {
+    var docRef =
+        FirebaseFirestore.instance.collection('tasks').doc(widget.taskId);
+    await FirestoreMethods().storeNotification(
+        widget.uploadedBy, widget.taskId, 'participate', widget.taskId);
+
+    getTaskData();
+  }
+
 // Add new applicants
 
   void addNewApplicant() async {
@@ -1297,6 +1307,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                               buttonStyle: CustomButtonStyles.fillIndigoA,
                               onTap: () {
                                 addNewApplicant();
+                                requestParticipation();
                               },
                             )
                           : Column(

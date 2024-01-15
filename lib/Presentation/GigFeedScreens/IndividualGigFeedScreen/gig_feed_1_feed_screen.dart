@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
+import 'package:ying_3_3/Presentation/Notifications/IndividualNotificationsScreen/notifications_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
 import 'package:ying_3_3/core/constants/color_map.dart';
 import 'package:ying_3_3/core/constants/global_variables.dart';
@@ -193,6 +194,12 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen> {
               if (title == 'Add Post') {
                 Navigator.pushNamed(
                     context, AppRoutes.individualPostTask1Screen2);
+              }
+              if (title == 'Notification') {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      NotificationsScreen(), // Replace YourNewPage with the actual page you want to navigate to
+                ));
               }
               if (title == 'Settings') {
                 Navigator.of(context).push(MaterialPageRoute(
