@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ying_3_3/Presentation/GigFeedScreens/IndividualGigFeedScreen/gig_feed_1_feed_screen.dart';
+import 'package:ying_3_3/Presentation/Notifications/IndividualNotificationsScreen/notifications_screen.dart';
 import 'package:ying_3_3/Presentation/PostTaskScreens/IndividualPostTaskScreen/individual_post_a_taks_1_screen.dart';
 import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/search_container_screen.dart';
 import 'package:ying_3_3/Presentation/UserProfileScreens/UserProfileViewScrren/user_profile_user_view_screen.dart';
@@ -40,7 +41,7 @@ class _NavState extends State<Nav> {
       const GigFeed1FeedScreen(),
       SearchContainerScreen(), // Placeholder widget for the second screen
       const IndividualPostATask1Screen(), // Placeholder widget for the third screen
-      Container(), // Placeholder widget for the fourth screen
+      NotificationsScreen(), // Placeholder widget for the fourth screen
       UserProfileUserViewScreen(
         userId: uid,
       ), // Placeholder widget for the fifth screen

@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:ying_3_3/Presentation/UserProfileScreens/ClientViewUserProfileScreen/user_profile_client_view_screen.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/core/constants/global_methods.dart';
 import 'package:ying_3_3/core/constants/global_variables.dart';
+import 'package:ying_3_3/providers/user_provider.dart';
+import 'package:ying_3_3/resources/firestore_methods.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
 
 import 'package:ying_3_3/widgets/app_bar/appbar_image_1.dart';
@@ -259,10 +262,12 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   void toggleLike() async {
     var docRef =
         FirebaseFirestore.instance.collection('tasks').doc(widget.taskId);
+    await FirestoreMethods().storeNotification(
+        widget.uploadedBy, widget.taskId, 'like', widget.taskId);
+
     setState(() {
       isLiked = !isLiked;
     });
-
 // Access the document in firebase
     if (isLiked) {
 // if the post is now liked, add the user's name to the 'likes' field
