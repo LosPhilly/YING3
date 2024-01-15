@@ -1,17 +1,30 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ying_3_3/core/app_export.dart';
+import 'package:ying_3_3/firebase_options.dart';
 import 'package:ying_3_3/providers/firebase_provider.dart';
 import 'package:ying_3_3/user_state.dart';
 
-void main() {
+Future<void> _backgroundMessageHandler(RemoteMessage message) async {
+  // Initialize Firebase before using Firebase services
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Your background message handling code
+}
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize Firebase before using Firebase Messaging
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseMessaging.instance.getInitialMessage();
+  FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  final Future<FirebaseApp> _initialization =
+      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   MyApp({super.key});
 
@@ -41,7 +54,7 @@ class MyApp extends StatelessWidget {
                 home: Scaffold(
                   body: Center(
                     child: Text(
-                      'AN ERROR HAS OCCURED 4',
+                      'AN ERROR HAS OCCURRED 4',
                       style: TextStyle(
                           color: theme.colorScheme.primary,
                           fontSize: 40,

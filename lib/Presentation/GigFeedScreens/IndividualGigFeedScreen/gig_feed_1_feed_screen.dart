@@ -12,6 +12,7 @@ import 'package:ying_3_3/core/constants/global_variables.dart';
 import 'package:ying_3_3/core/constants/persistant.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/services/firebase_firestore_service.dart';
+import 'package:ying_3_3/services/notification_service.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_image.dart';
 import 'package:ying_3_3/widgets/custom_icon_button.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
@@ -42,6 +43,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool selectedPostContainer = true;
   bool selectedRequestContainer = false;
+  final notificationService = NotificationsService();
 
   late FocusNode _searchFocusNode;
 
@@ -63,6 +65,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
     Persistent persistentObject = Persistent();
     persistentObject.getUserData();
     WidgetsBinding.instance.addObserver(this);
+    notificationService.firebaseNotification(context);
   }
 
   @override

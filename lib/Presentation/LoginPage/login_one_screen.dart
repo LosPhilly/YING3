@@ -5,6 +5,7 @@ import 'package:ying_3_3/Presentation/SignUpPage/register_individual_one_screen.
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/core/constants/global_methods.dart';
 import 'package:ying_3_3/services/firebase_firestore_service.dart';
+import 'package:ying_3_3/services/notification_service.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
 
 import 'package:ying_3_3/widgets/custom_checkbox_button.dart';
@@ -30,7 +31,7 @@ class _LoginOneScreenState extends State<LoginOneScreen> {
   bool englishLabel = false;
 
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
-
+  static final notifications = NotificationsService();
   bool isLoading = false;
 
   @override
@@ -55,6 +56,9 @@ class _LoginOneScreenState extends State<LoginOneScreen> {
         await FirebaseFirestoreService.updateUserData(
           {'lastActive': DateTime.now()},
         );
+
+        await notifications.requestPermission();
+        await notifications.getToken();
         // ignore: use_build_context_synchronously
         Navigator.canPop(context) ? Navigator.pop(context) : null;
         // ignore: use_build_context_synchronously

@@ -10,6 +10,7 @@ import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/chats_li
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/services/firebase_firestore_service.dart';
 import 'package:ying_3_3/services/media_service.dart';
+import 'package:ying_3_3/services/notification_service.dart';
 
 class ChatTextField extends StatefulWidget {
   const ChatTextField({super.key, required this.receiverId});
@@ -20,6 +21,7 @@ class ChatTextField extends StatefulWidget {
 
 class _ChatTextFieldState extends State<ChatTextField> {
   final controller = TextEditingController();
+  final notificationsService = NotificationsService();
   Uint8List? file;
   File? imageFile;
 
@@ -29,6 +31,9 @@ class _ChatTextFieldState extends State<ChatTextField> {
         receiverId: widget.receiverId!,
         content: controller.text,
       );
+      await notificationsService.sendNotification(
+          body: controller.text,
+          senderId: FirebaseAuth.instance.currentUser!.uid);
       controller.clear();
       // ignore: use_build_context_synchronously
       FocusScope.of(context).unfocus();
@@ -87,12 +92,16 @@ class _ChatTextFieldState extends State<ChatTextField> {
         receiverId: widget.receiverId!,
         file: file!,
       );
+      await notificationsService.sendNotification(
+          body: 'image......',
+          senderId: FirebaseAuth.instance.currentUser!.uid);
     }
   }
 
   @override
   void initState() {
     // TODO: implement initState
+    notificationsService.getReceiverToken(widget.receiverId);
     super.initState();
   }
 
