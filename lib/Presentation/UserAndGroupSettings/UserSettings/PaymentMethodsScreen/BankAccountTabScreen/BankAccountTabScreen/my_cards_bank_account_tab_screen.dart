@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/DebitCardAccountScreen/my_cards_debit_card_page/my_cards_debit_card_page.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_page.dart';
 import 'package:ying_3_3/core/utils/size_utils.dart';
 import 'package:ying_3_3/core/app_export.dart';
 //import 'package:ying_3_3/presentation/my_cards_bank_account_page/my_cards_bank_account_page.dart';
@@ -106,9 +108,9 @@ class MyCardsBankAccountTabScreenState
                       height: 565.v,
                       child: TabBarView(
                         controller: tabviewController,
-                        children: [
-                          Container(), // MyCardsBankAccountPage(),
-                          Container(), // MyCardsDebitCardPage()
+                        children: const [
+                          MyCardsBankAccountPage(),
+                          MyCardsDebitCardPage(), // MyCardsDebitCardPage()
                         ],
                       ),
                     )

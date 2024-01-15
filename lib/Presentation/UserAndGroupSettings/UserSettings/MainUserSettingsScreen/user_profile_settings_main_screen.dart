@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/AccountSettingsScreen/account_settings_screen.dart';
-import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_tab_container_screen/my_cards_bank_account_screen.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/BankAccountTabScreen/my_cards_bank_account_tab_screen.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/my_cards_bank_account_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PersonalDataScreen/user_profile_settings_data_screen.dart';
 import 'package:ying_3_3/core/utils/image_constant.dart';
 import 'package:ying_3_3/core/utils/size_utils.dart';
@@ -123,7 +124,7 @@ class _UserProfileSettingsMainScreenState
   onTapPaymentSettings(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) =>
-          const MyCardsBankAccountScreen(), // Replace YourNewPage with the actual page you want to navigate to
+          const MyCardsBankAccountTabScreen(), // Replace YourNewPage with the actual page you want to navigate to
     ));
   }
 

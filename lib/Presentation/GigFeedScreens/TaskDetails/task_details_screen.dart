@@ -662,7 +662,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                                             child: Column(
                                                               children: [
                                                                 const Text(
-                                                                  "Task Description",
+                                                                  "Gig Description",
                                                                   style:
                                                                       TextStyle(
                                                                     fontSize:
@@ -1119,7 +1119,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                               children: [
                                 Align(
                                   alignment: Alignment.topLeft,
-                                  child: Text('Task Details:',
+                                  child: Text('Gig Details:',
                                       style: theme.textTheme.titleSmall),
                                 ),
                                 Align(
