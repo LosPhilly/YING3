@@ -12,6 +12,7 @@ import 'package:ying_3_3/widgets/app_bar/appbar_iconbutton_3.dart';
 import 'package:ying_3_3/widgets/app_bar/custom_app_bar.dart';
 
 import 'package:ying_3_3/widgets/custom_elevated_button.dart';
+import 'package:ying_3_3/widgets/custom_icon_button.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 import 'package:ying_3_3/widgets/custom_rating_bar.dart';
 
@@ -87,6 +88,120 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen> {
     } finally {
       _isLoading = false;
     }
+  }
+
+  onTapMyschedule(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: false,
+      showDragHandle: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
+      context: context,
+      builder: (BuildContext context) {
+        return Column(
+          children: [
+            SizedBox(height: 2),
+            Padding(
+              padding: EdgeInsets.only(
+                left: 21.h,
+                top: 22.v,
+                right: 21.h,
+              ),
+              child: Column(
+                children: [
+                  Center(
+                    child: Text("My Gig Schedule",
+                        style: CustomTextStyles.titleMediumOnPrimaryBold),
+                  ),
+                  SizedBox(height: 2.v),
+                  Center(
+                    child: Text(
+                        "Have an insight into all the variations of your tasks. Start by choosing one of the following: ",
+                        style: CustomTextStyles.bodySmall11),
+                  ),
+                  SizedBox(height: 2.v),
+                  Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            CustomIconButton(
+                              height: 44.adaptSize,
+                              width: 44.adaptSize,
+                              padding: EdgeInsets.all(10.h),
+                              decoration: IconButtonStyleHelper.fillPurpleTL16,
+                              child: CustomImageView(
+                                svgPath: ImageConstant.imgOutlineshopping,
+                              ),
+                            ),
+                            SizedBox(height: 10.v),
+                            Text(
+                              "Recieved",
+                              style:
+                                  CustomTextStyles.labelLargeOnPrimarySemiBold,
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 1.v),
+                          child: Column(
+                            children: [
+                              CustomIconButton(
+                                height: 44.adaptSize,
+                                width: 44.adaptSize,
+                                padding: EdgeInsets.all(10.h),
+                                decoration:
+                                    IconButtonStyleHelper.fillPurpleTL16,
+                                child: CustomImageView(
+                                  svgPath: ImageConstant.imgOutlineshopping,
+                                ),
+                              ),
+                              SizedBox(height: 8.v),
+                              Text(
+                                "Posted",
+                                style: CustomTextStyles
+                                    .labelLargeOnPrimarySemiBold,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 1.v),
+                          child: Column(
+                            children: [
+                              CustomIconButton(
+                                height: 44.adaptSize,
+                                width: 44.adaptSize,
+                                padding: EdgeInsets.all(10.h),
+                                decoration:
+                                    IconButtonStyleHelper.fillPurpleTL16,
+                                child: CustomImageView(
+                                  svgPath: ImageConstant.imgOutlineshopping,
+                                ),
+                              ),
+                              SizedBox(height: 8.v),
+                              Text(
+                                "Request",
+                                style: CustomTextStyles
+                                    .labelLargeOnPrimarySemiBold,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -490,7 +605,4 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen> {
   /// The [BuildContext] parameter is used to build the navigation stack.
   /// When the action is triggered, this function uses the [Navigator] widget
   /// to push the named route for the taskScheduleOneScreen.
-  onTapMyschedule(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.userState);
-  }
 }
