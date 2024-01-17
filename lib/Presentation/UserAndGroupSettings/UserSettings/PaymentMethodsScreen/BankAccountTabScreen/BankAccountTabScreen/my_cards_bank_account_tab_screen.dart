@@ -100,7 +100,7 @@ class MyCardsBankAccountTabScreenState
                                 theme.colorScheme.onPrimary.withOpacity(0.42),
                             unselectedLabelColor:
                                 appTheme.cyan700.withOpacity(0.5),
-                            tabs: [
+                            tabs: const [
                               Tab(child: Text("Bank Account")),
                               Tab(child: Text("Debit Card"))
                             ])),

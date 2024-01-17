@@ -3,11 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:radio_grouped_buttons/custom_buttons/custom_radio_buttons_group.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/DebitCardAccountScreen/my_cards_debit_card_page/my_cards_debit_card_page.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_page.dart';
+import 'package:ying_3_3/Presentation/UserProfileScreens/UserProfileViewScrren/UserSchdeule/UserSchedule.dart';
 import 'package:ying_3_3/Presentation/UserProfileScreens/UserProfileViewScrren/widgets/chipviewchips8_item_widget.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/core/constants/persistant.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
-
+import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 import 'package:ying_3_3/widgets/app_bar/appbar_iconbutton_3.dart';
 import 'package:ying_3_3/widgets/app_bar/custom_app_bar.dart';
 
@@ -26,7 +29,8 @@ class UserProfileUserViewScreen extends StatefulWidget {
       _UserProfileUserViewScreenState();
 }
 
-class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen> {
+class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen>
+    with TickerProviderStateMixin {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -41,6 +45,7 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen> {
   String joinedAt = '';
   bool _isLoading = false;
   bool _isSameUser = false;
+  late TabController tabviewController;
 
   onTapImgOutlineburgerme(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.individualMainMenuScreen);
@@ -90,115 +95,107 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen> {
     }
   }
 
-  onTapMyschedule(BuildContext context) {
+  onTapMyschedule(BuildContext context) async {
     showModalBottomSheet(
-      isScrollControlled: false,
+      isScrollControlled: true,
       showDragHandle: true,
+      useSafeArea: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20), topRight: Radius.circular(20)),
       ),
       context: context,
       builder: (BuildContext context) {
-        return Column(
-          children: [
-            SizedBox(height: 2),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 21.h,
-                top: 22.v,
-                right: 21.h,
-              ),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text("My Gig Schedule",
-                        style: CustomTextStyles.titleMediumOnPrimaryBold),
+        return SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height *
+                1, // Set a height constraint
+            child: Column(
+              children: [
+                const SizedBox(height: 2),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 21.h,
+                    top: 22.v,
+                    right: 21.h,
                   ),
-                  SizedBox(height: 2.v),
-                  Center(
-                    child: Text(
-                        "Have an insight into all the variations of your tasks. Start by choosing one of the following: ",
-                        style: CustomTextStyles.bodySmall11),
-                  ),
-                  SizedBox(height: 2.v),
-                  Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            CustomIconButton(
-                              height: 44.adaptSize,
-                              width: 44.adaptSize,
-                              padding: EdgeInsets.all(10.h),
-                              decoration: IconButtonStyleHelper.fillPurpleTL16,
-                              child: CustomImageView(
-                                svgPath: ImageConstant.imgOutlineshopping,
-                              ),
-                            ),
-                            SizedBox(height: 10.v),
-                            Text(
-                              "Recieved",
-                              style:
-                                  CustomTextStyles.labelLargeOnPrimarySemiBold,
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 1.v),
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Text("My Gig Schedule",
+                            style: CustomTextStyles.titleMediumOnPrimaryBold),
+                      ),
+                      SizedBox(height: 5.v),
+                      Center(
+                        child: Text(
+                            "Have an insight into all the variations of your tasks. Start by choosing one of the following: ",
+                            style: CustomTextStyles.bodySmall11),
+                      ),
+                      SizedBox(height: 2.v),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: fs.Svg(ImageConstant.imgGroup47),
+                                  fit: BoxFit.cover)),
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              CustomIconButton(
-                                height: 44.adaptSize,
-                                width: 44.adaptSize,
-                                padding: EdgeInsets.all(10.h),
-                                decoration:
-                                    IconButtonStyleHelper.fillPurpleTL16,
-                                child: CustomImageView(
-                                  svgPath: ImageConstant.imgOutlineshopping,
+                              SizedBox(
+                                  height: 64.v,
+                                  width: 296.h,
+                                  child: TabBar(
+                                      controller: tabviewController,
+                                      labelPadding: EdgeInsets.zero,
+                                      labelColor: theme.colorScheme.onPrimary
+                                          .withOpacity(0.42),
+                                      unselectedLabelColor:
+                                          appTheme.cyan700.withOpacity(0.5),
+                                      tabs: const [
+                                        Tab(
+                                          icon: Icon(
+                                            Icons.receipt,
+                                            color: Colors.black,
+                                          ),
+                                          text: "Received",
+                                        ),
+                                        Tab(
+                                          icon: Icon(
+                                            Icons.post_add_outlined,
+                                            color: Colors.black,
+                                          ),
+                                          text: "Posted",
+                                        ),
+                                        Tab(
+                                          icon: Icon(
+                                            Icons.request_quote_rounded,
+                                            color: Colors.black,
+                                          ),
+                                          text: "Requested",
+                                        ),
+                                      ])),
+                              SizedBox(
+                                height: 565.v,
+                                child: TabBarView(
+                                  controller: tabviewController,
+                                  children: [
+                                    Container(),
+                                    const MyGigSchedule(), // MyCardsDebitCardPage()
+                                    Container(),
+                                  ],
                                 ),
-                              ),
-                              SizedBox(height: 8.v),
-                              Text(
-                                "Posted",
-                                style: CustomTextStyles
-                                    .labelLargeOnPrimarySemiBold,
-                              ),
+                              )
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 1.v),
-                          child: Column(
-                            children: [
-                              CustomIconButton(
-                                height: 44.adaptSize,
-                                width: 44.adaptSize,
-                                padding: EdgeInsets.all(10.h),
-                                decoration:
-                                    IconButtonStyleHelper.fillPurpleTL16,
-                                child: CustomImageView(
-                                  svgPath: ImageConstant.imgOutlineshopping,
-                                ),
-                              ),
-                              SizedBox(height: 8.v),
-                              Text(
-                                "Request",
-                                style: CustomTextStyles
-                                    .labelLargeOnPrimarySemiBold,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
@@ -210,6 +207,7 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen> {
     super.initState();
     getUserData();
     _focusNode = FocusNode();
+    tabviewController = TabController(length: 3, vsync: this);
   }
 
   @override
