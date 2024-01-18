@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/chats_list_screen/ChatListScreen/widgets/user_item.dart';
 
@@ -28,6 +29,7 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
     super.dispose();
   }
 
+/* DUMMY DATA
   final userData = [
     User(
       uid: '1',
@@ -62,7 +64,7 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
       lastActive: DateTime.now(),
     ),
   ];
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +78,10 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
             separatorBuilder: (context, index) => const SizedBox(
               height: 10,
             ),
-            itemBuilder: (context, index) => UserItem(user: value.users[index]),
+            itemBuilder: (context, index) =>
+                value.users[index].uid != FirebaseAuth.instance.currentUser?.uid
+                    ? UserItem(user: value.users[index])
+                    : const SizedBox(),
             physics: const BouncingScrollPhysics(),
           );
         }));

@@ -8,6 +8,7 @@ class FirebaseProvider extends ChangeNotifier {
   List<User> getAllUsers() {
     FirebaseFirestore.instance
         .collection('users')
+        .orderBy('lastActive', descending: true)
         .snapshots(includeMetadataChanges: true)
         .listen((users) {
       this.users = users.docs.map((doc) => User.fromJson(doc.data())).toList();
