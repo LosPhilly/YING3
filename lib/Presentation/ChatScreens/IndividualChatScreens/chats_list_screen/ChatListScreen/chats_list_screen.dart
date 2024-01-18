@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/chats_list_screen/ChatListScreen/widgets/user_item.dart';
 
-import 'package:ying_3_3/models/user.dart';
 import 'package:ying_3_3/providers/firebase_provider.dart';
 import 'package:ying_3_3/routes/app_routes.dart';
 
