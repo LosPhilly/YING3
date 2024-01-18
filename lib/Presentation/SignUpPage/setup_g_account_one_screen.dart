@@ -86,6 +86,8 @@ class _SetupGAccountOneScreenState extends State<SetupGAccountOneScreen> {
           'locationPreference': [],
           'userImage': '',
           'user': 'individual',
+          'isOnline': true,
+          'lastActive': DateTime.now(),
         });
 
         // ignore: use_build_context_synchronously
