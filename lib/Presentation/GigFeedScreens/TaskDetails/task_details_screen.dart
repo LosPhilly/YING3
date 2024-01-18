@@ -263,7 +263,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     var docRef =
         FirebaseFirestore.instance.collection('tasks').doc(widget.taskId);
     await FirestoreMethods().storeNotification(
-        widget.uploadedBy, widget.taskId, 'like', widget.taskId);
+        _auth.currentUser!.uid, widget.taskId, 'like', widget.taskId);
 
     setState(() {
       isLiked = !isLiked;
@@ -284,11 +284,12 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   }
 
   // Request Participation
+
   void requestParticipation() async {
     var docRef =
         FirebaseFirestore.instance.collection('tasks').doc(widget.taskId);
     await FirestoreMethods().storeNotification(
-        widget.uploadedBy, widget.taskId, 'participate', widget.taskId);
+        _auth.currentUser!.uid, widget.taskId, 'participate', widget.taskId);
 
     getTaskData();
   }
@@ -1052,7 +1053,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                   width: MediaQuery.of(context).size.width,
                                   height: 60,
                                   child: buttonList.isEmpty
-                                      ? const CircularProgressIndicator()
+                                      ? Text('No Skills Uploaded')
                                       : GestureDetector(
                                           onLongPress: () {
                                             showModalBottomSheet(
