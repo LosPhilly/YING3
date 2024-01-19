@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/chats_list_screen/ChatListScreen/widgets/chat_text_field.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/widgets/chat_messages.dart';
 import 'package:ying_3_3/Presentation/UserProfileScreens/ClientViewUserProfileScreen/user_profile_client_view_screen.dart';
 import 'package:ying_3_3/models/user.dart';
+import 'package:ying_3_3/providers/firebase_provider.dart';
 
 class ChatScreenIndividual extends StatefulWidget {
   const ChatScreenIndividual({super.key, required this.user});
@@ -14,6 +16,14 @@ class ChatScreenIndividual extends StatefulWidget {
 
 class _ChatScreenIndividualState extends State<ChatScreenIndividual> {
   @override
+  void initState() {
+    Provider.of<FirebaseProvider>(context, listen: false)
+      ..getUserById(widget.user.uid)
+      ..getMessages(widget.user.uid);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
@@ -23,7 +33,7 @@ class _ChatScreenIndividualState extends State<ChatScreenIndividual> {
           children: [
             ChatMessages(
                 receiverId: 'fgKnNxiLQRc180qANUgi4tOn7AE2'), //widget.user.uid
-            const ChatTextField()
+            ChatTextField(receiverId: widget.user.uid)
           ],
         ),
       ),

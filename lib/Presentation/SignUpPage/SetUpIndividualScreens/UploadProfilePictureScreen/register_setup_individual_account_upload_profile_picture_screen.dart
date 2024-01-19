@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/core/constants/global_methods.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
