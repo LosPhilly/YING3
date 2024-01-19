@@ -66,12 +66,14 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
+    final User? user = _auth.currentUser;
+    final uid = user!.uid;
 
     switch (state) {
       case AppLifecycleState.resumed:
-        FirebaseFirestoreService.updateUserData({
+        FirebaseFirestore.instance.collection('users').doc(uid).update({
           'lastActive': DateTime.now(),
           'isOnline': true,
         });
@@ -80,7 +82,10 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:
-        FirebaseFirestoreService.updateUserData({'isOnline': false});
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .update({'isOnline': false});
         break;
 
       default:
