@@ -48,6 +48,24 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   TextEditingController searchController = TextEditingController();
 
   @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //updateLastActive();
+    _searchFocusNode = FocusNode();
+    title = "Gig Feed";
+    Persistent persistentObject = Persistent();
+    persistentObject.getUserData();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
@@ -60,38 +78,15 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
         break;
 
       case AppLifecycleState.inactive:
-        FirebaseFirestoreService.updateUserData({'isOnline': false});
-        break;
       case AppLifecycleState.paused:
-        FirebaseFirestoreService.updateUserData({'isOnline': false});
-        break;
       case AppLifecycleState.detached:
         FirebaseFirestoreService.updateUserData({'isOnline': false});
         break;
 
       default:
-        // Handle the AppLifecycleState.hidden case
-        FirebaseFirestoreService.updateUserData({'isOnline': false});
+        // Handle the case where the state is unknown.
         break;
     }
-  }
-
-  @override
-  void dispose() {
-    _searchFocusNode.dispose();
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    updateLastActive();
-    _searchFocusNode = FocusNode();
-    title = "Gig Feed";
-    Persistent persistentObject = Persistent();
-    persistentObject.getUserData();
-    WidgetsBinding.instance.addObserver(this);
   }
 
   updateLastActive() async {
