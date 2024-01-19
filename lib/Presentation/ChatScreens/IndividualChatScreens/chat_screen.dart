@@ -6,7 +6,7 @@ import 'package:ying_3_3/models/user.dart';
 
 class ChatScreenIndividual extends StatefulWidget {
   const ChatScreenIndividual({super.key, required this.user});
-  final User user;
+  final UserModel user;
 
   @override
   State<ChatScreenIndividual> createState() => _ChatScreenIndividualState();

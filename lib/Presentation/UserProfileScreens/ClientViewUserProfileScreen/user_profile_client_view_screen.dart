@@ -29,6 +29,7 @@ class _UserProfileClientViewScreenState
   String joinedAt = '';
   bool _isLoading = false;
   bool _isSameUser = false;
+  bool isOnline = false;
 
   getUserData() async {
     try {
@@ -45,6 +46,7 @@ class _UserProfileClientViewScreenState
           name = userDoc.get('name');
           email = userDoc.get('email');
           imageUrl = userDoc.get('userImage');
+          isOnline = userDoc.get('isOnline');
           Timestamp joinedAtTimeStamp = userDoc.get('createdAt');
           var joinedDate = joinedAtTimeStamp.toDate();
           joinedAt =
@@ -107,6 +109,13 @@ class _UserProfileClientViewScreenState
                         SizedBox(height: 4.v),
                         Text("UX/UI Designer",
                             style: theme.textTheme.bodyMedium),
+                        Text(
+                          isOnline ? 'Online' : 'Offline',
+                          style: TextStyle(
+                              color: isOnline ? Colors.green : Colors.grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(
                               left: 11.h, top: 52.v, right: 43.h),

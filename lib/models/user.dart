@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class UserModel {
   final String uid;
   final String name;
   final String email;
@@ -8,7 +8,7 @@ class User {
   final DateTime lastActive;
   final bool isOnline;
 
-  const User({
+  const UserModel({
     required this.name,
     required this.imageURL,
     required this.lastActive,
@@ -17,10 +17,10 @@ class User {
     this.isOnline = false,
   });
 
-  static User fromSnap(DocumentSnapshot snap) {
+  static UserModel fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
 
-    return User(
+    return UserModel(
       name: snapshot["name"],
       uid: snapshot["id"],
       email: snapshot["email"],
@@ -39,7 +39,7 @@ class User {
         'lastActive': lastActive,
       };
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         uid: json['id'],
         name: json['name'],
         imageURL: json['userImage'],

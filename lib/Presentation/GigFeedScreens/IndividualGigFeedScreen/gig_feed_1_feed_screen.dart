@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/chats_list_screen/ChatListScreen/chats_list_screen.dart';
 import 'package:ying_3_3/Presentation/Notifications/IndividualNotificationsScreen/notifications_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
 import 'package:ying_3_3/core/constants/color_map.dart';
+import 'package:ying_3_3/core/constants/global_methods.dart';
 import 'package:ying_3_3/core/constants/global_variables.dart';
 import 'package:ying_3_3/core/constants/persistant.dart';
 import 'package:ying_3_3/core/app_export.dart';
@@ -35,7 +37,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen> {
   String? jobCategoryFilter;
   // Create a variable to store the length of the snapshot
   int numberOfGigs = 0;
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool selectedPostContainer = true;
   bool selectedRequestContainer = false;
 
@@ -52,10 +54,28 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen> {
   @override
   void initState() {
     super.initState();
+    updateLastActive();
     _searchFocusNode = FocusNode();
     title = "Gig Feed";
     Persistent persistentObject = Persistent();
     persistentObject.getUserData();
+  }
+
+  updateLastActive() async {
+    try {
+      final User? user = _auth.currentUser;
+      final uid = user!.uid;
+
+      FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'lastActive': DateTime.now(),
+      });
+      FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'isOnline': true,
+      });
+    } catch (error) {
+      // ignore: use_build_context_synchronously
+      GlobalMethod.showErrorDialog(error: error.toString(), ctx: context);
+    }
   }
 
   onTapLogout(context) {

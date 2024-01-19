@@ -6,7 +6,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class UserItem extends StatefulWidget {
   const UserItem({super.key, required this.user});
-  final User user;
+  final UserModel user;
 
   @override
   State<UserItem> createState() => _UserItemState();
