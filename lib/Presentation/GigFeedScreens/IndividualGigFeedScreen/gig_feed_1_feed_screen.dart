@@ -66,12 +66,12 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
-    final User? user = _auth.currentUser;
-    final uid = user!.uid;
 
     try {
+      final User? user = _auth.currentUser;
+      final uid = user!.uid;
       switch (state) {
         case AppLifecycleState.resumed:
           FirebaseFirestore.instance.collection('users').doc(uid).update({
