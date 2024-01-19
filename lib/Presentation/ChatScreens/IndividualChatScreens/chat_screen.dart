@@ -50,7 +50,10 @@ class _ChatScreenIndividualState extends State<ChatScreenIndividual> {
             ? Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(value.user!.imageURL),
+                    backgroundImage: value.user!.imageURL.isNotEmpty
+                        ? NetworkImage(value.user!.imageURL)
+                        : const NetworkImage(
+                            'https://static.vecteezy.com/system/resources/previews/004/026/956/original/person-avatar-icon-free-vector.jpg'),
                     radius: 20,
                   ),
                   const SizedBox(width: 10),
