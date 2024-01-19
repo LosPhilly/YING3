@@ -32,7 +32,8 @@ class _ChatScreenIndividualState extends State<ChatScreenIndividual> {
         child: Column(
           children: [
             ChatMessages(
-                receiverId: 'fgKnNxiLQRc180qANUgi4tOn7AE2'), //widget.user.uid
+                receiverId: widget
+                    .user.uid), //widget.user.uid 'fgKnNxiLQRc180qANUgi4tOn7AE2'
             ChatTextField(receiverId: widget.user.uid)
           ],
         ),
@@ -41,52 +42,40 @@ class _ChatScreenIndividualState extends State<ChatScreenIndividual> {
   }
 
   AppBar _buildAppBar() => AppBar(
-        elevation: 0,
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.transparent,
-        title: GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              showDragHandle: true,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
-              context: context,
-              builder: (BuildContext context) {
-                return UserProfileClientViewScreen(userId: widget.user.uid);
-              },
-            );
-          },
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(widget.user.imageURL),
-                radius: 20,
-              ),
-              const SizedBox(width: 10),
-              Column(
+      elevation: 0,
+      foregroundColor: Colors.black,
+      backgroundColor: Colors.transparent,
+      title: Consumer<FirebaseProvider>(
+        builder: (context, value, child) => value.user != null
+            ? Row(
                 children: [
-                  Text(
-                    widget.user.name,
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(value.user!.imageURL),
+                    radius: 20,
                   ),
-                  Text(
-                    widget.user.isOnline ? 'Online' : 'Offline',
-                    style: TextStyle(
-                        color:
-                            widget.user.isOnline ? Colors.green : Colors.grey,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold),
+                  const SizedBox(width: 10),
+                  Column(
+                    children: [
+                      Text(
+                        value.user!.name,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        value.user!.isOnline ? 'Online' : 'Offline',
+                        style: TextStyle(
+                          color:
+                              value.user!.isOnline ? Colors.green : Colors.grey,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               )
-            ],
-          ),
-        ),
-      );
+            : const SizedBox(),
+      ));
 }

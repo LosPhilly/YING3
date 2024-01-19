@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/widgets/empty_widget.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/widgets/message_bubble.dart';
 import 'package:ying_3_3/models/message.dart';
+import 'package:ying_3_3/providers/firebase_provider.dart';
 
 class ChatMessages extends StatelessWidget {
   ChatMessages({super.key, required this.receiverId});
@@ -90,26 +93,35 @@ class ChatMessages extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-          itemCount: messages.length,
-          itemBuilder: (context, index) {
-            final isTextMessage =
-                messages[index].messageType == MessageType.text;
-            final isMe = receiverId != messages[index].senderId;
-            return isTextMessage
-                ? MessageBubble(
-                    isMe: isMe,
-                    message: messages[index],
-                    isImage: false,
-                  )
-                : MessageBubble(
-                    isMe: isMe,
-                    message: messages[index],
-                    isImage: true,
-                  );
-          }),
-    );
-  }
+  Widget build(BuildContext context) => Consumer<FirebaseProvider>(
+        builder: (context, value, child) => value.messages.isEmpty
+            ? const Expanded(
+                child: EmptyWidget(icon: Icons.waving_hand, text: 'Say Hello!'),
+              )
+            : Expanded(
+                child: ListView.builder(
+                  controller:
+                      Provider.of<FirebaseProvider>(context, listen: false)
+                          .scrollController,
+                  itemCount: value.messages.length,
+                  itemBuilder: (context, index) {
+                    final isTextMessage =
+                        value.messages[index].messageType == MessageType.text;
+                    final isMe = receiverId != value.messages[index].senderId;
+
+                    return isTextMessage
+                        ? MessageBubble(
+                            isMe: isMe,
+                            message: value.messages[index],
+                            isImage: false,
+                          )
+                        : MessageBubble(
+                            isMe: isMe,
+                            message: value.messages[index],
+                            isImage: true,
+                          );
+                  },
+                ),
+              ),
+      );
 }

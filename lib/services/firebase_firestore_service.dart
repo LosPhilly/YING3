@@ -85,4 +85,10 @@ class FirebaseFirestoreService {
         .collection('messages')
         .add(message.toJson());
   }
+
+  static Future<void> updateUserData(Map<String, dynamic> data) async =>
+      await firestore
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update(data);
 }
