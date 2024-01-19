@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/register_individual_one_screen.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/core/constants/global_methods.dart';
+import 'package:ying_3_3/services/firebase_firestore_service.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
 
 import 'package:ying_3_3/widgets/custom_checkbox_button.dart';
@@ -50,6 +51,10 @@ class _LoginOneScreenState extends State<LoginOneScreen> {
         await _auth.signInWithEmailAndPassword(
             email: _emailTextController.text.trim().toLowerCase(),
             password: _passTextController.text.trim());
+
+        await FirebaseFirestoreService.updateUserData(
+          {'lastActive': DateTime.now()},
+        );
         // ignore: use_build_context_synchronously
         Navigator.canPop(context) ? Navigator.pop(context) : null;
         // ignore: use_build_context_synchronously

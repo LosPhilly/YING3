@@ -11,6 +11,7 @@ import 'package:ying_3_3/core/constants/global_methods.dart';
 import 'package:ying_3_3/core/constants/global_variables.dart';
 import 'package:ying_3_3/core/constants/persistant.dart';
 import 'package:ying_3_3/core/app_export.dart';
+import 'package:ying_3_3/services/firebase_firestore_service.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_image.dart';
 import 'package:ying_3_3/widgets/custom_icon_button.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
@@ -32,7 +33,8 @@ class UserData {
   UserData({this.imageUrl, this.name});
 }
 
-class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen> {
+class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
+    with WidgetsBindingObserver {
   bool newMessage = false;
   String? jobCategoryFilter;
   // Create a variable to store the length of the snapshot
@@ -46,8 +48,34 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen> {
   TextEditingController searchController = TextEditingController();
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.resumed:
+        FirebaseFirestoreService.updateUserData({
+          'lastActive': DateTime.now(),
+          'isOnline': true,
+        });
+        break;
+
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        FirebaseFirestoreService.updateUserData({'isOnline': false});
+        break;
+
+      default:
+        // Handle the AppLifecycleState.hidden case
+        FirebaseFirestoreService.updateUserData({'isOnline': false});
+        break;
+    }
+  }
+
+  @override
   void dispose() {
     _searchFocusNode.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -59,6 +87,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen> {
     title = "Gig Feed";
     Persistent persistentObject = Persistent();
     persistentObject.getUserData();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   updateLastActive() async {
