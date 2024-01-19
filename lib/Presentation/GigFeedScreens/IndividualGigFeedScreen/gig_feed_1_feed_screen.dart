@@ -60,7 +60,11 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
         break;
 
       case AppLifecycleState.inactive:
+        FirebaseFirestoreService.updateUserData({'isOnline': false});
+        break;
       case AppLifecycleState.paused:
+        FirebaseFirestoreService.updateUserData({'isOnline': false});
+        break;
       case AppLifecycleState.detached:
         FirebaseFirestoreService.updateUserData({'isOnline': false});
         break;
