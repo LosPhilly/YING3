@@ -57,7 +57,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   @override
   void initState() {
     super.initState();
-    //updateLastActive();
+    updateLastActive();
     _searchFocusNode = FocusNode();
     title = "Gig Feed";
     Persistent persistentObject = Persistent();
