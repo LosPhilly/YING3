@@ -21,7 +21,8 @@ class _ChatScreenIndividualState extends State<ChatScreenIndividual> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            ChatMessages(receiverId: widget.user.uid),
+            ChatMessages(
+                receiverId: 'fgKnNxiLQRc180qANUgi4tOn7AE2'), //widget.user.uid
             const ChatTextField()
           ],
         ),
