@@ -66,31 +66,35 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
+  void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     final User? user = _auth.currentUser;
     final uid = user!.uid;
 
-    switch (state) {
-      case AppLifecycleState.resumed:
-        FirebaseFirestore.instance.collection('users').doc(uid).update({
-          'lastActive': DateTime.now(),
-          'isOnline': true,
-        });
-        break;
+    try {
+      switch (state) {
+        case AppLifecycleState.resumed:
+          FirebaseFirestore.instance.collection('users').doc(uid).update({
+            'lastActive': DateTime.now(),
+            'isOnline': true,
+          });
+          break;
 
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.paused:
-      case AppLifecycleState.detached:
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .update({'isOnline': false});
-        break;
+        case AppLifecycleState.inactive:
+        case AppLifecycleState.paused:
+        case AppLifecycleState.detached:
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .update({'isOnline': false});
+          break;
 
-      default:
-        // Handle the case where the state is unknown.
-        break;
+        default:
+          // Handle the case where the state is unknown.
+          break;
+      }
+    } catch (error) {
+      GlobalMethod.showErrorDialog(error: error.toString(), ctx: context);
     }
   }
 
