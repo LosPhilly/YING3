@@ -25,7 +25,11 @@ class _UserItemState extends State<UserItem> {
           children: [
             CircleAvatar(
               radius: 30,
-              backgroundImage: NetworkImage(widget.user.imageURL),
+              // ignore: unnecessary_null_comparison
+              backgroundImage: widget.user.imageURL.isNotEmpty
+                  ? NetworkImage(widget.user.imageURL)
+                  : const NetworkImage(
+                      'https://static.vecteezy.com/system/resources/previews/004/026/956/original/person-avatar-icon-free-vector.jpg'),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
