@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/chat_screen.dart';
+import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/widgets/chat_messages.dart';
 
 //import '../view/screens/chat_screen.dart';
 
@@ -120,7 +121,7 @@ class NotificationsService {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       await Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (_) => ChatScreenIndividual(user: message.data['senderId']),
+          builder: (_) => ChatMessages(receiverId: message.data['senderId']),
         ),
       );
     });
