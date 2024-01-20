@@ -119,7 +119,7 @@ class NotificationsService {
     _initLocalNotification();
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      await Navigator.of(context).push(
+      await Navigator.of(context).pushReplacement(
         MaterialPageRoute(
             builder: (_) =>
                 const ChatsListScreen() // ** BUG ** ChatScreenIndividual(user: message.data['senderId']),
