@@ -91,4 +91,13 @@ class FirebaseFirestoreService {
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update(data);
+
+  static Future<List<UserModel>> searchUser(String name) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where("name", isGreaterThanOrEqualTo: name)
+        .get();
+
+    return snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
+  }
 }

@@ -77,7 +77,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
           FirebaseFirestore.instance.collection('users').doc(uid).update({
             'lastActive': DateTime.now(),
             'isOnline': true,
-          }); // FirebaseFirestoreService.updateUserData({'lastActive': DateTime.now(),'isOnline': true,
+          }); // FirebaseFirestoreService.updateUserData({'lastActive': DateTime.now(),'isOnline': true,})
           break;
 
         case AppLifecycleState.inactive:

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/chats_list_screen/ChatListScreen/widgets/user_item.dart';
+import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/search_screen.dart';
 
 import 'package:ying_3_3/providers/firebase_provider.dart';
 import 'package:ying_3_3/routes/app_routes.dart';
@@ -69,6 +70,17 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Chats'),
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const UsersSearchScreen())),
+              icon: const Icon(Icons.search, color: Colors.black),
+            ),
+            IconButton(
+              onPressed: () => FirebaseAuth.instance.signOut(),
+              icon: const Icon(Icons.logout, color: Colors.black),
+            ),
+          ],
         ),
         body: Consumer<FirebaseProvider>(builder: (context, value, child) {
           return ListView.separated(

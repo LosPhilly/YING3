@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ying_3_3/models/message.dart';
 import 'package:ying_3_3/models/user.dart';
+import 'package:ying_3_3/services/firebase_firestore_service.dart';
 
 class FirebaseProvider extends ChangeNotifier {
   List<UserModel> users = [];
@@ -60,4 +61,9 @@ class FirebaseProvider extends ChangeNotifier {
           scrollController.jumpTo(scrollController.position.maxScrollExtent);
         }
       });
+
+  Future<void> searchUser(String name) async {
+    search = await FirebaseFirestoreService.searchUser(name);
+    notifyListeners();
+  }
 }
