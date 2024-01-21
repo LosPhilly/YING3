@@ -9,6 +9,7 @@ import 'package:ying_3_3/services/firebase_storage_service.dart';
 
 class FirebaseFirestoreService {
   static final firestore = FirebaseFirestore.instance;
+  String messageId = Uuid().v4();
 
   static Future<void> createUser({
     required String name,
@@ -28,7 +29,7 @@ class FirebaseFirestoreService {
     await firestore.collection('users').doc(uid).set(user.toJson());
   }
 
-  static Future<void> addTextMessage({
+  Future<void> addTextMessage({
     required String content,
     required String receiverId,
   }) async {
@@ -38,11 +39,14 @@ class FirebaseFirestoreService {
       receiverId: receiverId,
       messageType: MessageType.text,
       senderId: FirebaseAuth.instance.currentUser!.uid,
+      messageID: messageId,
+      isLiked: false,
+      unread: true,
     );
-    await _addMessageToChat(receiverId, message);
+    await _addMessageToChat(receiverId, messageId, message);
   }
 
-  static Future<void> addImageMessage({
+  Future<void> addImageMessage({
     required String receiverId,
     required Uint8List file,
   }) async {
@@ -59,23 +63,30 @@ class FirebaseFirestoreService {
       content: image,
       sentTime: DateTime.now(),
       receiverId: receiverId,
+      messageID: messageId,
       messageType: MessageType.image,
       senderId: FirebaseAuth.instance.currentUser!.uid,
+      isLiked: false,
+      unread: true,
     );
-    await _addMessageToChat(receiverId, message);
+    await _addMessageToChat(receiverId, messageId, message);
   }
 
-  static Future<void> _addMessageToChat(
+  Future<void> _addMessageToChat(
     String receiverId,
+    String messageId,
     Message message,
   ) async {
+    // When sending a message, create a unique message ID
+
     await firestore
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('chat')
         .doc(receiverId)
         .collection('messages')
-        .add(message.toJson());
+        .doc(messageId)
+        .set(message.toJson());
 
     await firestore
         .collection('users')
@@ -83,7 +94,8 @@ class FirebaseFirestoreService {
         .collection('chat')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('messages')
-        .add(message.toJson());
+        .doc(messageId)
+        .set(message.toJson());
   }
 
   static Future<void> updateUserData(Map<String, dynamic> data) async =>

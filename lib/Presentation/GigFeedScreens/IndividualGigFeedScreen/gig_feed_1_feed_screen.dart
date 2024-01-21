@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/chats_list_screen/ChatListScreen/chats_list_screen.dart';
+import 'package:ying_3_3/Presentation/ChatScreens/main_chat_screen.dart';
 import 'package:ying_3_3/Presentation/Notifications/IndividualNotificationsScreen/notifications_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
 import 'package:ying_3_3/core/constants/color_map.dart';
@@ -232,7 +233,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
     }
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>
-            ChatsListScreen())); // Replace YourNewPage with the actual page you want to navigate to
+            ChatScreenMain())); // Replace YourNewPage with the actual page you want to navigate to
   }
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();

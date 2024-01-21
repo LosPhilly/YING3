@@ -125,103 +125,114 @@ class _JobWidgetState extends State<JobWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white.withOpacity(1),
-      elevation: 3,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 35,
-        vertical: 10,
-      ),
-      child: ListTile(
-        onTap: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              // ignore: unnecessary_null_comparison
-              builder: (context) => null == true
-                  ? const CircularProgressIndicator()
-                  : TaskDetailsScreen(
-                      taskId: widget.jobId,
-                      uploadedBy: widget.uploadedBy,
-                    ),
+    return Column(
+      children: [
+        Card(
+          color: Colors.white60.withOpacity(1),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          elevation: 0,
+          margin: const EdgeInsets.symmetric(
+            horizontal: 35,
+            vertical: 10,
+          ),
+          child: ListTile(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  // ignore: unnecessary_null_comparison
+                  builder: (context) => null == true
+                      ? const CircularProgressIndicator()
+                      : TaskDetailsScreen(
+                          taskId: widget.jobId,
+                          uploadedBy: widget.uploadedBy,
+                        ),
+                ),
+              );
+            },
+            onLongPress: () {
+              _deleteDialog();
+            },
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            leading: Container(
+              padding: const EdgeInsets.only(right: 2),
+              decoration: const BoxDecoration(
+                border: Border(
+                  right: BorderSide(width: 1),
+                ),
+              ),
+              child: CircleAvatar(
+                radius: 35,
+                backgroundImage: NetworkImage(widget.userImage),
+              ),
             ),
-          );
-        },
-        onLongPress: () {
-          _deleteDialog();
-        },
-        contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        leading: Container(
-          padding: const EdgeInsets.only(right: 2),
-          decoration: const BoxDecoration(
-            border: Border(
-              right: BorderSide(width: 1),
-            ),
-          ),
-          child: CircleAvatar(
-            radius: 35,
-            backgroundImage: NetworkImage(widget.userImage),
-          ),
-        ),
-        title: Text(
-          widget.jobTitle,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              widget.name,
+            title: Text(
+              widget.jobTitle,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                color: Color.fromARGB(255, 98, 54, 255),
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontSize: 13,
+                fontSize: 18,
               ),
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            Text(
-              widget.jobDescription,
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 15,
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(16)),
-                  color: widget.backgroundColor.withOpacity(0.5)),
-              padding: const EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
-              child: Text(
-                widget.jobCategory,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  widget.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 98, 54, 255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
                 ),
-              ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  widget.jobDescription,
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 15,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(16)),
+                      color: widget.backgroundColor.withOpacity(0.5)),
+                  padding: const EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
+                  child: Text(
+                    widget.jobCategory,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+            trailing: const Icon(
+              Icons.keyboard_arrow_right,
+              size: 30,
+              color: Color.fromARGB(255, 98, 54, 255),
+            ),
+          ),
         ),
-        trailing: const Icon(
-          Icons.keyboard_arrow_right,
-          size: 30,
-          color: Color.fromARGB(255, 98, 54, 255),
-        ),
-      ),
+        Divider(
+          thickness: 1,
+          color: Theme.of(context).primaryColor.withOpacity(0.2),
+        )
+      ],
     );
   }
 }

@@ -66,4 +66,24 @@ class FirebaseProvider extends ChangeNotifier {
     search = await FirebaseFirestoreService.searchUser(name);
     notifyListeners();
   }
+
+  Future<void> updateUnreadSection(String receiverId, messageId) async {
+    try {
+      // Update the unread section in Firebase
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('chat')
+          .doc(receiverId)
+          .collection('messages')
+          .doc(messageId)
+          .update({'unread': true});
+
+      // Notify listeners after the update
+      notifyListeners();
+    } catch (e) {
+      // Handle any potential errors here
+      print('Error updating unread section: $e');
+    }
+  }
 }

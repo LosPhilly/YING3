@@ -27,13 +27,16 @@ class _ChatTextFieldState extends State<ChatTextField> {
 
   Future<void> _sendText(BuildContext context) async {
     if (controller.text.isNotEmpty) {
-      await FirebaseFirestoreService.addTextMessage(
+      // Create an instance of the FirebaseFirestoreService class
+      final firebaseFirestoreService = FirebaseFirestoreService();
+      await firebaseFirestoreService.addTextMessage(
         receiverId: widget.receiverId!,
         content: controller.text,
       );
       await notificationsService.sendNotification(
-          body: controller.text,
-          senderId: FirebaseAuth.instance.currentUser!.uid);
+        body: controller.text,
+        senderId: FirebaseAuth.instance.currentUser!.uid,
+      );
       controller.clear();
       // ignore: use_build_context_synchronously
       FocusScope.of(context).unfocus();
@@ -65,7 +68,8 @@ class _ChatTextFieldState extends State<ChatTextField> {
         final pickedImage = await MediaService.pickImage();
         setState(() => file = pickedImage);
         if (file != null) {
-          await FirebaseFirestoreService.addImageMessage(
+          final firebaseFirestoreService = FirebaseFirestoreService();
+          await firebaseFirestoreService.addImageMessage(
             receiverId: widget.receiverId!,
             file: file!,
           );
@@ -75,7 +79,8 @@ class _ChatTextFieldState extends State<ChatTextField> {
         final pickedImage = await MediaService.cameraImage();
         setState(() => file = pickedImage);
         if (file != null) {
-          await FirebaseFirestoreService.addImageMessage(
+          final firebaseFirestoreService = FirebaseFirestoreService();
+          await firebaseFirestoreService.addImageMessage(
             receiverId: widget.receiverId!,
             file: file!,
           );
@@ -88,7 +93,8 @@ class _ChatTextFieldState extends State<ChatTextField> {
     final pickedImage = await MediaService.pickImage();
     setState(() => file = pickedImage);
     if (file != null) {
-      await FirebaseFirestoreService.addImageMessage(
+      final firebaseFirestoreService = FirebaseFirestoreService();
+      await firebaseFirestoreService.addImageMessage(
         receiverId: widget.receiverId!,
         file: file!,
       );

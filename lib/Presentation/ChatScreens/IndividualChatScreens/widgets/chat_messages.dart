@@ -9,6 +9,9 @@ class ChatMessages extends StatelessWidget {
   ChatMessages({super.key, required this.receiverId});
   final String receiverId;
 
+  /* 
+   DUMMY DATA
+   
   final messages = [
     Message(
         senderId: '2',
@@ -83,14 +86,20 @@ class ChatMessages extends StatelessWidget {
         receiverId: '2',
         content: 'See you later',
         sentTime: DateTime.now(),
-        messageType: MessageType.text),
+        messageType: MessageType.text,
+        isLiked: false,
+        unread: true,
+        ),
     Message(
         senderId: '2',
         receiverId: 'fgKnNxiLQRc180qANUgi4tOn7AE2',
         content: 'See you later',
         sentTime: DateTime.now(),
-        messageType: MessageType.text)
-  ];
+        messageType: MessageType.text,
+        isLiked: false,
+        unread: true,
+        )
+  ]; */
 
   @override
   Widget build(BuildContext context) => Consumer<FirebaseProvider>(
