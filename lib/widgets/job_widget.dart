@@ -133,8 +133,8 @@ class _JobWidgetState extends State<JobWidget> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           elevation: 0,
           margin: const EdgeInsets.symmetric(
-            horizontal: 35,
-            vertical: 10,
+            horizontal: 1,
+            vertical: 1,
           ),
           child: ListTile(
             onTap: () {
@@ -155,7 +155,7 @@ class _JobWidgetState extends State<JobWidget> {
               _deleteDialog();
             },
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
             leading: Container(
               padding: const EdgeInsets.only(right: 2),
               decoration: const BoxDecoration(
@@ -164,7 +164,7 @@ class _JobWidgetState extends State<JobWidget> {
                 ),
               ),
               child: CircleAvatar(
-                radius: 35,
+                radius: 55,
                 backgroundImage: NetworkImage(widget.userImage),
               ),
             ),
