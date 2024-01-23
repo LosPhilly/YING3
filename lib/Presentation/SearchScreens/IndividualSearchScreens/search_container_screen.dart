@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ying_3_3/Presentation/ChatScreens/main_chat_screen.dart';
 import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/search_page.dart';
 import 'package:ying_3_3/core/utils/image_constant.dart';
 import 'package:ying_3_3/core/utils/size_utils.dart';
@@ -45,6 +46,9 @@ class _SearchContainerScreenState extends State<SearchContainerScreen> {
         newMessage = false;
       });
     }
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            ChatScreenMain())); // Replace YourNewPage with the actual page you want to navigate to
   }
 
   @override
