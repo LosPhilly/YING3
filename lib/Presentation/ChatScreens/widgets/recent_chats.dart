@@ -32,7 +32,7 @@ class _RecentChatsState extends State<RecentChats> {
               ),
               child: ListView.separated(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: value.users.length,
+                itemCount: value.messages.length,
                 separatorBuilder: (context, index) => const SizedBox(
                   height: 10,
                 ),
