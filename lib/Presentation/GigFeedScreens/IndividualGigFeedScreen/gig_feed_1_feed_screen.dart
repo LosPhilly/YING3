@@ -431,6 +431,8 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
                                       .data()['taskId'],
                                   uploadedBy: snapshot.data!.docs[index]
                                       .data()['uploadedBy'],
+                                  createAt: snapshot.data!.docs[index]
+                                      .data()['createAt'],
                                   userImage: snapshot.data!.docs[index]
                                       .data()['userImage'],
                                   name: snapshot.data!.docs[index]

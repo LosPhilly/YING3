@@ -43,6 +43,13 @@ class _UsersSearchScreenState extends State<UsersSearchScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    Provider.of<FirebaseProvider>(context, listen: false).getAllUsers();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,

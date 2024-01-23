@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:ying_3_3/Presentation/GigFeedScreens/TaskDetails/task_details_screen.dart';
 import 'package:ying_3_3/core/constants/global_methods.dart';
 
@@ -12,6 +12,7 @@ class JobWidget extends StatefulWidget {
   final String jobDescription;
   final String jobId;
   final String uploadedBy;
+  final Timestamp createAt;
   final String userImage;
   final String name;
   final bool recruitment;
@@ -25,6 +26,7 @@ class JobWidget extends StatefulWidget {
     required this.jobDescription,
     required this.jobId,
     required this.uploadedBy,
+    required this.createAt,
     required this.userImage,
     required this.name,
     required this.recruitment,
@@ -219,6 +221,20 @@ class _JobWidgetState extends State<JobWidget> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 5),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    timeago.format(widget.createAt.toDate()),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 98, 54, 255),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                )
               ],
             ),
             trailing: const Icon(

@@ -115,6 +115,9 @@ class MyGigScheduleState extends State<MyGigSchedule>
                                                     uploadedBy: snapshot
                                                         .data!.docs[index]
                                                         .data()['uploadedBy'],
+                                                    createAt: snapshot
+                                                        .data!.docs[index]
+                                                        .data()['createAt'],
                                                     userImage: snapshot
                                                         .data!.docs[index]
                                                         .data()['userImage'],
