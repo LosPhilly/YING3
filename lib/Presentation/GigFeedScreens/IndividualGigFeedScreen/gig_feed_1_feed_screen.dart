@@ -279,60 +279,61 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
             },
           ),
           appBar: SliderAppBar(
-              appBarHeight: 100,
-              drawerIconColor: Colors.white,
-              appBarColor: Theme.of(context).primaryColor,
-              title: Text(
-                'Gig Feed',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
-              ),
-              trailing: Row(
-                children: [
-                  AppbarImage(
-                    svgPath: ImageConstant.imgOutlineflag,
-                    margin: EdgeInsets.all(8.0),
-                    onTap: () {
-                      _showTaskCategoriesDialog(size: size);
-                    },
-                  ),
-                  AppbarImage(
-                    svgPath: ImageConstant.imgSearch,
-                    margin: EdgeInsets.all(8.0),
-                    onTap: () {
-                      onTapSearchone(context);
-                    },
-                  ),
-                  Stack(
-                    children: [
-                      Stack(
-                        children: [
-                          AppbarImage(
-                            onTap: onClickNewMessage,
-                            svgPath: ImageConstant.imgOutlinechattext,
-                            margin: EdgeInsets.all(8.0),
-                          ),
-                          if (newMessage)
-                            Positioned(
-                              top: 40.v,
-                              left: 25.h,
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  shape: BoxShape.circle,
-                                ),
+            appBarHeight: 100,
+            drawerIconColor: Colors.white,
+            appBarColor: Theme.of(context).primaryColor,
+            title: Text(
+              'Gig Feed',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
+            ),
+            trailing: Row(
+              children: [
+                AppbarImage(
+                  svgPath: ImageConstant.imgOutlineflag,
+                  margin: EdgeInsets.all(8.0),
+                  onTap: () {
+                    _showTaskCategoriesDialog(size: size);
+                  },
+                ),
+                AppbarImage(
+                  svgPath: ImageConstant.imgSearch,
+                  margin: EdgeInsets.all(8.0),
+                  onTap: () {
+                    onTapSearchone(context);
+                  },
+                ),
+                Stack(
+                  children: [
+                    Stack(
+                      children: [
+                        AppbarImage(
+                          onTap: onClickNewMessage,
+                          svgPath: ImageConstant.imgOutlinechattext,
+                          margin: EdgeInsets.all(8.0),
+                        ),
+                        if (newMessage)
+                          Positioned(
+                            top: 40.v,
+                            left: 25.h,
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
                               ),
                             ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
-              )),
+                          ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
           key: _sliderDrawerKey,
           sliderOpenSize: 179,
           child: Stack(
@@ -361,103 +362,107 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
                       ConnectionState.active) {
                     numberOfGigs = snapshot.data?.size ?? 0;
                     if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 1.v),
-                            Center(
-                              child: Text(
-                                numberOfGigs < 2
-                                    ? "$numberOfGigs new gig has been added"
-                                    : "$numberOfGigs new gigs have been added",
-                                style: theme.textTheme.bodyLarge,
-                              ),
-                            ),
-                            Center(
-                              child: SizedBox(
-                                height: 32.v,
-                                width: 116.h,
-                                child: Stack(
-                                  alignment: Alignment.centerLeft,
-                                  children: [
-                                    userImage == null
-                                        ? CircularProgressIndicator()
-                                        : CircleAvatar(
-                                            backgroundImage:
-                                                NetworkImage(userImage),
-                                          ),
-                                    CustomImageView(
-                                        imagePath: ImageConstant.imgEllipse14,
-                                        height: 32.adaptSize,
-                                        width: 32.adaptSize,
-                                        radius: BorderRadius.circular(16.h),
-                                        alignment: Alignment.centerLeft,
-                                        margin: EdgeInsets.only(left: 28.h)),
-                                    CustomImageView(
-                                        imagePath: ImageConstant.imgEllipse13,
-                                        height: 32.adaptSize,
-                                        width: 32.adaptSize,
-                                        radius: BorderRadius.circular(16.h),
-                                        alignment: Alignment.centerRight,
-                                        margin: EdgeInsets.only(right: 28.h)),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 8.h, vertical: 6.v),
-                                        decoration: AppDecoration
-                                            .gradientCyanToGreen40001
-                                            .copyWith(
-                                                borderRadius: BorderRadiusStyle
-                                                    .roundedBorder16),
-                                        child: Text("28",
-                                            style: theme.textTheme.bodySmall),
-                                      ),
-                                    ),
-                                  ],
+                      return Scaffold(
+                        body: Padding(
+                          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 1.v),
+                              Center(
+                                child: Text(
+                                  numberOfGigs < 2
+                                      ? "$numberOfGigs new gig has been added"
+                                      : "$numberOfGigs new gigs have been added",
+                                  style: theme.textTheme.bodyLarge,
                                 ),
                               ),
-                            ),
-                            const Divider(thickness: 2),
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: snapshot.data!.docs.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  Color backgroundColor = categoryColors[
-                                          snapshot.data!.docs[index]
-                                              .data()['taskCategory']] ??
-                                      Colors.grey;
-                                  return JobWidget(
-                                    jobTitle: snapshot.data!.docs[index]
-                                        ['taskTitle'],
-                                    jobDescription: snapshot.data!.docs[index]
-                                        .data()['taskDescription'],
-                                    jobId: snapshot.data!.docs[index]
-                                        .data()['taskId'],
-                                    uploadedBy: snapshot.data!.docs[index]
-                                        .data()['uploadedBy'],
-                                    createAt: snapshot.data!.docs[index]
-                                        .data()['createAt'],
-                                    userImage: snapshot.data!.docs[index]
-                                        .data()['userImage'],
-                                    name: snapshot.data!.docs[index]
-                                        .data()['userName'],
-                                    recruitment: snapshot.data!.docs[index]
-                                        .data()['recruitment'],
-                                    jobCategory: snapshot.data!.docs[index]
-                                        .data()['taskCategory'],
-                                    email: snapshot.data!.docs[index]
-                                        .data()['email'],
-                                    location: snapshot.data!.docs[index]
-                                        .data()['location'],
-                                    backgroundColor: backgroundColor,
-                                  );
-                                },
+                              Center(
+                                child: SizedBox(
+                                  height: 32.v,
+                                  width: 116.h,
+                                  child: Stack(
+                                    alignment: Alignment.centerLeft,
+                                    children: [
+                                      userImage == null
+                                          ? CircularProgressIndicator()
+                                          : CircleAvatar(
+                                              backgroundImage:
+                                                  NetworkImage(userImage),
+                                            ),
+                                      CustomImageView(
+                                          imagePath: ImageConstant.imgEllipse14,
+                                          height: 32.adaptSize,
+                                          width: 32.adaptSize,
+                                          radius: BorderRadius.circular(16.h),
+                                          alignment: Alignment.centerLeft,
+                                          margin: EdgeInsets.only(left: 28.h)),
+                                      CustomImageView(
+                                          imagePath: ImageConstant.imgEllipse13,
+                                          height: 32.adaptSize,
+                                          width: 32.adaptSize,
+                                          radius: BorderRadius.circular(16.h),
+                                          alignment: Alignment.centerRight,
+                                          margin: EdgeInsets.only(right: 28.h)),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8.h, vertical: 6.v),
+                                          decoration: AppDecoration
+                                              .gradientCyanToGreen40001
+                                              .copyWith(
+                                                  borderRadius:
+                                                      BorderRadiusStyle
+                                                          .roundedBorder16),
+                                          child: Text("28",
+                                              style: theme.textTheme.bodySmall),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                              const Divider(thickness: 2),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: snapshot.data!.docs.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    Color backgroundColor = categoryColors[
+                                            snapshot.data!.docs[index]
+                                                .data()['taskCategory']] ??
+                                        Colors.grey;
+                                    return JobWidget(
+                                      jobTitle: snapshot.data!.docs[index]
+                                          ['taskTitle'],
+                                      jobDescription: snapshot.data!.docs[index]
+                                          .data()['taskDescription'],
+                                      jobId: snapshot.data!.docs[index]
+                                          .data()['taskId'],
+                                      uploadedBy: snapshot.data!.docs[index]
+                                          .data()['uploadedBy'],
+                                      createAt: snapshot.data!.docs[index]
+                                          .data()['createAt'],
+                                      userImage: snapshot.data!.docs[index]
+                                          .data()['userImage'],
+                                      name: snapshot.data!.docs[index]
+                                          .data()['userName'],
+                                      recruitment: snapshot.data!.docs[index]
+                                          .data()['recruitment'],
+                                      jobCategory: snapshot.data!.docs[index]
+                                          .data()['taskCategory'],
+                                      email: snapshot.data!.docs[index]
+                                          .data()['email'],
+                                      location: snapshot.data!.docs[index]
+                                          .data()['location'],
+                                      backgroundColor: backgroundColor,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     } else {
