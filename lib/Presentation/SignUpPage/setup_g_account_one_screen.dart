@@ -70,9 +70,6 @@ class _SetupGAccountOneScreenState extends State<SetupGAccountOneScreen> {
           password: _confirmpasswordController.text.trim(),
         );
 
-        await notifications.requestPermission();
-        await notifications.getToken();
-
         final User? user = _auth.currentUser;
         final uid = user!.uid;
 
@@ -107,6 +104,9 @@ class _SetupGAccountOneScreenState extends State<SetupGAccountOneScreen> {
           'isOnline': true,
           'lastActive': DateTime.now(),
         });
+
+        await notifications.requestPermission();
+        await notifications.getToken();
 
         // ignore: use_build_context_synchronously
         verifyEmail(context);
