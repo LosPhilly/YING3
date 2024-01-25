@@ -7,6 +7,8 @@ import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/chats_li
 import 'package:ying_3_3/Presentation/ChatScreens/main_chat_screen.dart';
 import 'package:ying_3_3/Presentation/Notifications/IndividualNotificationsScreen/notifications_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/BankAccountTabScreen/my_cards_bank_account_tab_screen.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_page.dart';
 import 'package:ying_3_3/core/constants/color_map.dart';
 import 'package:ying_3_3/core/constants/global_methods.dart';
 import 'package:ying_3_3/core/constants/global_variables.dart';
@@ -259,6 +261,12 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
               if (title == 'Add Post') {
                 Navigator.pushNamed(
                     context, AppRoutes.individualPostTask1Screen2);
+              }
+              if (title == 'Payments') {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      const MyCardsBankAccountTabScreen(), // Replace YourNewPage with the actual page you want to navigate to
+                ));
               }
               if (title == 'Notification') {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -756,6 +764,7 @@ class _SliderViewState extends State<_SliderView> {
 
   @override
   Widget build(BuildContext context) {
+    int balanceToken = 5;
     colors.shuffle();
     return Container(
       color: Theme.of(context).primaryColor,
@@ -791,6 +800,7 @@ class _SliderViewState extends State<_SliderView> {
             height: 20,
           ),
           ...[
+            Menu(Icons.money_rounded, ' $balanceToken BLNC Token'),
             Menu(Icons.home, 'Home'),
             Menu(Icons.add_circle, 'Add Post'),
             Menu(Icons.group, 'My Groups'),
