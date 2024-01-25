@@ -291,32 +291,37 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
             ),
             trailing: Row(
               children: [
-                AppbarImage(
-                  svgPath: ImageConstant.imgOutlineflag,
-                  margin: EdgeInsets.all(8.0),
-                  onTap: () {
+                IconButton(
+                  onPressed: () {
                     _showTaskCategoriesDialog(size: size);
                   },
+                  icon: const Icon(Icons.emoji_flags, color: Colors.white),
                 ),
-                AppbarImage(
-                  svgPath: ImageConstant.imgSearch,
-                  margin: EdgeInsets.all(8.0),
-                  onTap: () {
+                IconButton(
+                  onPressed: () {
                     onTapSearchone(context);
                   },
+                  icon: const Icon(Icons.search, color: Colors.white),
                 ),
                 Stack(
                   children: [
                     Stack(
                       children: [
-                        AppbarImage(
+                        IconButton(
+                          onPressed: () {
+                            onClickNewMessage();
+                          },
+                          icon: const Icon(Icons.chat_bubble,
+                              color: Colors.white),
+                        ),
+                        /* AppbarImage(
                           onTap: onClickNewMessage,
                           svgPath: ImageConstant.imgOutlinechattext,
                           margin: EdgeInsets.all(8.0),
-                        ),
+                        ), */
                         if (newMessage)
                           Positioned(
-                            top: 40.v,
+                            top: 10.v,
                             left: 25.h,
                             child: Container(
                               width: 10,
@@ -830,7 +835,7 @@ class _SliderMenuItem extends StatelessWidget {
     return ListTile(
         title: Text(title,
             style: const TextStyle(
-                color: Colors.white, fontFamily: 'BalsamiqSans_Regular')),
+                color: Colors.white, fontFamily: 'PoppinsRegular')),
         leading: Icon(iconData, color: Colors.white),
         onTap: () => onTap?.call(title));
   }

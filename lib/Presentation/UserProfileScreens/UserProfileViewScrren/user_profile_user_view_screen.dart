@@ -253,96 +253,106 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen>
                       ],
                     ),
                     imageUrl.isEmpty
-                        ? const CircularProgressIndicator()
-                        : CircleAvatar(
-                            radius: 55,
-                            backgroundImage: NetworkImage(imageUrl),
+                        ? const Center(child: CircularProgressIndicator())
+                        : Center(
+                            child: CircleAvatar(
+                              radius: 55,
+                              backgroundImage: NetworkImage(imageUrl),
+                            ),
                           ),
                     SizedBox(height: 17.v),
-                    Text(name.toString(),
-                        style: CustomTextStyles.titleMediumOnPrimaryBold),
+                    Center(
+                      child: Text(name.toString(),
+                          style: CustomTextStyles.titleMediumOnPrimaryBold),
+                    ),
                     SizedBox(height: 4.v),
-                    Text("UX/UI Designer", style: theme.textTheme.bodyMedium),
-                    CustomElevatedButton(
-                        height: 33.v,
-                        width: 163.h,
-                        text: "My Schedule",
-                        margin: EdgeInsets.only(left: 78.h, top: 17.v),
-                        buttonStyle: CustomButtonStyles.outlineBlack,
-                        buttonTextStyle:
-                            CustomTextStyles.titleSmallPrimaryContainerBold,
-                        onTap: () {
-                          onTapMyschedule(context);
-                        }),
+                    Center(
+                        child: Text("UX/UI Designer",
+                            style: theme.textTheme.bodyMedium)),
+                    Center(
+                      child: CustomElevatedButton(
+                          height: 33.v,
+                          width: 163.h,
+                          text: "My Schedule",
+                          margin: EdgeInsets.only(top: 17.v),
+                          buttonStyle: CustomButtonStyles.outlineBlack,
+                          buttonTextStyle:
+                              CustomTextStyles.titleSmallPrimaryContainerBold,
+                          onTap: () {
+                            onTapMyschedule(context);
+                          }),
+                    ),
                     Padding(
                       padding:
                           EdgeInsets.only(left: 11.h, top: 34.v, right: 43.h),
-                      child: Row(
-                        children: [
-                          Column(children: [
-                            Text("Completed",
-                                style: theme.textTheme.bodyMedium),
-                            SizedBox(height: 2.v),
-                            RichText(
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: "89 ",
-                                      style: CustomTextStyles
-                                          .titleMediumOnPrimary18),
-                                  TextSpan(
-                                      text: "jobs",
-                                      style:
-                                          CustomTextStyles.bodySmallOnPrimary)
-                                ]),
-                                textAlign: TextAlign.left)
-                          ]),
-                          Padding(
-                            padding: EdgeInsets.only(left: 31.h),
-                            child: Column(
-                              children: [
-                                Text("In Progress",
-                                    style: theme.textTheme.bodyMedium),
-                                SizedBox(height: 1.v),
-                                RichText(
-                                    text: TextSpan(children: [
-                                      TextSpan(
-                                          text: "5 ",
-                                          style: CustomTextStyles
-                                              .titleMediumOnPrimary18),
-                                      TextSpan(
-                                          text: "jobs",
-                                          style: CustomTextStyles
-                                              .bodySmallOnPrimary)
-                                    ]),
-                                    textAlign: TextAlign.left)
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 30.h),
-                            child: Column(
-                              children: [
-                                Text("Experience",
-                                    style: theme.textTheme.bodyMedium),
-                                SizedBox(height: 2.v),
-                                RichText(
-                                    text: TextSpan(
-                                      children: [
+                      child: Center(
+                        child: Row(
+                          children: [
+                            Column(children: [
+                              Text("Completed",
+                                  style: theme.textTheme.bodyMedium),
+                              SizedBox(height: 2.v),
+                              RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: "89 ",
+                                        style: CustomTextStyles
+                                            .titleMediumOnPrimary18),
+                                    TextSpan(
+                                        text: "jobs",
+                                        style:
+                                            CustomTextStyles.bodySmallOnPrimary)
+                                  ]),
+                                  textAlign: TextAlign.left)
+                            ]),
+                            Padding(
+                              padding: EdgeInsets.only(left: 31.h),
+                              child: Column(
+                                children: [
+                                  Text("In Progress",
+                                      style: theme.textTheme.bodyMedium),
+                                  SizedBox(height: 1.v),
+                                  RichText(
+                                      text: TextSpan(children: [
                                         TextSpan(
-                                            text: "4.5 ",
+                                            text: "5 ",
                                             style: CustomTextStyles
                                                 .titleMediumOnPrimary18),
                                         TextSpan(
-                                            text: "years",
+                                            text: "jobs",
                                             style: CustomTextStyles
                                                 .bodySmallOnPrimary)
-                                      ],
-                                    ),
-                                    textAlign: TextAlign.left)
-                              ],
+                                      ]),
+                                      textAlign: TextAlign.left)
+                                ],
+                              ),
                             ),
-                          )
-                        ],
+                            Padding(
+                              padding: EdgeInsets.only(left: 30.h),
+                              child: Column(
+                                children: [
+                                  Text("Experience",
+                                      style: theme.textTheme.bodyMedium),
+                                  SizedBox(height: 2.v),
+                                  RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                              text: "4.5 ",
+                                              style: CustomTextStyles
+                                                  .titleMediumOnPrimary18),
+                                          TextSpan(
+                                              text: "years",
+                                              style: CustomTextStyles
+                                                  .bodySmallOnPrimary)
+                                        ],
+                                      ),
+                                      textAlign: TextAlign.left)
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Padding(
