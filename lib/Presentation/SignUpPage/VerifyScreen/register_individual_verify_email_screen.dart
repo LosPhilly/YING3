@@ -229,7 +229,7 @@ class _RegisterIndividualVerifyEmailScreenState
                 ),
               ),
               SizedBox(height: 5.v),
-              ElevatedButton.icon(
+              /* ElevatedButton.icon(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                       theme.colorScheme.primary), // Changed to use theme color
@@ -254,7 +254,7 @@ class _RegisterIndividualVerifyEmailScreenState
                     ),
                   ),
                 ),
-              ),
+              ), */
               SizedBox(height: 17.v),
               CustomImageView(
                 svgPath: ImageConstant.imgConfetti,
