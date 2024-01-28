@@ -196,8 +196,7 @@ class _IndividualMainMenuOneScreenState
                                   alignment: Alignment.centerLeft,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Navigator.pushNamed(
-                                          context, AppRoutes.userState);
+                                      Navigator.pop(context);
                                     },
                                     child: Image.asset(
                                         'assets/images/img_menu_gig_button.png'),

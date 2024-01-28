@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:intl/intl.dart';
+import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/search_screen.dart';
+import 'package:ying_3_3/Presentation/ChatScreens/main_chat_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
 import 'package:ying_3_3/core/constants/color_map.dart';
 import 'package:ying_3_3/core/utils/image_constant.dart';
@@ -19,10 +21,26 @@ class NotificationsScreen extends StatefulWidget {
 class _NotificationsScreenState extends State<NotificationsScreen> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
+  bool newMessage = false;
 
   onTapLogout(context) {
     FirebaseAuth.instance.signOut();
     Navigator.pushNamed(context, AppRoutes.userState);
+  }
+
+  void onClickNewMessage() {
+    if (newMessage == false) {
+      setState(() {
+        newMessage = true;
+      });
+    } else if (newMessage == true) {
+      setState(() {
+        newMessage = false;
+      });
+    }
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            ChatScreenMain())); // Replace YourNewPage with the actual page you want to navigate to
   }
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
@@ -37,102 +55,147 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 90, // Adjust the height to your preference
+        backgroundColor: theme.colorScheme.primary,
+        elevation: 8,
+        leading: Align(
+          alignment:
+              Alignment.bottomLeft, // Align the leading icon to the bottom
+          child: IconButton(
+            onPressed: () => Navigator.pushNamed(
+                context, AppRoutes.individualMainMenuScreen),
+            icon: const Icon(Icons.menu, color: Colors.white),
+          ),
+        ),
+        title: const Center(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              '\n Notifications',
+              maxLines: 2,
+              style: TextStyle(
+                fontSize: 30.0, // Adjust the font size as needed
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          Align(
+            alignment:
+                Alignment.bottomRight, // Align the action icons to the bottom
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const UsersSearchScreen())),
+                  icon: const Icon(Icons.search, color: Colors.white),
+                ),
+                const SizedBox(width: 1), // Add spacing between icons
+                Stack(
+                  children: [
+                    Stack(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            onClickNewMessage();
+                          },
+                          icon: const Icon(Icons.chat_rounded,
+                              color: Colors.white),
+                        ),
+                        /* AppbarImage(
+                          onTap: onClickNewMessage,
+                          svgPath: ImageConstant.imgOutlinechattext,
+                          margin: EdgeInsets.all(8.0),
+                        ), */
+                        if (newMessage)
+                          Positioned(
+                            top: 6.5.v,
+                            left: 29.h,
+                            child: Container(
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.0), // Adjust the radius as needed
+            bottomRight: Radius.circular(20.0),
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: SliderDrawer(
-          slider: _SliderView(
-            onItemClick: (title) {
-              _sliderDrawerKey.currentState!.closeSlider();
-              setState(() {
-                this.title = title;
-              });
-
-              if (title == 'Home') {
-                Navigator.pushNamed(context, AppRoutes.userState);
+        child: Scaffold(
+          body: StreamBuilder<QuerySnapshot>(
+            stream: _firestore
+                .collection('users')
+                .doc(_auth.currentUser!.uid)
+                .collection('notifications')
+                .orderBy('timestamp', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               }
 
-              if (title == 'Add Post') {
-                Navigator.pushNamed(
-                    context, AppRoutes.individualPostTask1Screen2);
-              }
-              if (title == 'Settings') {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => UserProfileSettingsMainScreen(
-                      userId: user!
-                          .uid), // Replace YourNewPage with the actual page you want to navigate to
-                ));
-              }
-              if (title == 'LogOut') {
-                onTapLogout(context);
-              }
-            },
-          ),
-          appBar: SliderAppBar(
-            appBarColor: Colors.white,
-            title: Text(
-              'Notifications',
-              style: theme.textTheme.headlineLarge,
-            ),
-          ),
-          key: _sliderDrawerKey,
-          sliderOpenSize: 179,
-          child: Scaffold(
-            body: StreamBuilder<QuerySnapshot>(
-              stream: _firestore
-                  .collection('users')
-                  .doc(_auth.currentUser!.uid)
-                  .collection('notifications')
-                  .orderBy('timestamp', descending: true)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
+              return ListView.builder(
+                itemCount: (snapshot.data! as dynamic).docs.length,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot notification =
+                      (snapshot.data! as dynamic).docs[index];
 
-                return ListView.builder(
-                  itemCount: (snapshot.data! as dynamic).docs.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot notification =
-                        (snapshot.data! as dynamic).docs[index];
+                  // Get the notification message and timestamp
+                  String? postUrl = notification['postUrl'];
+                  String message = notification['message'];
+                  Timestamp timestamp = notification['timestamp'];
+                  DateTime dateTime = timestamp.toDate();
 
-                    // Get the notification message and timestamp
-                    String? postUrl = notification['postUrl'];
-                    String message = notification['message'];
-                    Timestamp timestamp = notification['timestamp'];
-                    DateTime dateTime = timestamp.toDate();
+                  // Calculate how long ago the notification took place
+                  Duration timeAgo = DateTime.now().difference(dateTime);
+                  String timeAgoString = _formatTimeAgo(timeAgo);
 
-                    // Calculate how long ago the notification took place
-                    Duration timeAgo = DateTime.now().difference(dateTime);
-                    String timeAgoString = _formatTimeAgo(timeAgo);
-
-                    return InkWell(
-                      onTap: () {},
-                      /* {
-                  // Send the user to the post
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ProfileScreen(uid: notification['postId']),
+                  return InkWell(
+                    onTap: () {},
+                    /* {
+                // Send the user to the post
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ProfileScreen(uid: notification['postId']),
+                  ),
+                );
+              }, */
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          notification['profilePictureUrl'] ??
+                              'https://st.depositphotos.com/2218212/3092/i/600/depositphotos_30920521-stock-photo-facebook-profiles.jpg',
+                        ),
+                      ),
+                      title: Text(message),
+                      subtitle: Text(timeAgoString),
                     ),
                   );
-                }, */
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            notification['profilePictureUrl'] ??
-                                'https://st.depositphotos.com/2218212/3092/i/600/depositphotos_30920521-stock-photo-facebook-profiles.jpg',
-                          ),
-                        ),
-                        title: Text(message),
-                        subtitle: Text(timeAgoString),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
+                },
+              );
+            },
           ),
         ),
       ),

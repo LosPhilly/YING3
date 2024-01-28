@@ -303,10 +303,39 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
                   icon: const Icon(Icons.search, color: Colors.white),
                 ),
                 const SizedBox(width: 1), // Add spacing between icons
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.chat_rounded, color: Colors.white),
-                ),
+                Stack(
+                  children: [
+                    Stack(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            onClickNewMessage();
+                          },
+                          icon: const Icon(Icons.chat_rounded,
+                              color: Colors.white),
+                        ),
+                        /* AppbarImage(
+                          onTap: onClickNewMessage,
+                          svgPath: ImageConstant.imgOutlinechattext,
+                          margin: EdgeInsets.all(8.0),
+                        ), */
+                        if (newMessage)
+                          Positioned(
+                            top: 6.5.v,
+                            left: 29.h,
+                            child: Container(
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                )
               ],
             ),
           ),
