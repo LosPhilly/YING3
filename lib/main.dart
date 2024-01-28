@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ying_3_3/Presentation/SplashScreen/welcome_splash_screen/welcome_splash_screen.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/firebase_options.dart';
 import 'package:ying_3_3/providers/firebase_provider.dart';
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
                   scaffoldBackgroundColor: theme.scaffoldBackgroundColor,
                   primaryColor: theme.colorScheme.primary),
               routes: AppRoutes.routes,
-              home: const UserState(),
+              home: const WelcomeSplashScreen(),
             );
           }),
     );

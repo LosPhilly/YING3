@@ -2,6 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_menu/pie_menu.dart';
+import 'package:ying_3_3/Presentation/GigFeedScreens/GroupGigFeedScreen/AdminView/group_profile_admin_view_profile_screen/group_profile_admin_view_profile_screen.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/BankAccountTabScreen/my_cards_bank_account_tab_screen.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/my_cards_bank_account_screen.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_page.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 
@@ -74,7 +78,8 @@ class _IndividualMainMenuOneScreenState
         PieAction(
           tooltip: Text(groupDisplayName!),
           onSelect: () {
-            Navigator.pushNamed(context, AppRoutes.individualMainMenuScreen);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => GroupProfileAdminViewProfileScreen()));
           },
           child: CircleAvatar(
             radius: 35.h,
@@ -309,23 +314,31 @@ class _IndividualMainMenuOneScreenState
                                         ],
                                       ),
                                       SizedBox(height: 27.v),
-                                      Row(children: [
-                                        CustomImageView(
-                                          svgPath:
-                                              ImageConstant.imgOutlinebankcard,
-                                          height: 24.adaptSize,
-                                          width: 24.adaptSize,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 20.h, top: 3.v),
-                                          child: Text(
-                                            "Payments",
-                                            style: CustomTextStyles
-                                                .titleSmallPrimaryContainer_3,
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MyCardsBankAccountTabScreen()));
+                                        },
+                                        child: Row(children: [
+                                          CustomImageView(
+                                            svgPath: ImageConstant
+                                                .imgOutlinebankcard,
+                                            height: 24.adaptSize,
+                                            width: 24.adaptSize,
                                           ),
-                                        ),
-                                      ]),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 20.h, top: 3.v),
+                                            child: Text(
+                                              "Payments",
+                                              style: CustomTextStyles
+                                                  .titleSmallPrimaryContainer_3,
+                                            ),
+                                          ),
+                                        ]),
+                                      ),
                                       SizedBox(height: 29.v),
                                       Row(
                                         crossAxisAlignment:
