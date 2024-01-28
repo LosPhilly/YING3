@@ -19,6 +19,9 @@ class ImageConstant {
   // Slash Screen images
   static String imgSplashYingLogo = '$imagePath/yingLogoSplash.png';
 
+  // Login Page YING Logo
+  static String imgLoginYingLogo = '$imagePath/LoginPageYING.png';
+
   // Setup_G_Account_Thirteen images
   static String imgOutlineinfocrfr = '$imagePath/img_outlineinfocrfr.svg';
 

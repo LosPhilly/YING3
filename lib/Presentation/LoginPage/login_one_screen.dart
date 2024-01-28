@@ -91,45 +91,41 @@ class _LoginOneScreenState extends State<LoginOneScreen> {
               Align(
                 alignment: Alignment.centerRight,
                 child: SizedBox(
-                  height: 254.v,
-                  width: 347.h,
+                  height: 325.v, // Adjusted height to fit the entire image
+                  width: 347.h, // Adjusted width to fit the entire image
                   child: Stack(
                     alignment: Alignment.bottomLeft,
                     children: [
                       Align(
                         alignment: Alignment.centerRight,
-                        child: SizedBox(
-                          height: 254.v,
-                          width: 268.h,
-                          child: Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              CustomImageView(
-                                  imagePath: ImageConstant.imgObject254x268,
-                                  height: 254.v,
-                                  width: 268.h,
-                                  alignment: Alignment.center),
-                              CustomImageView(
-                                  svgPath: ImageConstant.imgComputer,
-                                  height: 29.v,
-                                  width: 34.h,
-                                  alignment: Alignment.topRight,
-                                  margin:
-                                      EdgeInsets.only(top: 96.v, right: 73.h))
-                            ],
+                        child: Opacity(
+                          // Added Opacity widget
+                          opacity: 0.8, // Adjust the opacity level as needed
+                          child: SizedBox(
+                            height: 500
+                                .v, // Adjusted height to fit the entire image
+                            width:
+                                268.h, // Adjusted width to fit the entire image
+                            child: CustomImageView(
+                                imagePath: ImageConstant.imgLoginYingLogo,
+                                height:
+                                    325.v, // Adjusted to match container size
+                                width:
+                                    268.h, // Adjusted to match container size
+                                alignment: Alignment.center),
                           ),
                         ),
                       ),
                       Align(
                           alignment: Alignment.bottomLeft,
                           child: Padding(
-                              padding: EdgeInsets.only(bottom: 71.v),
+                              padding: EdgeInsets.only(bottom: 61.v),
                               child: Text("Let’s log you in",
                                   style: theme.textTheme.headlineLarge))),
                       Align(
                           alignment: Alignment.bottomLeft,
                           child: Padding(
-                              padding: EdgeInsets.only(bottom: 38.v),
+                              padding: EdgeInsets.only(bottom: 25.v),
                               child: Text("Welcome Back 👋",
                                   style: CustomTextStyles.bodyLargeOnPrimary)))
                     ],
@@ -144,7 +140,7 @@ class _LoginOneScreenState extends State<LoginOneScreen> {
                       return null;
                     }
                   },
-                  margin: EdgeInsets.only(left: 28.h, top: 13.v, right: 28.h),
+                  margin: EdgeInsets.only(left: 28.h, top: 30.v, right: 28.h),
                   controller: _emailTextController,
                   labelText: "Email address",
                   labelStyle: CustomTextStyles.bodyMediumOnPrimary_3,
@@ -200,7 +196,9 @@ class _LoginOneScreenState extends State<LoginOneScreen> {
                   ],
                 ),
               ),
-              const Spacer(),
+              SizedBox(
+                height: 35.h,
+              ),
               CustomElevatedButton(
                 text: "Log In",
                 margin: EdgeInsets.symmetric(horizontal: 28.h),
