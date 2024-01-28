@@ -6,6 +6,7 @@ import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/sear
 import 'package:ying_3_3/core/utils/image_constant.dart';
 import 'package:ying_3_3/core/utils/size_utils.dart';
 import 'package:ying_3_3/routes/app_routes.dart';
+import 'package:ying_3_3/theme/theme_helper.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_image.dart';
 import 'package:ying_3_3/widgets/app_bar/custom_app_bar.dart';
 
@@ -58,34 +59,57 @@ class _SearchContainerScreenState extends State<SearchContainerScreen> {
     mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80, // Adjust the height to your preference
-        backgroundColor: Theme.of(context).primaryColor,
-        elevation: 3,
-        leading: IconButton(
-          onPressed: () => Navigator.pushNamed(context, AppRoutes.userState),
-          icon: const Icon(Icons.chevron_left, color: Colors.white),
+        toolbarHeight: 90, // Adjust the height to your preference
+        backgroundColor: theme.colorScheme.primary,
+        elevation: 8,
+        leading: Align(
+          alignment:
+              Alignment.bottomLeft, // Align the leading icon to the bottom
+          child: IconButton(
+            onPressed: () => Navigator.pushNamed(
+                context, AppRoutes.individualMainMenuScreen),
+            icon: const Icon(Icons.menu, color: Colors.white),
+          ),
         ),
-        title: const Align(
-          alignment: Alignment.bottomCenter, // Align the text to the bottom
-          child: Text(
-            'Search',
-            style: TextStyle(
-              fontSize: 24.0, // Adjust the font size as needed
-              fontWeight: FontWeight.bold,
+        title: const Center(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              '',
+              maxLines: 2,
+              style: TextStyle(
+                fontSize: 30.0, // Adjust the font size as needed
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
         actions: [
-          const SizedBox(width: 20), // Add spacing between icons and text
-          IconButton(
-            onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const UsersSearchScreen())),
-            icon: const Icon(Icons.search, color: Colors.white),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.emoji_flags, color: Colors.white),
+            ),
           ),
-          const SizedBox(width: 10), // Add spacing between icons
-          IconButton(
-            onPressed: () => FirebaseAuth.instance.signOut(),
-            icon: const Icon(Icons.logout, color: Colors.white),
+          Align(
+            alignment:
+                Alignment.bottomRight, // Align the action icons to the bottom
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const UsersSearchScreen())),
+                  icon: const Icon(Icons.search, color: Colors.white),
+                ),
+                const SizedBox(width: 1), // Add spacing between icons
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.chat_rounded, color: Colors.white),
+                ),
+              ],
+            ),
           ),
         ],
         shape: const RoundedRectangleBorder(

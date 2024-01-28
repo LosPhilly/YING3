@@ -93,7 +93,9 @@ class _SearchPageState extends State<SearchPage> {
                     print(searchController);
                   },
                 ),*/
-
+                SizedBox(
+                  height: 25,
+                ),
                 CustomSearchView(
                   margin: EdgeInsets.only(right: 28.h),
                   controller: searchController,

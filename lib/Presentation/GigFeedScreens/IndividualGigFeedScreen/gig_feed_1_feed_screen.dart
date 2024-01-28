@@ -1,10 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/chats_list_screen/ChatListScreen/chats_list_screen.dart';
+import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/search_screen.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/main_chat_screen.dart';
+import 'package:ying_3_3/Presentation/GigFeedScreens/IndividualGigFeedScreen/widget/gig_feed_list_tile.dart';
 import 'package:ying_3_3/Presentation/Notifications/IndividualNotificationsScreen/notifications_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/BankAccountTabScreen/my_cards_bank_account_tab_screen.dart';
@@ -14,6 +17,8 @@ import 'package:ying_3_3/core/constants/global_methods.dart';
 import 'package:ying_3_3/core/constants/global_variables.dart';
 import 'package:ying_3_3/core/constants/persistant.dart';
 import 'package:ying_3_3/core/app_export.dart';
+import 'package:ying_3_3/core/constants/string_const.dart';
+import 'package:ying_3_3/core/utils/helper_utils.dart';
 import 'package:ying_3_3/services/firebase_firestore_service.dart';
 import 'package:ying_3_3/services/notification_service.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_image.dart';
@@ -49,6 +54,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   final notificationService = NotificationsService();
 
   late FocusNode _searchFocusNode;
+  String temTaskID = '0';
 
   TextEditingController searchController = TextEditingController();
 
@@ -249,254 +255,251 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
     mediaQueryData = MediaQuery.of(context);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(bottom: 1.0),
-        child: SliderDrawer(
-          slider: _SliderView(
-            onItemClick: (title) {
-              _sliderDrawerKey.currentState!.closeSlider();
-              setState(() {
-                this.title = title;
-              });
-              if (title == 'Add Post') {
-                Navigator.pushNamed(
-                    context, AppRoutes.individualPostTask1Screen2);
-              }
-              if (title == 'Payments') {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      const MyCardsBankAccountTabScreen(), // Replace YourNewPage with the actual page you want to navigate to
-                ));
-              }
-              if (title == 'Notification') {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      NotificationsScreen(), // Replace YourNewPage with the actual page you want to navigate to
-                ));
-              }
-              if (title == 'Settings') {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => UserProfileSettingsMainScreen(
-                      userId: user!
-                          .uid), // Replace YourNewPage with the actual page you want to navigate to
-                ));
-              }
-              if (title == 'LogOut') {
-                onTapLogout(context);
-              }
-            },
+      appBar: AppBar(
+        toolbarHeight: 90, // Adjust the height to your preference
+        backgroundColor: theme.colorScheme.primary,
+        elevation: 8,
+        leading: Align(
+          alignment:
+              Alignment.bottomLeft, // Align the leading icon to the bottom
+          child: IconButton(
+            onPressed: () => Navigator.pushNamed(
+                context, AppRoutes.individualMainMenuScreen),
+            icon: const Icon(Icons.menu, color: Colors.white),
           ),
-          appBar: SliderAppBar(
-            appBarHeight: 100,
-            drawerIconColor: Colors.white,
-            appBarColor: Theme.of(context).primaryColor,
-            title: Text(
-              'Gig Feed',
+        ),
+        title: const Center(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              '',
+              maxLines: 2,
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold),
+                fontSize: 30.0, // Adjust the font size as needed
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            trailing: Row(
+          ),
+        ),
+        actions: [
+          Align(
+            alignment: Alignment.bottomRight,
+            child: IconButton(
+              onPressed: () {
+                _showTaskCategoriesDialog(size: size);
+              },
+              icon: const Icon(Icons.emoji_flags, color: Colors.white),
+            ),
+          ),
+          Align(
+            alignment:
+                Alignment.bottomRight, // Align the action icons to the bottom
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  onPressed: () {
-                    _showTaskCategoriesDialog(size: size);
-                  },
-                  icon: const Icon(Icons.emoji_flags, color: Colors.white),
-                ),
-                IconButton(
-                  onPressed: () {
-                    onTapSearchone(context);
-                  },
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const UsersSearchScreen())),
                   icon: const Icon(Icons.search, color: Colors.white),
                 ),
-                Stack(
-                  children: [
-                    Stack(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            onClickNewMessage();
-                          },
-                          icon: const Icon(Icons.chat_bubble,
-                              color: Colors.white),
-                        ),
-                        /* AppbarImage(
-                          onTap: onClickNewMessage,
-                          svgPath: ImageConstant.imgOutlinechattext,
-                          margin: EdgeInsets.all(8.0),
-                        ), */
-                        if (newMessage)
-                          Positioned(
-                            top: 10.v,
-                            left: 25.h,
-                            child: Container(
-                              width: 10,
-                              height: 10,
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
-                )
+                const SizedBox(width: 1), // Add spacing between icons
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.chat_rounded, color: Colors.white),
+                ),
               ],
             ),
           ),
-          key: _sliderDrawerKey,
-          sliderOpenSize: 179,
-          child: Stack(
-            children: [
-              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: jobCategoryFilter == null
-                    ? FirebaseFirestore.instance
-                        .collection('tasks')
-                        .where('recruitment', isEqualTo: true)
-                        .orderBy('createAt', descending: true)
-                        .snapshots()
-                    : FirebaseFirestore.instance
-                        .collection('tasks')
-                        .where('taskCategory', isEqualTo: jobCategoryFilter)
-                        .where('recruitment', isEqualTo: true)
-                        .orderBy('createAt', descending: true)
-                        .snapshots(),
-                builder: (context,
-                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                        snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.active) {
-                    numberOfGigs = snapshot.data?.size ?? 0;
-                    if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                      return Scaffold(
-                        body: Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 1.v),
-                              Center(
-                                child: Text(
-                                  numberOfGigs < 2
-                                      ? "$numberOfGigs new gig has been added"
-                                      : "$numberOfGigs new gigs have been added",
-                                  style: theme.textTheme.bodyLarge,
-                                ),
-                              ),
-                              Center(
-                                child: SizedBox(
-                                  height: 32.v,
-                                  width: 116.h,
-                                  child: Stack(
-                                    alignment: Alignment.centerLeft,
-                                    children: [
-                                      userImage == null
-                                          ? CircularProgressIndicator()
-                                          : CircleAvatar(
-                                              backgroundImage:
-                                                  NetworkImage(userImage),
-                                            ),
-                                      CustomImageView(
-                                          imagePath: ImageConstant.imgEllipse14,
-                                          height: 32.adaptSize,
-                                          width: 32.adaptSize,
-                                          radius: BorderRadius.circular(16.h),
-                                          alignment: Alignment.centerLeft,
-                                          margin: EdgeInsets.only(left: 28.h)),
-                                      CustomImageView(
-                                          imagePath: ImageConstant.imgEllipse13,
-                                          height: 32.adaptSize,
-                                          width: 32.adaptSize,
-                                          radius: BorderRadius.circular(16.h),
-                                          alignment: Alignment.centerRight,
-                                          margin: EdgeInsets.only(right: 28.h)),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 8.h, vertical: 6.v),
-                                          decoration: AppDecoration
-                                              .gradientCyanToGreen40001
-                                              .copyWith(
-                                                  borderRadius:
-                                                      BorderRadiusStyle
-                                                          .roundedBorder16),
-                                          child: Text("28",
-                                              style: theme.textTheme.bodySmall),
+        ],
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.0), // Adjust the radius as needed
+            bottomRight: Radius.circular(20.0),
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 1.0),
+        child: Stack(
+          children: [
+            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: jobCategoryFilter == null
+                  ? FirebaseFirestore.instance
+                      .collection('tasks')
+                      .where('recruitment', isEqualTo: true)
+                      .orderBy('createAt', descending: true)
+                      .snapshots()
+                  : FirebaseFirestore.instance
+                      .collection('tasks')
+                      .where('taskCategory', isEqualTo: jobCategoryFilter)
+                      .where('recruitment', isEqualTo: true)
+                      .orderBy('createAt', descending: true)
+                      .snapshots(),
+              builder: (context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.connectionState == ConnectionState.active) {
+                  numberOfGigs = snapshot.data?.size ?? 0;
+                  if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                    int userImgIndex = -1;
+                    return Scaffold(
+                      body: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 6.0, bottom: 8.0, left: 15, right: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const Text("Gig Feed",
+                                style: TextStyle(
+                                  fontFamily: REGULAR_FONT,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Text(
+                              numberOfGigs < 2
+                                  ? "$numberOfGigs new gig has been added"
+                                  : "$numberOfGigs new gigs have been added",
+                              style: theme.textTheme.bodyLarge,
+                            ),
+                            HelperUtils.verticalSpace(8),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Stack(
+                                children: (snapshot.data?.docs ?? []).map(
+                                  (querySnap) {
+                                    userImgIndex++;
+                                    if (userImgIndex > 3 ||
+                                        userImgIndex == -1) {
+                                      return const Offstage();
+                                    }
+
+                                    //return Text(index.toString());
+                                    return Positioned(
+                                      left: userImgIndex * 22,
+                                      top: userImgIndex == 0 ? 3 : 0,
+                                      child: Container(
+                                        width: userImgIndex == 0 ? 29 : 34.0,
+                                        height: userImgIndex == 0 ? 29 : 34.0,
+                                        clipBehavior: Clip.antiAlias,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.blue.shade50,
+                                          border: Border.all(
+                                              color: Colors.white,
+                                              width: userImgIndex == 0 ? 0 : 3),
+                                          image: userImgIndex >= 3
+                                              ? null
+                                              : DecorationImage(
+                                                  image: CachedNetworkImageProvider(
+                                                      (snapshot.data?.docs ??
+                                                              [])[userImgIndex]
+                                                          .data()['userImage'],
+                                                      maxWidth: 50,
+                                                      maxHeight: 50),
+                                                  fit: BoxFit.cover),
                                         ),
+                                        child: (userImgIndex == 3)
+                                            ? Text(
+                                                "${numberOfGigs - 3}",
+                                                style: theme.textTheme.bodyLarge
+                                                    ?.copyWith(fontSize: 12),
+                                              )
+                                            : null,
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const Divider(thickness: 2),
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: snapshot.data!.docs.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    Color backgroundColor = categoryColors[
-                                            snapshot.data!.docs[index]
-                                                .data()['taskCategory']] ??
-                                        Colors.grey;
-                                    return JobWidget(
-                                      jobTitle: snapshot.data!.docs[index]
-                                          ['taskTitle'],
-                                      jobDescription: snapshot.data!.docs[index]
-                                          .data()['taskDescription'],
-                                      jobId: snapshot.data!.docs[index]
-                                          .data()['taskId'],
-                                      uploadedBy: snapshot.data!.docs[index]
-                                          .data()['uploadedBy'],
-                                      createAt: snapshot.data!.docs[index]
-                                          .data()['createAt'],
-                                      userImage: snapshot.data!.docs[index]
-                                          .data()['userImage'],
-                                      name: snapshot.data!.docs[index]
-                                          .data()['userName'],
-                                      recruitment: snapshot.data!.docs[index]
-                                          .data()['recruitment'],
-                                      jobCategory: snapshot.data!.docs[index]
-                                          .data()['taskCategory'],
-                                      email: snapshot.data!.docs[index]
-                                          .data()['email'],
-                                      location: snapshot.data!.docs[index]
-                                          .data()['location'],
-                                      backgroundColor: backgroundColor,
                                     );
                                   },
-                                ),
+                                ).toList(),
                               ),
-                            ],
-                          ),
+                            ),
+                            HelperUtils.verticalSpace(3),
+                            const Divider(thickness: 1),
+                            HelperUtils.verticalSpace(16),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: snapshot.data!.docs.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  if (index == 0) {
+                                    temTaskID = snapshot.data!.docs[index]
+                                        .data()['taskId'];
+                                  }
+
+                                  Color backgroundColor = categoryColors[
+                                          snapshot.data!.docs[index]
+                                              .data()['taskCategory']] ??
+                                      Colors.grey;
+                                  return GigFeedListTile(
+                                    userImage: snapshot.data!.docs[index]
+                                        .data()['userImage'],
+                                    taskName: snapshot.data!.docs[index]
+                                        .data()['taskTitle'],
+                                    createAt: snapshot.data!.docs[index]
+                                        .data()['createAt'],
+                                    taskDescription: snapshot.data!.docs[index]
+                                        .data()['taskDescription'],
+                                    uploadBy: snapshot.data!.docs[index]
+                                        .data()['uploadedBy'],
+                                    jobID: snapshot.data!.docs[index]
+                                        .data()['taskDescription'],
+                                    taskImages: List<String>.from(snapshot
+                                            .data!.docs[index]
+                                            .data()['taskImages'] ??
+                                        []),
+                                  );
+                                  // return JobWidget(
+                                  //   jobTitle: snapshot.data!.docs[index]
+                                  //       ['taskTitle'],
+                                  //   jobDescription: snapshot.data!.docs[index]
+                                  //       .data()['taskDescription'],
+                                  //   jobId: snapshot.data!.docs[index]
+                                  //       .data()['taskId'],
+                                  //   uploadedBy: snapshot.data!.docs[index]
+                                  //       .data()['uploadedBy'],
+                                  //   createAt: snapshot.data!.docs[index]
+                                  //       .data()['createAt'],
+                                  //   userImage: snapshot.data!.docs[index]
+                                  //       .data()['userImage'],
+                                  //   name: snapshot.data!.docs[index]
+                                  //       .data()['userName'],
+                                  //   recruitment: snapshot.data!.docs[index]
+                                  //       .data()['recruitment'],
+                                  //   jobCategory: snapshot.data!.docs[index]
+                                  //       .data()['taskCategory'],
+                                  //   email: snapshot.data!.docs[index]
+                                  //       .data()['email'],
+                                  //   location: snapshot.data!.docs[index]
+                                  //       .data()['location'],
+                                  //   backgroundColor: backgroundColor,
+                                  // );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      );
-                    } else {
-                      return const Center(
-                        child: Text('There are no gigs available'),
-                      );
-                    }
-                  }
-                  return const Center(
-                    child: Text(
-                      'Something went wrong',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
                       ),
+                    );
+                  } else {
+                    return const Center(
+                      child: Text('There are no gigs available'),
+                    );
+                  }
+                }
+                return const Center(
+                  child: Text(
+                    'Something went wrong',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
                     ),
-                  );
-                },
-              )
-            ],
-          ),
+                  ),
+                );
+              },
+            )
+          ],
         ),
       ),
     );
