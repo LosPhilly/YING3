@@ -16,6 +16,8 @@ class ImageConstant {
   static String imgUnsplashoalh2mojuuk =
       '$imagePath/img_unsplashoalh2mojuuk.png';
 
+  static String imgVerifyEmailSent = '$imagePath/img_verify_email.png';
+
   // Slash Screen images
   static String imgSplashYingLogo = '$imagePath/yingLogoSplash.png';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ying_3_3/core/app_export.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  CustomTextFormField({
+  const CustomTextFormField({
     Key? key,
     this.alignment,
     this.width,
@@ -16,7 +16,9 @@ class CustomTextFormField extends StatelessWidget {
     this.textInputType = TextInputType.text,
     this.maxLines,
     this.hintText,
+    this.label,
     this.hintStyle,
+    this.lableStyle,
     this.prefix,
     this.prefixConstraints,
     this.suffix,
@@ -24,14 +26,17 @@ class CustomTextFormField extends StatelessWidget {
     this.contentPadding,
     this.borderDecoration,
     this.fillColor,
+    this.onchange,
     this.filled = false,
+    this.readOnly = false,
     this.validator,
+    this.onTap,
   }) : super(
           key: key,
         );
 
   final Alignment? alignment;
-
+  final onchange;
   final double? width;
 
   final EdgeInsetsGeometry? margin;
@@ -53,8 +58,10 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLines;
 
   final String? hintText;
+  final String? label;
 
   final TextStyle? hintStyle;
+  final TextStyle? lableStyle;
 
   final Widget? prefix;
 
@@ -74,6 +81,10 @@ class CustomTextFormField extends StatelessWidget {
 
   final FormFieldValidator<String>? validator;
 
+  final bool readOnly;
+
+  final void Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -88,6 +99,7 @@ class CustomTextFormField extends StatelessWidget {
         width: width ?? double.maxFinite,
         margin: margin,
         child: TextFormField(
+          readOnly: readOnly,
           controller: controller,
           focusNode: focusNode ?? FocusNode(),
           autofocus: autofocus!,
@@ -98,9 +110,15 @@ class CustomTextFormField extends StatelessWidget {
           maxLines: maxLines ?? 1,
           decoration: decoration,
           validator: validator,
+          onChanged: onchange,
+          onTap: onTap,
         ),
       );
   InputDecoration get decoration => InputDecoration(
+        label: Text(
+          label ?? "",
+          style: lableStyle ?? theme.textTheme.titleSmall,
+        ),
         hintText: hintText ?? "",
         hintStyle: hintStyle ?? theme.textTheme.titleSmall,
         prefixIcon: prefix,
@@ -112,6 +130,7 @@ class CustomTextFormField extends StatelessWidget {
             EdgeInsets.only(
               top: 13.v,
               right: 13.h,
+              left: 13.h,
               bottom: 13.v,
             ),
         fillColor: fillColor,
@@ -155,5 +174,12 @@ extension TextFormFieldStyleHelper on CustomTextFormField {
   static OutlineInputBorder get fillGray => OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.h),
         borderSide: BorderSide.none,
+      );
+  static OutlineInputBorder get outlineOnindigo => OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.h),
+        borderSide: BorderSide(
+          color: appTheme.indigoA200,
+          width: 2,
+        ),
       );
 }

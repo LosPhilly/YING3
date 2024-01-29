@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:super_tag_editor/widgets/rich_text_widget.dart';
@@ -15,6 +16,7 @@ import 'package:ying_3_3/widgets/custom_elevated_button.dart';
 import 'package:super_tag_editor/tag_editor.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 // ignore: library_prefixes
+import '../../../../widgets/custom_text_form_field.dart';
 import 'skillsList.dart' as skillsList;
 
 // ignore_for_file: must_be_immutable
@@ -35,8 +37,9 @@ class _RegisterSetupIndividualAccountSkillsScreenState
   bool focusTagEnabled = false;
 
   TextEditingController outlinedownarroController = TextEditingController();
+  final TextEditingController _otherController = TextEditingController();
 
-  final List<String> _values = [];
+  final List<String> _values = ["Other"];
 
   final FocusNode _focusNode = FocusNode();
 
@@ -62,6 +65,7 @@ class _RegisterSetupIndividualAccountSkillsScreenState
           skills.add(_values[i]);
         }
       }
+      if (skills.isNotEmpty) skills.removeLast();
 
       FirebaseFirestore.instance.collection('users').doc(uid).update({
         'skills': skills,
@@ -85,6 +89,8 @@ class _RegisterSetupIndividualAccountSkillsScreenState
     });
   }
 
+  bool othervisible = false;
+
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
@@ -107,7 +113,7 @@ class _RegisterSetupIndividualAccountSkillsScreenState
           ]),
       body: Container(
         width: double.maxFinite,
-        padding: EdgeInsets.symmetric(horizontal: 27.h, vertical: 10.v),
+        padding: EdgeInsets.symmetric(horizontal: 28.h, vertical: 20.v),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           CustomElevatedButton(
               height: 32.v,
@@ -150,152 +156,176 @@ class _RegisterSetupIndividualAccountSkillsScreenState
               ],
             ),
           ),
-          SizedBox(height: 18.v),
+          SizedBox(height: 34.v),
+          DropDownSearchField(
+            textFieldConfiguration: TextFieldConfiguration(
+                controller: _skillsController,
+                minLines: 1,
+                autofocus: true,
+                style: const TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(
+                      top: 17.v, right: 15.h, left: 15.h, bottom: 17.v),
+                  label: Text(
+                    "Add SKills",
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                        color: appTheme.indigoA200,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  border: TextFormFieldStyleHelper.outlineOnindigo,
+                  enabledBorder: TextFormFieldStyleHelper.outlineOnindigo,
+                  focusedBorder: TextFormFieldStyleHelper.outlineOnindigo,
+                )),
+            suggestionsCallback: (pattern) async {
+              return await _filterSearchResults(pattern);
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                // leading: Icon(Icons.shopping_cart),
+                title: Text(suggestion.toString()),
+                // subtitle: Text('\$${suggestion['price']}'),
+              );
+            },
+            onSuggestionSelected: (suggestion) {
+              _values.insert(0, suggestion.toString());
+              _skillsController.clear();
+            },
+            displayAllSuggestionWhenTap: false,
+          ),
+          SizedBox(height: 20.v),
           Wrap(
+            runSpacing: 5.0,
+            spacing: 8.0,
+            clipBehavior: Clip.hardEdge,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView(
-                  shrinkWrap: true, // Set shrinkWrap to true
-                  children: <Widget>[
-                    TagEditor<String>(
-                      length: _values.length,
-                      controller: _skillsController,
-                      focusNode: _focusNode,
-                      delimiters: const [',', ' '],
-                      hasAddButton: true,
-                      resetTextOnSubmitted: true,
-                      textStyle: const TextStyle(color: Colors.grey),
-                      onSubmitted: (outstandingValue) {
-                        setState(() {
-                          _values.add(outstandingValue);
-                        });
-                      },
-                      inputDecoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Add Skills...',
-                      ),
-                      onTagChanged: (newValue) {
-                        setState(() {
-                          _values.add(newValue);
-                        });
-                      },
-                      tagBuilder: (context, index) => Container(
-                        color: focusTagEnabled && index == _values.length - 1
-                            ? Colors.redAccent
-                            : Colors.white,
-                        child: _Chip(
-                          index: index,
-                          label: _values[index],
-                          onDeleted: _onDelete,
-                        ),
-                      ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.deny(RegExp(r'[/\\]'))
-                      ],
-                      useDefaultHighlight: false,
-                      suggestionBuilder: (context, state, data, index, length,
-                          highlight, suggestionValid) {
-                        var borderRadius =
-                            const BorderRadius.all(Radius.circular(20));
-                        if (index == 0) {
-                          borderRadius = const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          );
-                        } else if (index == length - 1) {
-                          borderRadius = const BorderRadius.only(
-                            bottomRight: Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
-                          );
-                        }
-                        return InkWell(
-                          onTap: () {
-                            setState(() {
-                              _values.add(data);
-                            });
-                            state.resetTextField();
-                            state.closeSuggestionBox();
-                          },
-                          child: Container(
-                            decoration: highlight
-                                ? BoxDecoration(
-                                    color: theme.focusColor,
-                                    borderRadius: borderRadius)
-                                : null,
-                            padding: const EdgeInsets.all(16),
-                            child: RichTextWidget(
-                              wordSearched: suggestionValid ?? '',
-                              textOrigin: data,
-                            ),
+              for (var i in _values)
+                Container(
+                  color: i.toString() == "Other"
+                      ? appTheme.gray300
+                      : appTheme.green40001.withOpacity(.10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          i.toString(),
+                          style: theme.textTheme.bodyLarge!.copyWith(
+                            fontSize: 12,
+                            color: appTheme.black900,
+                            fontWeight: FontWeight.w600,
                           ),
-                        );
-                      },
-                      onFocusTagAction: (focused) {
-                        setState(() {
-                          focusTagEnabled = focused;
-                        });
-                      },
-                      onDeleteTagAction: () {
-                        if (_values.isNotEmpty) {
-                          setState(() {
-                            _values.removeLast();
-                          });
-                        }
-                      },
-                      onSelectOptionAction: (item) {
-                        setState(() {
-                          _values.add(item);
-                        });
-                      },
-                      suggestionsBoxElevation: 10,
-                      findSuggestions: (String query) {
-                        if (query.isNotEmpty) {
-                          var lowercaseQuery = query.toLowerCase();
-                          return skills.where((profile) {
-                            return profile
-                                    .toLowerCase()
-                                    .contains(query.toLowerCase()) ||
-                                profile
-                                    .toLowerCase()
-                                    .contains(query.toLowerCase());
-                          }).toList(growable: false)
-                            ..sort((a, b) => a
-                                .toLowerCase()
-                                .indexOf(lowercaseQuery)
-                                .compareTo(
-                                    b.toLowerCase().indexOf(lowercaseQuery)));
-                        }
-                        return [];
-                      },
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (i.toString() == "Other") {
+                              setState(() {
+                                othervisible = true;
+                              });
+                            } else {
+                              setState(() {
+                                _values.remove(i.toString());
+                              });
+                            }
+                          },
+                          child: i.toString() == "Other"
+                              ? const Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 20,
+                                )
+                              : Container(
+                                  height: 20,
+                                  width: 20,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: appTheme.green800),
+                                  child: const Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: 15,
+                                  )),
+                        )
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
             ],
           ),
-          SizedBox(height: 24.v),
-          SizedBox(height: 32.v),
+          SizedBox(height: 20.v),
+          othervisible
+              ? CustomTextFormField(
+                  textStyle: const TextStyle(color: Colors.black),
+                  autofocus: true,
+                  controller: _otherController,
+                  // hintText: "Full name",
+                  hintStyle: theme.textTheme.bodyMedium!,
+                  label: "Other",
+                  lableStyle: theme.textTheme.bodyMedium?.copyWith(
+                      color: appTheme.indigoA200, fontWeight: FontWeight.w600),
+                  prefixConstraints: BoxConstraints(maxHeight: 56.v),
+                  contentPadding: EdgeInsets.only(
+                      top: 17.v, right: 15.h, left: 15.h, bottom: 17.v),
+                  borderDecoration: TextFormFieldStyleHelper.outlineOnindigo,
+                  suffix: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _values.insert(0, _otherController.text);
+                            _otherController.clear();
+                          });
+                        },
+                        child: Text(
+                          "Add",
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                              color: appTheme.indigoA200,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  onchange: (val) {
+                    _filterSearchResults(val);
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Field Missing';
+                    } else {
+                      return null;
+                    }
+                  },
+                )
+              : Container(),
+        ]),
+      ),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 36.v),
           Align(
-            alignment: Alignment.center,
-            child: SizedBox(
-              height: 6.v,
-              child: AnimatedSmoothIndicator(
-                activeIndex: 1,
-                count: 4,
-                effect: ScrollingDotsEffect(
-                    spacing: 8,
-                    activeDotColor: theme.colorScheme.primary,
-                    dotColor: appTheme.cyan700.withOpacity(0.5),
-                    dotHeight: 6.v,
-                    dotWidth: 6.h),
-              ),
-            ),
-          ),
-          SizedBox(height: 32.v),
+              alignment: Alignment.center,
+              child: SizedBox(
+                  height: 6.v,
+                  child: AnimatedSmoothIndicator(
+                      activeIndex: 1,
+                      count: 3,
+                      effect: ScrollingDotsEffect(
+                          spacing: 8,
+                          activeDotColor: theme.colorScheme.primary,
+                          dotColor: appTheme.cyan700.withOpacity(0.5),
+                          dotHeight: 6.v,
+                          dotWidth: 6.h)))),
+          SizedBox(height: 15.v),
           CustomElevatedButton(
               text: "Continue",
               buttonStyle: CustomButtonStyles.fillPrimary,
+              margin: EdgeInsets.only(left: 28.h, right: 28.h, bottom: 10.v),
               rightIcon: Container(
                   margin: EdgeInsets.only(left: 8.h),
                   child: CustomImageView(
@@ -303,27 +333,45 @@ class _RegisterSetupIndividualAccountSkillsScreenState
               onTap: () {
                 onTapContinue(context);
               }),
-          SizedBox(height: 15.v),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 71.h, vertical: 15.v),
             decoration: AppDecoration.outlineOnPrimary3
                 .copyWith(borderRadius: BorderRadiusStyle.roundedBorder12),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomImageView(
                     svgPath: ImageConstant.imgOutlineinfocrfrOnprimary,
                     height: 24.adaptSize,
                     width: 24.adaptSize),
+                SizedBox(
+                  width: 5.v,
+                ),
                 Text("Skills Assessment",
                     style: CustomTextStyles.titleMediumOnPrimary_1)
               ],
             ),
           ),
-          SizedBox(height: 5.v)
-        ]),
+          SizedBox(height: 15.v)
+        ],
       ),
     );
+  }
+
+  _filterSearchResults(query) {
+    if (query.isNotEmpty) {
+      var lowercaseQuery = query.toLowerCase();
+      return skills.where((profile) {
+        return profile.toLowerCase().contains(query.toLowerCase()) ||
+            profile.toLowerCase().contains(query.toLowerCase());
+      }).toList(growable: false)
+        ..sort((a, b) => a
+            .toLowerCase()
+            .indexOf(lowercaseQuery)
+            .compareTo(b.toLowerCase().indexOf(lowercaseQuery)));
+    }
+
+    return [];
   }
 
   /// Navigates back to the previous screen.
@@ -331,7 +379,27 @@ class _RegisterSetupIndividualAccountSkillsScreenState
   /// This function takes a [BuildContext] object as a parameter, which is used
   /// to navigate back to the previous screen.
   onTapArrowleftone(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.registerIndividualInterestScreen);
+    Navigator.pushNamed(context, AppRoutes.registerIndividualOneScreen);
+    deleteUserAndDocument();
+  }
+
+  Future<void> deleteUserAndDocument() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      String uid = user!.uid;
+
+      // Delete user document from Firestore
+      await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+
+      // Delete user from Firebase Authentication
+      await user.delete();
+
+      // ignore: avoid_print
+      print('User and document deleted successfully');
+    } catch (e) {
+      // ignore: avoid_print
+      print('Failed to delete user and document: $e');
+    }
   }
 
   /// Navigates to the gigFeed1FeedScreen when the action is triggered.

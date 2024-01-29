@@ -7,21 +7,19 @@ import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/core/constants/global_methods.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 
-import '../../../core/constants/string_const.dart';
-
-class RegisterIndividualVerifyEmailScreen extends StatefulWidget {
-  const RegisterIndividualVerifyEmailScreen({Key? key})
+class RegisterIndividualVerifyEmailScreen1 extends StatefulWidget {
+  const RegisterIndividualVerifyEmailScreen1({Key? key})
       : super(
           key: key,
         );
 
   @override
-  State<RegisterIndividualVerifyEmailScreen> createState() =>
-      _RegisterIndividualVerifyEmailScreenState();
+  State<RegisterIndividualVerifyEmailScreen1> createState() =>
+      _RegisterIndividualVerifyEmailScreen1State();
 }
 
-class _RegisterIndividualVerifyEmailScreenState
-    extends State<RegisterIndividualVerifyEmailScreen> {
+class _RegisterIndividualVerifyEmailScreen1State
+    extends State<RegisterIndividualVerifyEmailScreen1> {
   bool isEmailVerified = false;
 
   Timer? timer;
@@ -149,18 +147,53 @@ class _RegisterIndividualVerifyEmailScreenState
             vertical: 45.v,
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomImageView(
-                imagePath: ImageConstant.imgVerifyEmailSent,
+              const Spacer(),
+              Expanded(
+                child: CustomImageView(
+                  svgPath: ImageConstant.imgIcon,
+                  height: 164.adaptSize,
+                  width: 164.adaptSize,
+                ),
               ),
               SizedBox(height: 35.v),
-              Text("Verify your email", style: theme.textTheme.headlineLarge),
-              SizedBox(height: 12.v),
-              Text(
-                  "We sent you an email verification link on your email address",
-                  style: CustomTextStyles.bodyLargeOnPrimary_1),
+              SizedBox(
+                width: 295.h,
+                child: Text(
+                  "Welcome\nto the YING Lifestyle!",
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: CustomTextStyles.headlineMediumPrimary.copyWith(
+                    height: 1.50,
+                  ),
+                ),
+              ),
+              SizedBox(height: 13.v),
+              SizedBox(
+                width: 170.h,
+                child: Text(
+                  "Let’s start \nGroup SkillsharingTM!",
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyLarge!.copyWith(
+                    height: 1.64,
+                  ),
+                ),
+              ),
+              SizedBox(height: 13.v),
+              SizedBox(
+                width: 170.h,
+                child: Text(
+                  "A verification email has been sent to your email",
+                  maxLines: 3,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyLarge!.copyWith(
+                    height: 1.64,
+                  ),
+                ),
+              ),
               SizedBox(height: 35.v),
               ElevatedButton.icon(
                 style: ButtonStyle(
@@ -171,8 +204,7 @@ class _RegisterIndividualVerifyEmailScreenState
                   padding: EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.email,
-                    size: 30,
-                    color: Colors.white,
+                    size: 32,
                   ),
                 ),
                 onPressed: canResendEmail
@@ -185,46 +217,53 @@ class _RegisterIndividualVerifyEmailScreenState
                         });
                       }
                     : null,
-                label: Text(
-                  canResendEmail
-                      ? 'Resend Email'
-                      : 'Resend Email in $countdownSeconds',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: REGULAR_FONT,
-                    color: Theme.of(context).colorScheme.onPrimary,
+                label: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    canResendEmail
+                        ? 'Resend Email'
+                        : 'Resend Email in $countdownSeconds',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 12.v),
-              /* Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 60),
-                child: ElevatedButton.icon(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(theme
-                        .colorScheme.primary), // Changed to use theme color
+              SizedBox(height: 5.v),
+              /* ElevatedButton.icon(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      theme.colorScheme.primary), // Changed to use theme color
+                ),
+                icon: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.cancel,
+                    size: 32,
                   ),
-                  icon: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.cancel,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () {
-                    onCancelVerify(context);
-                  },
-                  label: Text(
+                ),
+                onPressed: () {
+                  onCancelVerify(context);
+                },
+                label: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
                     'Cancel',
                     style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: REGULAR_FONT,
+                      fontSize: 20,
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 ),
               ), */
+              SizedBox(height: 17.v),
+              CustomImageView(
+                svgPath: ImageConstant.imgConfetti,
+                height: 155.v,
+                width: 185.h,
+              ),
+              const Spacer(),
             ],
           )),
     );

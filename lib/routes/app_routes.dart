@@ -13,10 +13,14 @@ import 'package:ying_3_3/Presentation/PostTaskScreens/IndividualPostTaskScreen/p
 //import 'package:ying_3_3/Presentation/GigFeedScreens/TaskDetails/task_details_screen.dart';
 
 import 'package:ying_3_3/Presentation/OpenScreen/welcome_main_screen.dart';
+import 'package:ying_3_3/Presentation/SignUpPage/SetUpGroupScreens/GroupAvailabilityScreen/setup_g_account_availability_screen.dart';
+import 'package:ying_3_3/Presentation/SignUpPage/VerifyScreen/register_individual_verify_email_screen.dart';
+import 'package:ying_3_3/Presentation/SignUpPage/VerifyScreen/successfully_verified/successfully_created_account_screen.dart';
+import 'package:ying_3_3/Presentation/SignUpPage/VerifyScreen/successfully_verified/successfully_verified_email_screen.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/register_individual_one_screen.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/setup_g_account_one_screen.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/VerifyScreen/setup_g_account_verify_email_screen.dart';
-import 'package:ying_3_3/Presentation/SignUpPage/VerifyScreen/register_individual_verify_email_screen.dart';
+import 'package:ying_3_3/Presentation/SignUpPage/VerifyScreen/register_individual_verify_email_screen1.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/SetUpGroupScreens/GroupSetUpSkillsOffering/setup_g_account_offering_screen.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/SetUpGroupScreens/GroupSetUpSkillsAvaiable/setup_g_account_skills_screen.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/SetUpGroupScreens/GroupSetUpProfilePicture/setup_g_account_g_upload_profile_pic_screen.dart';
@@ -81,6 +85,15 @@ static const String accountSettingsScreen = '/account_settings_screen';
 
   static const String setupGAccountVerifyEmailScreen =
       '/setup_g_account_verify_email_screen';
+
+  static const String successfullyVerifiedEmailScreen =
+      '/successfully_verified_email_screen';
+
+  static const String successfullyCreatedAccountScreen =
+      '/successfully_created_account_screen';
+
+  static const String setupGAccountAvailabilityScreen =
+      '/setup_g_account_availability_screen';
 
   static const String setupGAccountOfferingScreen =
       '/setup_g_account_offering_screen';
@@ -174,6 +187,15 @@ accountSettingsScreen:(context) => const AccountSettingsScreen(),
     //User and Group Menu Start Map//
     setupGAccountVerifyEmailScreen: (context) =>
         const SetupGAccountVerifyEmailScreen(),
+
+    successfullyVerifiedEmailScreen: (context) =>
+        const SuccessfullyVerifiedEmailScreen(),
+
+    successfullyCreatedAccountScreen: (context) =>
+        const SuccessfullyCreatedAccountScreen(),
+
+    setupGAccountAvailabilityScreen: (context) =>
+        const SetupGAccountAvailabilityScreen(),
 
     setupGAccountOfferingScreen: (context) =>
         const SetupGAccountOfferingScreen(),
