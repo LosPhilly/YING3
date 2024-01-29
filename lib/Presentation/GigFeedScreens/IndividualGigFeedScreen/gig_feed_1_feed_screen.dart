@@ -9,6 +9,8 @@ import 'package:ying_3_3/Presentation/ChatScreens/IndividualChatScreens/search_s
 import 'package:ying_3_3/Presentation/ChatScreens/main_chat_screen.dart';
 import 'package:ying_3_3/Presentation/GigFeedScreens/IndividualGigFeedScreen/widget/gig_feed_list_tile.dart';
 import 'package:ying_3_3/Presentation/Notifications/IndividualNotificationsScreen/notifications_screen.dart';
+import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/search_container_screen.dart';
+import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/search_page.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/MainUserSettingsScreen/user_profile_settings_main_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/BankAccountTabScreen/my_cards_bank_account_tab_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_page.dart';
@@ -26,6 +28,7 @@ import 'package:ying_3_3/widgets/custom_icon_button.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 import 'package:ying_3_3/widgets/custom_search_view.dart';
 import 'package:ying_3_3/widgets/job_widget.dart';
+import 'package:ying_3_3/widgets/nav.dart';
 
 // ignore_for_file: must_be_immutable
 class GigFeed1FeedScreen extends StatefulWidget {
@@ -135,6 +138,196 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   void onTapSearch() {
     // Set the focus on the search field when the search icon is tapped
     FocusScope.of(context).requestFocus(_searchFocusNode);
+  }
+
+  onTapSearchone(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: false,
+      showDragHandle: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      context: context,
+      builder: (BuildContext context) {
+        return Column(
+          children: [
+            CustomSearchView(
+              margin: EdgeInsets.only(right: 28.h),
+              controller: searchController,
+              autofocus: false,
+              hintText: "Search by name, skill or category",
+              hintStyle: const TextStyle(color: Colors.black),
+              focusNode: _searchFocusNode,
+              prefix: Container(
+                margin: EdgeInsets.fromLTRB(16.h, 10.v, 8.h, 10.v),
+                child: CustomImageView(svgPath: ImageConstant.imgSearch),
+              ),
+              prefixConstraints: BoxConstraints(maxHeight: 40.v),
+              suffix: Padding(
+                padding: EdgeInsets.only(right: 15.h),
+                child: IconButton(
+                  onPressed: () {
+                    searchController.clear();
+                  },
+                  icon: Icon(Icons.clear, color: Colors.grey.shade600),
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
+            Padding(
+              padding: EdgeInsets.only(
+                left: 21.h,
+                top: 28.v,
+                right: 21.h,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      CustomIconButton(
+                        height: 44.adaptSize,
+                        width: 44.adaptSize,
+                        padding: EdgeInsets.all(10.h),
+                        decoration: IconButtonStyleHelper.fillCyan,
+                        child: CustomImageView(
+                          svgPath: ImageConstant.imgOutlineheart,
+                        ),
+                      ),
+                      SizedBox(height: 10.v),
+                      Text(
+                        "Groups",
+                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 1.v),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Nav(initialIndex: 1)));
+                          },
+                          child: CustomIconButton(
+                            height: 44.adaptSize,
+                            width: 44.adaptSize,
+                            padding: EdgeInsets.all(10.h),
+                            decoration: IconButtonStyleHelper.fillGray,
+                            child: CustomImageView(
+                              svgPath: ImageConstant
+                                  .imgOutlineuserSecondarycontainer,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8.v),
+                        Text(
+                          "Members",
+                          style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 1.v),
+                    child: Column(
+                      children: [
+                        CustomIconButton(
+                          height: 44.adaptSize,
+                          width: 44.adaptSize,
+                          padding: EdgeInsets.all(10.h),
+                          decoration: IconButtonStyleHelper.fillPurpleTL16,
+                          child: CustomImageView(
+                            svgPath: ImageConstant.imgOutlineshopping,
+                          ),
+                        ),
+                        SizedBox(height: 8.v),
+                        Text(
+                          "Tasks",
+                          style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(21.h, 27.v, 21.h, 9.v),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      CustomIconButton(
+                        height: 44.adaptSize,
+                        width: 44.adaptSize,
+                        padding: EdgeInsets.all(10.h),
+                        decoration: IconButtonStyleHelper.fillRedTL16,
+                        child: CustomImageView(
+                          svgPath: ImageConstant.imgOutlinestar,
+                        ),
+                      ),
+                      SizedBox(height: 8.v),
+                      Text(
+                        "Skills",
+                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ChatScreenMain()));
+                        },
+                        child: CustomIconButton(
+                          height: 44.adaptSize,
+                          width: 44.adaptSize,
+                          padding: EdgeInsets.all(10.h),
+                          decoration: IconButtonStyleHelper.fillRed,
+                          child: CustomImageView(
+                            svgPath:
+                                ImageConstant.imgOutlinechattextDeepOrange700,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8.v),
+                      Text(
+                        "Chats",
+                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      CustomIconButton(
+                        height: 44.adaptSize,
+                        width: 44.adaptSize,
+                        padding: EdgeInsets.all(10.h),
+                        decoration: IconButtonStyleHelper.fillGreenTL16,
+                        child: CustomImageView(
+                          svgPath: ImageConstant.imgOutlinelistboxes,
+                        ),
+                      ),
+                      SizedBox(height: 8.v),
+                      Text(
+                        "Feed",
+                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   /// SHOW CATEGORIES FIELDS ///
@@ -256,7 +449,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 90, // Adjust the height to your preference
+        toolbarHeight: 90.h, // Adjust the height to your preference
         backgroundColor: theme.colorScheme.primary,
         elevation: 8,
         leading: Align(
@@ -298,8 +491,9 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const UsersSearchScreen())),
+                  onPressed: () {
+                    onTapSearchone(context);
+                  },
                   icon: const Icon(Icons.search, color: Colors.white),
                 ),
                 const SizedBox(width: 1), // Add spacing between icons
@@ -473,7 +667,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
                                     uploadBy: snapshot.data!.docs[index]
                                         .data()['uploadedBy'],
                                     jobID: snapshot.data!.docs[index]
-                                        .data()['taskDescription'],
+                                        .data()['taskId'],
                                     taskImages: List<String>.from(snapshot
                                             .data!.docs[index]
                                             .data()['taskImages'] ??
@@ -547,182 +741,6 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   ///
   /// The [BuildContext] parameter is used to build the navigation stack.
   /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the gigFeed2SearchContainerScreen.
-  onTapSearchone(BuildContext context) {
-    showModalBottomSheet(
-      isScrollControlled: false,
-      showDragHandle: true,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      context: context,
-      builder: (BuildContext context) {
-        return Column(
-          children: [
-            CustomSearchView(
-              margin: EdgeInsets.only(right: 28.h),
-              controller: searchController,
-              autofocus: false,
-              hintText: "Search by name, skill or category",
-              hintStyle: const TextStyle(color: Colors.black),
-              focusNode: _searchFocusNode,
-              prefix: Container(
-                margin: EdgeInsets.fromLTRB(16.h, 10.v, 8.h, 10.v),
-                child: CustomImageView(svgPath: ImageConstant.imgSearch),
-              ),
-              prefixConstraints: BoxConstraints(maxHeight: 40.v),
-              suffix: Padding(
-                padding: EdgeInsets.only(right: 15.h),
-                child: IconButton(
-                  onPressed: () {
-                    searchController.clear();
-                  },
-                  icon: Icon(Icons.clear, color: Colors.grey.shade600),
-                ),
-              ),
-            ),
-            SizedBox(height: 5),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 21.h,
-                top: 28.v,
-                right: 21.h,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      CustomIconButton(
-                        height: 44.adaptSize,
-                        width: 44.adaptSize,
-                        padding: EdgeInsets.all(10.h),
-                        decoration: IconButtonStyleHelper.fillCyan,
-                        child: CustomImageView(
-                          svgPath: ImageConstant.imgOutlineheart,
-                        ),
-                      ),
-                      SizedBox(height: 10.v),
-                      Text(
-                        "Groups",
-                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 1.v),
-                    child: Column(
-                      children: [
-                        CustomIconButton(
-                          height: 44.adaptSize,
-                          width: 44.adaptSize,
-                          padding: EdgeInsets.all(10.h),
-                          decoration: IconButtonStyleHelper.fillGray,
-                          child: CustomImageView(
-                            svgPath:
-                                ImageConstant.imgOutlineuserSecondarycontainer,
-                          ),
-                        ),
-                        SizedBox(height: 8.v),
-                        Text(
-                          "Members",
-                          style: CustomTextStyles.labelLargeOnPrimarySemiBold,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 1.v),
-                    child: Column(
-                      children: [
-                        CustomIconButton(
-                          height: 44.adaptSize,
-                          width: 44.adaptSize,
-                          padding: EdgeInsets.all(10.h),
-                          decoration: IconButtonStyleHelper.fillPurpleTL16,
-                          child: CustomImageView(
-                            svgPath: ImageConstant.imgOutlineshopping,
-                          ),
-                        ),
-                        SizedBox(height: 8.v),
-                        Text(
-                          "Tasks",
-                          style: CustomTextStyles.labelLargeOnPrimarySemiBold,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(21.h, 27.v, 21.h, 9.v),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      CustomIconButton(
-                        height: 44.adaptSize,
-                        width: 44.adaptSize,
-                        padding: EdgeInsets.all(10.h),
-                        decoration: IconButtonStyleHelper.fillRedTL16,
-                        child: CustomImageView(
-                          svgPath: ImageConstant.imgOutlinestar,
-                        ),
-                      ),
-                      SizedBox(height: 8.v),
-                      Text(
-                        "Skills",
-                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      CustomIconButton(
-                        height: 44.adaptSize,
-                        width: 44.adaptSize,
-                        padding: EdgeInsets.all(10.h),
-                        decoration: IconButtonStyleHelper.fillRed,
-                        child: CustomImageView(
-                          svgPath:
-                              ImageConstant.imgOutlinechattextDeepOrange700,
-                        ),
-                      ),
-                      SizedBox(height: 8.v),
-                      Text(
-                        "Chats",
-                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      CustomIconButton(
-                        height: 44.adaptSize,
-                        width: 44.adaptSize,
-                        padding: EdgeInsets.all(10.h),
-                        decoration: IconButtonStyleHelper.fillGreenTL16,
-                        child: CustomImageView(
-                          svgPath: ImageConstant.imgOutlinelistboxes,
-                        ),
-                      ),
-                      SizedBox(height: 8.v),
-                      Text(
-                        "Feed",
-                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   /// Navigates to the gigFeed2TaskDetailsScreen when the action is triggered.
   ///
@@ -822,7 +840,7 @@ class _SliderViewState extends State<_SliderView> {
           Text(
             userDisplayName!,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 30,

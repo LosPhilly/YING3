@@ -16,6 +16,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 
+import '../../../../widgets/custom_loader.dart';
+
 class RegisterSetupIndividualAccountUploadProfilePictureScreen
     extends StatefulWidget {
   const RegisterSetupIndividualAccountUploadProfilePictureScreen({Key? key})
@@ -130,6 +132,9 @@ class _RegisterSetupIndividualAccountUploadProfilePictureScreenState
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 10.v,
+                ),
                 InkWell(
                   onTap: () {
                     _getFromGallery();
@@ -190,6 +195,11 @@ class _RegisterSetupIndividualAccountUploadProfilePictureScreenState
   }
 
 //CAMERA AND GALLERY, CROP IMAGES FUNCTIONS START //
+  void continueToSuccessfullyScreen(BuildContext context) {
+    Navigator.popAndPushNamed(
+        context, AppRoutes.successfullyCreatedAccountScreen,
+        arguments: {"isindividual": true});
+  }
 
 //SUBMIT SIGN UP FORM START//
 
@@ -203,6 +213,8 @@ class _RegisterSetupIndividualAccountUploadProfilePictureScreenState
     }
 
     try {
+      CommonLoader().commonLoader(context);
+
       final User? user = _auth.currentUser;
       final uid = user!.uid;
 
@@ -215,7 +227,7 @@ class _RegisterSetupIndividualAccountUploadProfilePictureScreenState
       });
 
       // ignore: use_build_context_synchronously
-      onTapContinue(context);
+      continueToSuccessfullyScreen(context);
     } catch (error) {
       // ignore: use_build_context_synchronously
       GlobalMethod.showErrorDialog(error: error.toString(), ctx: context);
@@ -256,7 +268,7 @@ class _RegisterSetupIndividualAccountUploadProfilePictureScreenState
                   buttonStyle: CustomButtonStyles.fillGreen,
                   buttonTextStyle: CustomTextStyles.labelLargeGreen800),
               SizedBox(height: 10.v),
-              Text("$userDisplayName upload a profile picture",
+              Text("Upload profile picture",
                   style: theme.textTheme.headlineMedium),
               Container(
                 width: 309.h,
@@ -268,44 +280,75 @@ class _RegisterSetupIndividualAccountUploadProfilePictureScreenState
                   style: theme.textTheme.bodyLarge!.copyWith(height: 1.64),
                 ),
               ),
-              SizedBox(height: 78.v),
-              GestureDetector(
-                onTap: () {
-                  _ShowImageDialog();
-                },
-                child: Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    height: 109.v,
-                    width: 95.h,
-                    child: Container(
-                      width: size.width * 0.35,
-                      height: size.width * 0.35,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 2,
-                          color: Colors.deepPurpleAccent,
-                        ),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: imageFile == null
-                            ? const Icon(
-                                Icons.camera_enhance_sharp,
-                                color: Color.fromARGB(255, 98, 54, 255),
-                                size: 30,
-                              )
-                            : Image.file(
-                                imageFile!,
-                                fit: BoxFit.fill,
+              SizedBox(height: 77.v),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 90,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            // borderRadius: BorderRadius.circular(10.0), // Border radius
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey
+                                    .withOpacity(0.2), // Shadow color
+                                spreadRadius: 10, // Spread radius
+                                blurRadius: 5, // Blur radius
+                                // offset: Offset(0, 3), // Shadow offset
                               ),
+                            ],
+                            image: imageFile == null
+                                ? DecorationImage(
+                                    image: AssetImage(
+                                        ImageConstant.etprofilefemale))
+                                : DecorationImage(
+                                    image: FileImage(
+                                      imageFile!,
+                                      // fit: BoxFit.fill,
+                                    ),
+                                    fit: BoxFit.fill)),
                       ),
-                    ),
+                      Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            _ShowImageDialog();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              // borderRadius: BorderRadius.circular(10.0), // Border radius
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey
+                                      .withOpacity(0.2), // Shadow color
+                                  spreadRadius: 10, // Spread radius
+                                  blurRadius: 5, // Blur radius
+                                  // offset: Offset(0, 3), // Shadow offset
+                                ),
+                              ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.asset(ImageConstant.camera),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
-              SizedBox(height: 23.v),
+              SizedBox(height: 24.v),
               Align(
                   alignment: Alignment.center,
                   child: Text("Tap on camera icon.",

@@ -8,27 +8,27 @@ import 'package:ying_3_3/Presentation/UserProfileScreens/UserProfileViewScrren/u
 import 'package:ying_3_3/theme/theme_helper.dart';
 
 class Nav extends StatefulWidget {
-  const Nav({Key? key}) : super(key: key);
+  const Nav({Key? key, required this.initialIndex}) : super(key: key);
+  final int initialIndex; // Add this parameter
 
   @override
   State<Nav> createState() => _NavState();
 }
 
 class _NavState extends State<Nav> {
-// GET AND DISPLAY USER OR GROUP INFORMATION START //
-
   int _selectedIndex = 0;
 
   void _onItemTap(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index; // Update _selectedIndex with the tapped index
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _selectedIndex =
+        widget.initialIndex; // Set the initial index from the widget parameter
   }
 
   @override
@@ -39,6 +39,7 @@ class _NavState extends State<Nav> {
 
     final List<Widget> _widgetOptions = <Widget>[
       const GigFeed1FeedScreen(),
+
       SearchContainerScreen(), // Placeholder widget for the second screen
       const IndividualPostATask1Screen(), // Placeholder widget for the third screen
       NotificationsScreen(), // Placeholder widget for the fourth screen

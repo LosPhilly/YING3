@@ -416,14 +416,44 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     return Scaffold(
-      appBar: CustomAppBar(
-        leadingWidth: double.maxFinite,
-        leading: AppbarImage1(
-          svgPath: ImageConstant.imgArrowleftOnprimary,
-          margin: EdgeInsets.fromLTRB(28.h, 16.v, 323.h, 16.v),
-          onTap: () {
-            onTapArrowleftone(context);
-          },
+      appBar: AppBar(
+        toolbarHeight: 50, // Adjust the height to your preference
+        backgroundColor: theme.colorScheme.primary,
+        elevation: 8,
+        leading: Align(
+          alignment:
+              Alignment.bottomLeft, // Align the leading icon to the bottom
+          child: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.chevron_left,
+              color: Colors.white,
+              size: 35,
+            ),
+          ),
+        ),
+        title: Center(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 48.0),
+              child: Text(
+                jobTitle?.toString() ?? '',
+                maxLines: 2,
+                style: const TextStyle(
+                  fontSize: 25.0, // Adjust the font size as needed
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
+
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.0), // Adjust the radius as needed
+            bottomRight: Radius.circular(20.0),
+          ),
         ),
       ),
       body: SizedBox(
@@ -438,8 +468,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(jobTitle?.toString() ?? '',
-                          style: theme.textTheme.titleLarge),
+                      /*  Text(jobTitle?.toString() ?? '',
+                          style: theme.textTheme.titleLarge), */
                       SizedBox(height: 5.v),
                       Row(children: [
                         Row(

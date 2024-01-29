@@ -31,7 +31,7 @@ class UserState extends StatelessWidget {
           print('User is logged in');
           return const Scaffold(
             body: Center(child: GigFeed1FeedScreen()),
-            bottomNavigationBar: Nav(),
+            bottomNavigationBar: Nav(initialIndex: 0),
           );
         } else if (userSnapShot.hasError) {
           return const Scaffold(

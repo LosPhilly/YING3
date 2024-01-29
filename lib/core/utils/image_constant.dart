@@ -660,6 +660,7 @@ class ImageConstant {
   static String imgSlotmachineamico = '$imagePath/img_slotmachineamico.svg';
 
   static String imgFrame398 = '$imagePath/img_frame398.png';
-
+  static String camera = '$imagePath/Camera.png';
+  static String etprofilefemale = '$imagePath/et_profile-female.png';
   static String imageNotFound = 'assets/images/image_not_found.png';
 }
