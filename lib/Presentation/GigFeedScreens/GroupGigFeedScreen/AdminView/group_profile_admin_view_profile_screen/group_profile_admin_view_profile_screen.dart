@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ying_3_3/Presentation/ChatScreens/main_chat_screen.dart';
+import 'package:ying_3_3/core/constants/global_methods.dart';
+import 'package:ying_3_3/core/constants/persistant.dart';
 import 'package:ying_3_3/core/utils/image_constant.dart';
 import 'package:ying_3_3/core/utils/size_utils.dart';
 import 'package:ying_3_3/routes/app_routes.dart';
+import 'package:ying_3_3/services/notification_service.dart';
 import 'package:ying_3_3/theme/app_decoration.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
 import 'package:ying_3_3/theme/custom_text_style.dart';
@@ -13,7 +19,10 @@ import 'package:ying_3_3/widgets/app_bar/appbar_subtitle_11.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_subtitle_6.dart';
 import 'package:ying_3_3/widgets/app_bar/custom_app_bar.dart';
 import 'package:ying_3_3/widgets/custom_elevated_button.dart';
+import 'package:ying_3_3/widgets/custom_icon_button.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
+import 'package:ying_3_3/widgets/custom_search_view.dart';
+import 'package:ying_3_3/widgets/nav.dart';
 
 import '../group_profile_admin_view_profile_screen/widgets/eventpost1_item_widget.dart';
 import '../group_profile_admin_view_profile_screen/widgets/imagelist1_item_widget.dart';
@@ -29,9 +38,411 @@ class GroupProfileAdminViewProfileScreen extends StatefulWidget {
       _GroupProfileAdminViewProfileScreenState();
 }
 
+class UserData {
+  final String? imageUrl;
+  final String? name;
+
+  UserData({this.imageUrl, this.name});
+}
+
 class _GroupProfileAdminViewProfileScreenState
-    extends State<GroupProfileAdminViewProfileScreen> {
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+    extends State<GroupProfileAdminViewProfileScreen>
+    with WidgetsBindingObserver {
+  bool newMessage = false;
+  String? jobCategoryFilter;
+  // Create a variable to store the length of the snapshot
+  int numberOfGigs = 0;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool selectedPostContainer = true;
+  bool selectedRequestContainer = false;
+  final notificationService = NotificationsService();
+
+  late FocusNode _searchFocusNode;
+  String temTaskID = '0';
+
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    updateLastActive();
+    _searchFocusNode = FocusNode();
+
+    Persistent persistentObject = Persistent();
+    persistentObject.getUserData();
+    WidgetsBinding.instance.addObserver(this);
+    notificationService.firebaseNotification(context);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+
+    try {
+      final User? user = _auth.currentUser;
+      final uid = user!.uid;
+      switch (state) {
+        case AppLifecycleState.resumed:
+          FirebaseFirestore.instance.collection('users').doc(uid).update({
+            'lastActive': DateTime.now(),
+            'isOnline': true,
+          }); // FirebaseFirestoreService.updateUserData({'lastActive': DateTime.now(),'isOnline': true,})
+          break;
+
+        case AppLifecycleState.inactive:
+        case AppLifecycleState.paused:
+        case AppLifecycleState.detached:
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .update({'isOnline': false});
+          break;
+
+        default:
+          // Handle the case where the state is unknown.
+          break;
+      }
+    } catch (error) {
+      GlobalMethod.showErrorDialog(error: error.toString(), ctx: context);
+    }
+  }
+
+  updateLastActive() async {
+    try {
+      final User? user = _auth.currentUser;
+      final uid = user!.uid;
+
+      FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'lastActive': DateTime.now(),
+      });
+      FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'isOnline': true,
+      });
+    } catch (error) {
+      // ignore: use_build_context_synchronously
+      GlobalMethod.showErrorDialog(error: error.toString(), ctx: context);
+    }
+  }
+
+  onTapLogout(context) {
+    FirebaseAuth.instance.signOut();
+    Navigator.pushNamed(context, AppRoutes.userState);
+  }
+
+  void onTapSearch() {
+    // Set the focus on the search field when the search icon is tapped
+    FocusScope.of(context).requestFocus(_searchFocusNode);
+  }
+
+  onTapSearchone(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: false,
+      showDragHandle: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      context: context,
+      builder: (BuildContext context) {
+        return Column(
+          children: [
+            CustomSearchView(
+              margin: EdgeInsets.only(right: 28.h),
+              controller: searchController,
+              autofocus: false,
+              hintText: "Search by name, skill or category",
+              hintStyle: const TextStyle(color: Colors.black),
+              focusNode: _searchFocusNode,
+              prefix: Container(
+                margin: EdgeInsets.fromLTRB(16.h, 10.v, 8.h, 10.v),
+                child: CustomImageView(svgPath: ImageConstant.imgSearch),
+              ),
+              prefixConstraints: BoxConstraints(maxHeight: 40.v),
+              suffix: Padding(
+                padding: EdgeInsets.only(right: 15.h),
+                child: IconButton(
+                  onPressed: () {
+                    searchController.clear();
+                  },
+                  icon: Icon(Icons.clear, color: Colors.grey.shade600),
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
+            Padding(
+              padding: EdgeInsets.only(
+                left: 21.h,
+                top: 28.v,
+                right: 21.h,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      CustomIconButton(
+                        height: 44.adaptSize,
+                        width: 44.adaptSize,
+                        padding: EdgeInsets.all(10.h),
+                        decoration: IconButtonStyleHelper.fillCyan,
+                        child: CustomImageView(
+                          svgPath: ImageConstant.imgOutlineheart,
+                        ),
+                      ),
+                      SizedBox(height: 10.v),
+                      Text(
+                        "Groups",
+                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 1.v),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Nav(initialIndex: 1)));
+                          },
+                          child: CustomIconButton(
+                            height: 44.adaptSize,
+                            width: 44.adaptSize,
+                            padding: EdgeInsets.all(10.h),
+                            decoration: IconButtonStyleHelper.fillGray,
+                            child: CustomImageView(
+                              svgPath: ImageConstant
+                                  .imgOutlineuserSecondarycontainer,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8.v),
+                        Text(
+                          "Members",
+                          style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 1.v),
+                    child: Column(
+                      children: [
+                        CustomIconButton(
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Nav(initialIndex: 4)));
+                          },
+                          height: 44.adaptSize,
+                          width: 44.adaptSize,
+                          padding: EdgeInsets.all(10.h),
+                          decoration: IconButtonStyleHelper.fillPurpleTL16,
+                          child: CustomImageView(
+                            svgPath: ImageConstant.imgOutlineshopping,
+                          ),
+                        ),
+                        SizedBox(height: 8.v),
+                        Text(
+                          "Tasks",
+                          style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(21.h, 27.v, 21.h, 9.v),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      CustomIconButton(
+                        height: 44.adaptSize,
+                        width: 44.adaptSize,
+                        padding: EdgeInsets.all(10.h),
+                        decoration: IconButtonStyleHelper.fillRedTL16,
+                        child: CustomImageView(
+                          svgPath: ImageConstant.imgOutlinestar,
+                        ),
+                      ),
+                      SizedBox(height: 8.v),
+                      Text(
+                        "Skills",
+                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ChatScreenMain()));
+                        },
+                        child: CustomIconButton(
+                          height: 44.adaptSize,
+                          width: 44.adaptSize,
+                          padding: EdgeInsets.all(10.h),
+                          decoration: IconButtonStyleHelper.fillRed,
+                          child: CustomImageView(
+                            svgPath:
+                                ImageConstant.imgOutlinechattextDeepOrange700,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8.v),
+                      Text(
+                        "Chats",
+                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      CustomIconButton(
+                        height: 44.adaptSize,
+                        width: 44.adaptSize,
+                        padding: EdgeInsets.all(10.h),
+                        decoration: IconButtonStyleHelper.fillGreenTL16,
+                        child: CustomImageView(
+                          svgPath: ImageConstant.imgOutlinelistboxes,
+                        ),
+                      ),
+                      SizedBox(height: 8.v),
+                      Text(
+                        "Feed",
+                        style: CustomTextStyles.labelLargeOnPrimarySemiBold,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// SHOW CATEGORIES FIELDS ///
+  _showTaskCategoriesDialog({required Size size}) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor:
+              const Color.fromARGB(255, 98, 54, 255).withOpacity(0.5),
+          title: const Text(
+            'Job Category',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+            ),
+          ),
+          content: Container(
+            width: size.width * 0.9,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: Persistent.taskCategoryList.length,
+              itemBuilder: (ctx, index) {
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      jobCategoryFilter = Persistent.taskCategoryList[index];
+                    });
+                    Navigator.canPop(context) ? Navigator.pop(context) : null;
+                    // ignore: avoid_print
+                    print(
+                        'jobCategoryList[index], ${Persistent.taskCategoryList[index]}');
+                  },
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.flag_circle,
+                        color: Colors.green,
+                        size: 12,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          Persistent.taskCategoryList[index],
+                          style: const TextStyle(
+                            color: Colors.green,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins-Regular',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.canPop(context) ? Navigator.pop(context) : null;
+              },
+              child: const Text(
+                'Close',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  jobCategoryFilter = null;
+                  // ignore: avoid_print
+                  print(jobCategoryFilter);
+                });
+                Navigator.canPop(context) ? Navigator.pop(context) : null;
+              },
+              child: const Text(
+                'Cancel Filter',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// SHOW CATEGORIES FIELDS END ///
+
+  void onClickNewMessage() {
+    if (newMessage == false) {
+      setState(() {
+        newMessage = true;
+      });
+    } else if (newMessage == true) {
+      setState(() {
+        newMessage = false;
+      });
+    }
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            ChatScreenMain())); // Replace YourNewPage with the actual page you want to navigate to
+  }
 
   @override
   Widget build(BuildContext context) {
