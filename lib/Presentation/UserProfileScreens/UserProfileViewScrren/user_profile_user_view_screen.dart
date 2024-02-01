@@ -229,6 +229,7 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen>
       child: SizedBox(
         height: size.height * 0.9,
         child: Scaffold(
+          backgroundColor: Colors.black,
           body: SizedBox(
             width: mediaQueryData.size.width,
             child: SingleChildScrollView(
@@ -263,12 +264,14 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen>
                     SizedBox(height: 17.v),
                     Center(
                       child: Text(name.toString(),
-                          style: CustomTextStyles.titleMediumOnPrimaryBold),
+                          style: TextStyle(color: Colors.white)),
                     ),
                     SizedBox(height: 4.v),
-                    Center(
+                    const Center(
                         child: Text("UX/UI Designer",
-                            style: theme.textTheme.bodyMedium)),
+                            style: TextStyle(
+                                fontStyle: FontStyle.normal,
+                                color: Colors.white))),
                     Center(
                       child: CustomElevatedButton(
                           height: 33.v,
@@ -290,18 +293,16 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen>
                           children: [
                             Column(children: [
                               Text("Completed",
-                                  style: theme.textTheme.bodyMedium),
+                                  style: TextStyle(color: Colors.white)),
                               SizedBox(height: 2.v),
                               RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
                                         text: "89 ",
-                                        style: CustomTextStyles
-                                            .titleMediumOnPrimary18),
+                                        style: TextStyle(color: Colors.white)),
                                     TextSpan(
                                         text: "jobs",
-                                        style:
-                                            CustomTextStyles.bodySmallOnPrimary)
+                                        style: TextStyle(color: Colors.white))
                                   ]),
                                   textAlign: TextAlign.left)
                             ]),
@@ -310,18 +311,18 @@ class _UserProfileUserViewScreenState extends State<UserProfileUserViewScreen>
                               child: Column(
                                 children: [
                                   Text("In Progress",
-                                      style: theme.textTheme.bodyMedium),
+                                      style: TextStyle(color: Colors.white)),
                                   SizedBox(height: 1.v),
                                   RichText(
                                       text: TextSpan(children: [
                                         TextSpan(
                                             text: "5 ",
-                                            style: CustomTextStyles
-                                                .titleMediumOnPrimary18),
+                                            style:
+                                                TextStyle(color: Colors.white)),
                                         TextSpan(
                                             text: "jobs",
-                                            style: CustomTextStyles
-                                                .bodySmallOnPrimary)
+                                            style:
+                                                TextStyle(color: Colors.white))
                                       ]),
                                       textAlign: TextAlign.left)
                                 ],

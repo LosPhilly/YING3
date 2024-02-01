@@ -47,33 +47,34 @@ class _WelcomeSplashScreenState extends State<WelcomeSplashScreen>
 
     return AnimatedSplashScreen(
         duration: 5000,
-        splashIconSize: 255,
+        splashIconSize: 295,
         splash: SizedBox(
           width: double.maxFinite,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 195.v,
-                width: 180.h,
+                height: 200.v,
+                width: 192.h,
                 child: Stack(
                   alignment: Alignment.bottomRight,
                   children: [
                     CustomImageView(
                         imagePath: ImageConstant.imgSplashYingLogo,
-                        height: 355.v,
-                        width: 374.h,
+                        height: 245.v,
+                        width: 284.h,
                         alignment: Alignment.topCenter),
                   ],
                 ),
               ),
               SizedBox(height: 15.v),
-              const Text(
+              Text(
                 "YING",
                 style: TextStyle(
-                    fontSize: 30.0, // Adjust the font size as needed
+                    fontSize: 42.0, // Adjust the font size as needed
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    fontFamily: 'Poppins',
+                    color: theme.colorScheme.primary),
               ),
               SizedBox(height: 5.v),
             ],
@@ -82,6 +83,6 @@ class _WelcomeSplashScreenState extends State<WelcomeSplashScreen>
         nextScreen: const UserState(),
         splashTransition: SplashTransition.fadeTransition,
         //pageTransitionType: PageTransitionType.scale,
-        backgroundColor: theme.colorScheme.primary);
+        backgroundColor: Colors.black);
   }
 }

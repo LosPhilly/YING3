@@ -236,6 +236,12 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
                     child: Column(
                       children: [
                         CustomIconButton(
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Nav(initialIndex: 4)));
+                          },
                           height: 44.adaptSize,
                           width: 44.adaptSize,
                           padding: EdgeInsets.all(10.h),

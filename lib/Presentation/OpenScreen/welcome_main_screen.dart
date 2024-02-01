@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
+import 'package:ying_3_3/theme/custom_button_style_rounded_opacity.dart';
 import 'package:ying_3_3/widgets/custom_elevated_button.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 
@@ -24,56 +25,77 @@ class _WelcomeMainScreenState extends State<WelcomeMainScreen> {
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     return Scaffold(
-        body: SizedBox(
-            height: 768.v,
-            width: double.maxFinite,
-            child: Stack(alignment: Alignment.center, children: [
-              CustomImageView(
-                  imagePath: ImageConstant.imgUnsplashoalh2mojuuk,
-                  height: 355.v,
-                  width: 374.h,
-                  alignment: Alignment.topCenter),
-              Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 28.h, vertical: 58.v),
-                      decoration: AppDecoration
-                          .gradientPrimaryContainerToPrimaryContainer,
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Spacer(),
-                            Text("Welcome to YING",
-                                style: theme.textTheme.headlineLarge),
-                            SizedBox(height: 12.v),
-                            Text("The Community Platform",
-                                style: CustomTextStyles.bodyLargeOnPrimary_1),
-                            SizedBox(height: 78.v),
-                            CustomElevatedButton(
-                                buttonStyle:
-                                    CustomButtonStyles.outlineOnPrimaryTL121,
-                                height: 60.v,
-                                text: "Log In",
-                                buttonTextStyle: CustomTextStyles.titleMedium18,
-                                onTap: () {
-                                  onTapLogin(context);
-                                }),
-                            SizedBox(height: 20.v),
-                            CustomElevatedButton(
-                                height: 60.v,
-                                text: "Sign Up",
-                                buttonStyle: CustomButtonStyles.none,
-                                decoration: CustomButtonStyles
-                                    .gradientCyanToGreenDecoration,
-                                buttonTextStyle:
-                                    CustomTextStyles.titleMediumOnPrimary18_2,
-                                onTap: () {
-                                  onTapSignup(context);
-                                })
-                          ])))
-            ])));
+      backgroundColor: Colors.black,
+      body: SizedBox(
+        height: 768.v,
+        width: double.maxFinite,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 28.h, vertical: 58.v),
+                decoration:
+                    AppDecoration.gradientPrimaryContainerToPrimaryContainer,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Spacer(),
+                    const Text(
+                      "Welcome to YING",
+                      style: TextStyle(
+                          fontSize: 36,
+                          color: Colors.white,
+                          fontFamily: 'Poppins'),
+                    ),
+                    SizedBox(height: 12.v),
+                    const Text(
+                      "A Group Gig Sharing Platform",
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontFamily: 'Poppins'),
+                    ),
+                    SizedBox(height: 78.v),
+                    CustomElevatedButton(
+                        buttonStyle: CustomButtonStyles.outlineOnPrimaryTL121,
+                        height: 60.v,
+                        text: "Log In",
+                        buttonTextStyle: CustomTextStyles.titleMedium18,
+                        onTap: () {
+                          onTapLogin(context);
+                        }),
+                    SizedBox(height: 20.v),
+                    CustomElevatedButton(
+                      height: 60.v,
+                      text: "Sign Up",
+                      buttonStyle: CustomButtonStyles.outlineBlueGray,
+                      decoration:
+                          CustomButtonStyles.gradientCyanToGreenDecoration,
+                      buttonTextStyle:
+                          CustomTextStyles.titleMediumOnPrimary18_2,
+                      onTap: () {
+                        onTapSignup(context);
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+            CustomImageViewRoundedOp(
+              imagePath: ImageConstant.imgWelcomeScreen,
+              height: 355.v, // Assuming 'v' is a valid extension for height
+              width: 374.h, // Assuming 'h' is a valid extension for width
+              alignment: Alignment.topCenter,
+              roundedBottomCorners:
+                  true, // Enable rounded corners on the bottom edges
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   /// Navigates to the loginOneScreen when the action is triggered.

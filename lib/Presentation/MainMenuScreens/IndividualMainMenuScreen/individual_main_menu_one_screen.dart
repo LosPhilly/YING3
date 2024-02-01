@@ -8,6 +8,7 @@ import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentM
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_page.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
+import 'package:ying_3_3/widgets/nav.dart';
 
 class IndividualMainMenuOneScreen extends StatefulWidget {
   const IndividualMainMenuOneScreen({Key? key}) : super(key: key);
@@ -401,23 +402,32 @@ class _IndividualMainMenuOneScreenState
                                         ),
                                       ]),
                                       SizedBox(height: 28.v),
-                                      Row(children: [
-                                        CustomImageView(
-                                          svgPath:
-                                              ImageConstant.imgOutlinesettings,
-                                          height: 24.adaptSize,
-                                          width: 24.adaptSize,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 20.h, top: 2.v),
-                                          child: Text(
-                                            "Settings",
-                                            style: CustomTextStyles
-                                                .titleSmallPrimaryContainer_3,
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const Nav(
+                                                          initialIndex: 4)));
+                                        },
+                                        child: Row(children: [
+                                          CustomImageView(
+                                            svgPath: ImageConstant
+                                                .imgOutlinesettings,
+                                            height: 24.adaptSize,
+                                            width: 24.adaptSize,
                                           ),
-                                        ),
-                                      ]),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 20.h, top: 2.v),
+                                            child: Text(
+                                              "Settings",
+                                              style: CustomTextStyles
+                                                  .titleSmallPrimaryContainer_3,
+                                            ),
+                                          ),
+                                        ]),
+                                      ),
                                       SizedBox(height: 28.v),
                                     ],
                                   ),

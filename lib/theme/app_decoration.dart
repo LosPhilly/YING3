@@ -159,11 +159,11 @@ class AppDecoration {
   static BoxDecoration get gradientPrimaryContainerToPrimaryContainer =>
       BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment(0.5, 0),
-          end: Alignment(0.5, 1),
+          begin: Alignment(0.5, 1),
+          end: Alignment(0.5, 0),
           colors: [
             theme.colorScheme.primaryContainer.withOpacity(0),
-            theme.colorScheme.primaryContainer.withOpacity(1),
+            theme.colorScheme.primary.withOpacity(0.5),
           ],
         ),
       );

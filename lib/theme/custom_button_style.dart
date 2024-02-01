@@ -197,6 +197,9 @@ class CustomButtonStyles {
             top: Radius.circular(
               12.h,
             ),
+            bottom: Radius.circular(
+              12.h,
+            ),
           ),
         ),
       );
