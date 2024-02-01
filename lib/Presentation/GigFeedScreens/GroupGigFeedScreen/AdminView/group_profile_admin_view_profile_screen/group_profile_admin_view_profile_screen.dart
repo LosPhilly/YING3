@@ -21,9 +21,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 
 // ignore_for_file: must_be_immutable
-class GroupProfileAdminViewProfileScreen extends StatelessWidget {
+class GroupProfileAdminViewProfileScreen extends StatefulWidget {
   GroupProfileAdminViewProfileScreen({Key? key}) : super(key: key);
 
+  @override
+  State<GroupProfileAdminViewProfileScreen> createState() =>
+      _GroupProfileAdminViewProfileScreenState();
+}
+
+class _GroupProfileAdminViewProfileScreenState
+    extends State<GroupProfileAdminViewProfileScreen> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   @override
@@ -33,36 +40,45 @@ class GroupProfileAdminViewProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.colorScheme.primary,
       appBar: CustomAppBar(
-          leadingWidth: 192.h,
-          leading: AppbarImage1(
-              svgPath: ImageConstant.imgGroup36850,
-              margin: EdgeInsets.only(top: 2.v, right: 152.h, bottom: 4.v)),
-          title: Container(
-              margin: EdgeInsets.only(left: 10.h),
-              decoration: AppDecoration.column31,
-              child: Column(children: [
-                AppbarSubtitle(
-                    text: "Ying Co-Working",
-                    margin: EdgeInsets.only(left: 41.h)),
-                AppbarImage2(
-                    imagePath: ImageConstant.imgYinglogoblack,
-                    margin: EdgeInsets.only(right: 163.h)),
-                AppbarSubtitle6(
-                    text: "Short Description",
-                    margin: EdgeInsets.only(left: 41.h, right: 20.h)),
-                AppbarSubtitle11(
-                    text: "YING",
-                    margin:
-                        EdgeInsets.only(left: 1.h, right: 165.h, bottom: 10.v))
-              ])),
-          actions: [
-            AppbarIconbutton4(
-                svgPath: ImageConstant.imgOutlinesettings,
-                margin: EdgeInsets.fromLTRB(28.h, 6.v, 28.h, 9.v),
-                onTap: () {
-                  onTapOutlinesettings(context);
-                })
-          ]),
+        leadingWidth: 192.h,
+        leading: AppbarImage1(
+          svgPath: ImageConstant.imgGroup36850,
+          margin: EdgeInsets.only(top: 2.v, right: 152.h, bottom: 4.v),
+        ),
+        title: Container(
+          margin: EdgeInsets.only(left: 10.h),
+          decoration: AppDecoration.column31,
+          child: Column(
+            children: [
+              AppbarSubtitle(
+                text: "Ying Co-Working",
+                margin: EdgeInsets.only(left: 41.h),
+              ),
+              AppbarImage2(
+                imagePath: ImageConstant.imgYinglogoblack,
+                margin: EdgeInsets.only(right: 163.h),
+              ),
+              AppbarSubtitle6(
+                text: "Short Description",
+                margin: EdgeInsets.only(left: 41.h, right: 20.h),
+              ),
+              AppbarSubtitle11(
+                text: "YING",
+                margin: EdgeInsets.only(left: 1.h, right: 165.h, bottom: 10.v),
+              )
+            ],
+          ),
+        ),
+        actions: [
+          AppbarIconbutton4(
+            svgPath: ImageConstant.imgOutlinesettings,
+            margin: EdgeInsets.fromLTRB(28.h, 6.v, 28.h, 9.v),
+            onTap: () {
+              onTapOutlinesettings(context);
+            },
+          )
+        ],
+      ),
       body: SizedBox(
           width: double.maxFinite,
           child: Column(children: [
