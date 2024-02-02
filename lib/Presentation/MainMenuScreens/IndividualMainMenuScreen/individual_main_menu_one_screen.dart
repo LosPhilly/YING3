@@ -7,6 +7,7 @@ import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentM
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/my_cards_bank_account_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_page.dart';
 import 'package:ying_3_3/core/app_export.dart';
+import 'package:ying_3_3/user_group_state.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 import 'package:ying_3_3/widgets/nav.dart';
 
@@ -79,8 +80,11 @@ class _IndividualMainMenuOneScreenState
         PieAction(
           tooltip: Text(groupDisplayName!),
           onSelect: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => GroupProfileAdminViewProfileScreen()));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const UserGroupState(),
+              ),
+            );
           },
           child: CircleAvatar(
             radius: 35.h,

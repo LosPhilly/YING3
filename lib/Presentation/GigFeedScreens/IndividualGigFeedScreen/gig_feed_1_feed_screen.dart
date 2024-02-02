@@ -444,8 +444,6 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   }
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-  final GlobalKey<SliderDrawerState> _sliderDrawerKey =
-      GlobalKey<SliderDrawerState>();
   late String title;
   User? user = FirebaseAuth.instance.currentUser;
 
@@ -758,6 +756,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
   }
 }
 
+/* 
 class _SliderView extends StatefulWidget {
   final Function(String)? onItemClick;
 
@@ -913,3 +912,4 @@ class Menu {
 
   Menu(this.iconData, this.title);
 }
+ */

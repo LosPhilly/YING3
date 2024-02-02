@@ -36,6 +36,7 @@ class AppbarIconbutton3 extends StatelessWidget {
           width: 40.adaptSize,
           padding: EdgeInsets.all(10.h),
           child: CustomImageView(
+            color: Colors.white,
             svgPath: svgPath,
             imagePath: imagePath,
           ),

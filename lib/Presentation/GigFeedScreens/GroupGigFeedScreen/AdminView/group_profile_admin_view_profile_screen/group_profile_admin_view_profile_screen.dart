@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:ying_3_3/Presentation/ChatScreens/main_chat_screen.dart';
+import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/widgets/storiescolumn_item_widget.dart';
 import 'package:ying_3_3/core/constants/global_methods.dart';
 import 'package:ying_3_3/core/constants/persistant.dart';
 import 'package:ying_3_3/core/utils/image_constant.dart';
@@ -11,6 +13,7 @@ import 'package:ying_3_3/theme/app_decoration.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
 import 'package:ying_3_3/theme/custom_text_style.dart';
 import 'package:ying_3_3/theme/theme_helper.dart';
+import 'package:ying_3_3/widgets/app_bar/appbar_iconbutton_3.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_iconbutton_4.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_image_1.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_image_2.dart';
@@ -22,7 +25,7 @@ import 'package:ying_3_3/widgets/custom_elevated_button.dart';
 import 'package:ying_3_3/widgets/custom_icon_button.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 import 'package:ying_3_3/widgets/custom_search_view.dart';
-import 'package:ying_3_3/widgets/nav.dart';
+import 'package:ying_3_3/widgets/group_Nav.dart';
 
 import '../group_profile_admin_view_profile_screen/widgets/eventpost1_item_widget.dart';
 import '../group_profile_admin_view_profile_screen/widgets/imagelist1_item_widget.dart';
@@ -38,21 +41,28 @@ class GroupProfileAdminViewProfileScreen extends StatefulWidget {
       _GroupProfileAdminViewProfileScreenState();
 }
 
-class UserData {
-  final String? imageUrl;
-  final String? name;
+class GroupData {
+  final String? groupImageUrl;
+  final String? groupName;
+  final String? groupCode;
 
-  UserData({this.imageUrl, this.name});
+  GroupData({this.groupImageUrl, this.groupName, this.groupCode});
 }
 
 class _GroupProfileAdminViewProfileScreenState
     extends State<GroupProfileAdminViewProfileScreen>
     with WidgetsBindingObserver {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  String? groupImageDisplayUrl = '';
+  String? groupDisplayName = '';
+  String? groupInviteCode = '';
+
   bool newMessage = false;
   String? jobCategoryFilter;
   // Create a variable to store the length of the snapshot
   int numberOfGigs = 0;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   bool selectedPostContainer = true;
   bool selectedRequestContainer = false;
   final notificationService = NotificationsService();
@@ -74,11 +84,45 @@ class _GroupProfileAdminViewProfileScreenState
     super.initState();
     updateLastActive();
     _searchFocusNode = FocusNode();
-
+    fetchData();
     Persistent persistentObject = Persistent();
     persistentObject.getUserData();
     WidgetsBinding.instance.addObserver(this);
     notificationService.firebaseNotification(context);
+  }
+
+  Future<void> fetchData() async {
+    await getGroupData();
+  }
+
+  Future<void> getGroupData() async {
+    try {
+      final User? user = _auth.currentUser;
+      String uid = user!.uid;
+
+      var groupDocRef =
+          FirebaseFirestore.instance.collection('groups').doc(uid);
+      var groupDocSnapshot = await groupDocRef.get();
+
+      if (groupDocSnapshot.exists) {
+        var groupData = groupDocSnapshot.data() as Map<String, dynamic>;
+        var groupImageUrl = groupData['groupImage'] as String?;
+        var groupUserName = groupData['groupName'] as String?;
+        var groupInvite = groupData['groupCode'] as String?;
+
+        if (groupImageUrl != null && groupUserName != null) {
+          setState(() {
+            groupDisplayName = groupUserName;
+            groupImageDisplayUrl = groupImageUrl;
+            groupInviteCode = groupInvite;
+          });
+        }
+      }
+    } catch (error) {
+      // ignore: avoid_print
+      print('Error getting Group User Menu document: $error');
+      FirebaseAuth.instance.signOut();
+    }
   }
 
   @override
@@ -209,9 +253,11 @@ class _GroupProfileAdminViewProfileScreenState
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const Nav(initialIndex: 1)));
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const GroupNav(initialIndex: 1),
+                              ),
+                            );
                           },
                           child: CustomIconButton(
                             height: 44.adaptSize,
@@ -239,9 +285,11 @@ class _GroupProfileAdminViewProfileScreenState
                         CustomIconButton(
                           onTap: () {
                             Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const Nav(initialIndex: 4)));
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const GroupNav(initialIndex: 4),
+                              ),
+                            );
                           },
                           height: 44.adaptSize,
                           width: 44.adaptSize,
@@ -447,166 +495,290 @@ class _GroupProfileAdminViewProfileScreenState
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
-
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: theme.colorScheme.primary,
-      appBar: CustomAppBar(
-        leadingWidth: 192.h,
-        leading: AppbarImage1(
-          svgPath: ImageConstant.imgGroup36850,
-          margin: EdgeInsets.only(top: 2.v, right: 152.h, bottom: 4.v),
-        ),
-        title: Container(
-          margin: EdgeInsets.only(left: 10.h),
-          decoration: AppDecoration.column31,
-          child: Column(
-            children: [
-              AppbarSubtitle(
-                text: "Ying Co-Working",
-                margin: EdgeInsets.only(left: 41.h),
-              ),
-              AppbarImage2(
-                imagePath: ImageConstant.imgYinglogoblack,
-                margin: EdgeInsets.only(right: 163.h),
-              ),
-              AppbarSubtitle6(
-                text: "Short Description",
-                margin: EdgeInsets.only(left: 41.h, right: 20.h),
-              ),
-              AppbarSubtitle11(
-                text: "YING",
-                margin: EdgeInsets.only(left: 1.h, right: 165.h, bottom: 10.v),
-              )
-            ],
+      appBar: AppBar(
+        toolbarHeight: 90.h, // Adjust the height to your preference
+        backgroundColor: theme.colorScheme.primary,
+        elevation: 0,
+        leading: Align(
+          alignment:
+              Alignment.bottomLeft, // Align the leading icon to the bottom
+          child: IconButton(
+            onPressed: () => Navigator.pushNamed(
+                context, AppRoutes.individualMainMenuScreen),
+            icon: const Icon(Icons.menu, color: Colors.white),
           ),
         ),
+        title: const Center(
+          child: Align(alignment: Alignment.bottomCenter, child: Text('')),
+        ),
         actions: [
-          AppbarIconbutton4(
-            svgPath: ImageConstant.imgOutlinesettings,
-            margin: EdgeInsets.fromLTRB(28.h, 6.v, 28.h, 9.v),
-            onTap: () {
-              onTapOutlinesettings(context);
-            },
-          )
+          Align(
+            alignment: Alignment.bottomRight,
+            child: IconButton(
+              onPressed: () {
+                _showTaskCategoriesDialog(size: size);
+              },
+              icon: const Icon(Icons.emoji_flags, color: Colors.white),
+            ),
+          ),
+          Align(
+            alignment:
+                Alignment.bottomRight, // Align the action icons to the bottom
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    onTapSearchone(context);
+                  },
+                  icon: const Icon(Icons.search, color: Colors.white),
+                ),
+                const SizedBox(width: 1), // Add spacing between icons
+                Stack(
+                  children: [
+                    Stack(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            onClickNewMessage();
+                          },
+                          icon: const Icon(Icons.chat_rounded,
+                              color: Colors.white),
+                        ),
+                        /* AppbarImage(
+                          onTap: onClickNewMessage,
+                          svgPath: ImageConstant.imgOutlinechattext,
+                          margin: EdgeInsets.all(8.0),
+                        ), */
+                        if (newMessage)
+                          Positioned(
+                            top: 6.5.v,
+                            left: 29.h,
+                            child: Container(
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
         ],
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.0), // Adjust the radius as needed
+            bottomRight: Radius.circular(20.0),
+          ),
+        ),
       ),
       body: SizedBox(
-          width: double.maxFinite,
-          child: Column(children: [
+        width: double.maxFinite,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                groupImageDisplayUrl!.isEmpty
+                    ? const CircularProgressIndicator()
+                    : CircleAvatar(
+                        radius: 35,
+                        backgroundImage: NetworkImage(groupImageDisplayUrl!),
+                      ),
+                Text(
+                  groupDisplayName!,
+                  maxLines: 1,
+                  style: const TextStyle(
+                      fontSize: 22.0, // Adjust the font size as needed
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'PoppinsRegular',
+                      color: Colors.white),
+                ),
+                AppbarIconbutton3(
+                    svgPath: ImageConstant.imgOutlinesettingsOnprimary,
+                    margin: EdgeInsets.only(
+                      top: 5.v,
+                      right: 20.h,
+                    ),
+                    onTap: () {
+                      onTapOutlinesettings(context);
+                    }),
+              ],
+            ),
             SizedBox(height: 23.v),
             Expanded(
-                child: SizedBox(
-                    width: double.maxFinite,
-                    child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 23.v),
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: fs.Svg(ImageConstant.imgGroup47),
-                                fit: BoxFit.cover)),
-                        child: Column(children: [
-                          Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 28.h),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                        padding: EdgeInsets.only(top: 4.v),
-                                        child: Text("Members",
-                                            style: CustomTextStyles
-                                                .titleMediumOnPrimaryBold)),
-                                    CustomElevatedButton(
-                                        height: 32.v,
-                                        width: 115.h,
-                                        text: "Invite Link",
-                                        leftIcon: Container(
-                                            margin: EdgeInsets.only(right: 6.h),
-                                            child: CustomImageView(
-                                                svgPath: ImageConstant
-                                                    .imgLinkOnprimary)),
-                                        buttonStyle: CustomButtonStyles.none,
-                                        decoration: CustomButtonStyles
-                                            .gradientCyanToGreenDecoration,
-                                        buttonTextStyle: CustomTextStyles
-                                            .labelLargeOnPrimarySemiBold)
-                                  ])),
-                          Expanded(
-                              child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: SizedBox(
-                                      height: 156.v,
-                                      child: ListView.separated(
-                                          padding: EdgeInsets.only(
-                                              left: 28.h, top: 16.v),
-                                          scrollDirection: Axis.horizontal,
-                                          separatorBuilder: (context, index) {
-                                            return SizedBox(width: 15.h);
-                                          },
-                                          itemCount: 4,
-                                          itemBuilder: (context, index) {
-                                            return Imagelist1ItemWidget(
-                                                onTapImgUserImage: () {
-                                              onTapImgUserImage(context);
-                                            });
-                                          })))),
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 28.h, top: 48.v),
-                                  child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadiusStyle
-                                                    .customBorderTL40),
-                                            child: Column(children: [
-                                              Text("Tasks",
-                                                  style: CustomTextStyles
-                                                      .titleMediumPrimary),
-                                              SizedBox(height: 10.v),
-                                              Container(
-                                                  height: 5.v,
-                                                  width: 12.h,
-                                                  decoration: BoxDecoration(
-                                                      color: theme
-                                                          .colorScheme.primary,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              2.h)))
-                                            ])),
-                                        Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 24.h,
-                                                top: 2.v,
-                                                bottom: 13.v),
-                                            child: Text("Group Tasks",
-                                                style: CustomTextStyles
-                                                    .titleMediumOnPrimary_2))
-                                      ]))),
-                          Padding(
-                              padding:
-                                  EdgeInsets.fromLTRB(28.h, 16.v, 28.h, 99.v),
+              child: SizedBox(
+                width: double.maxFinite,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 23.v),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: fs.Svg(ImageConstant.imgGroup47),
+                          fit: BoxFit.cover),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 28.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(top: 4.v),
+                                  child: Text("Members",
+                                      style: CustomTextStyles
+                                          .titleMediumOnPrimaryBold)),
+                              CustomElevatedButton(
+                                  onTap: () {
+                                    Share.share(
+                                        '${groupDisplayName!} Skill Sharing Group \n Invite Code: ${groupInviteCode} \n https://liveying.com/${groupInviteCode}');
+                                  },
+                                  height: 32.v,
+                                  width: 115.h,
+                                  text: "Invite Link",
+                                  leftIcon: Container(
+                                      margin: EdgeInsets.only(right: 6.h),
+                                      child: CustomImageView(
+                                          svgPath:
+                                              ImageConstant.imgLinkOnprimary)),
+                                  buttonStyle: CustomButtonStyles.none,
+                                  decoration: CustomButtonStyles
+                                      .gradientCyanToGreenDecoration,
+                                  buttonTextStyle: CustomTextStyles
+                                      .labelLargeOnPrimarySemiBold)
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: SizedBox(
+                              height: 156.v,
+                              child: ListView.separated(
+                                padding: EdgeInsets.only(left: 28.h, top: 16.v),
+                                scrollDirection: Axis.horizontal,
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(width: 15.h);
+                                },
+                                itemCount: 4,
+                                itemBuilder: (context, index) {
+                                  return const StoriescolumnItemWidget();
+
+                                  /* Imagelist1ItemWidget(
+                                    onTapImgUserImage: () {
+                                      onTapImgUserImage(context);
+                                    },
+                                  ); */
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 28.h, top: 1.v),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadiusStyle.customBorderTL40),
+                                  child: Column(
+                                    children: [
+                                      Text("Tasks",
+                                          style: CustomTextStyles
+                                              .titleMediumPrimary),
+                                      SizedBox(height: 10.v),
+                                      Container(
+                                        height: 5.v,
+                                        width: 12.h,
+                                        decoration: BoxDecoration(
+                                          color: theme.colorScheme.primary,
+                                          borderRadius:
+                                              BorderRadius.circular(2.h),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 24.h, top: 2.v, bottom: 13.v),
+                                  child: Text("Group Tasks",
+                                      style: CustomTextStyles
+                                          .titleMediumOnPrimary_2),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(1.h, 1.v, 1.h, 1.v),
                               child: GridView.builder(
-                                  shrinkWrap: true,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          mainAxisExtent: 241.v,
-                                          crossAxisCount: 2,
-                                          mainAxisSpacing: 15.h,
-                                          crossAxisSpacing: 15.h),
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: 4,
-                                  itemBuilder: (context, index) {
-                                    return Eventpost1ItemWidget(
-                                        onTapImgProjectName: () {
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        mainAxisExtent: 241.v,
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 15.h,
+                                        crossAxisSpacing: 15.h),
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: 4,
+                                itemBuilder: (context, index) {
+                                  return Eventpost1ItemWidget(
+                                    onTapImgProjectName: () {
                                       onTapImgProjectName(context);
-                                    });
-                                  }))
-                        ]))))
-          ])),
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      /* bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          // Replace 'Text' with 'BottomNavigationBarItem'.
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Icon(Icons.search),
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ), */
     );
   }
 
