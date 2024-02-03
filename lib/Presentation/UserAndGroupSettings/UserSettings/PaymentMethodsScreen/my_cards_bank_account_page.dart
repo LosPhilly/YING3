@@ -1,10 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/AddDebitCardScreen/add_debit_card_page.dart';
+import 'package:ying_3_3/core/constants/app_colors.dart';
 import 'package:ying_3_3/core/constants/global_methods.dart';
 import 'package:ying_3_3/core/utils/size_utils.dart';
 import 'package:ying_3_3/core/app_export.dart';
+import 'package:ying_3_3/providers/auth_controller.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
 import 'package:ying_3_3/widgets/custom_elevated_button.dart';
 import 'package:ying_3_3/widgets/custom_icon_button.dart';
@@ -24,6 +31,19 @@ class MyCardsBankAccountPageState extends State<MyCardsBankAccountPage>
   bool showBankInfo = false;
   bool canAddBankInfo = true;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final authController = Get.find<AuthController>(); // Lazy initialization
+
+  String cardNumber = '5555 55555 5555 4444';
+  String expiryDate = '12/25';
+  String cardHolderName = 'YING Community';
+  String cvvCode = '123';
+  bool isCvvFocused = false;
+  bool useGlassMorphism = false;
+  bool useBackgroundImage = false;
+  OutlineInputBorder? border;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  //AuthController authController = Get.find<AuthController>();
 
 //DELETE USER POST START//
   void _deleteDialog() {
@@ -92,99 +112,120 @@ class MyCardsBankAccountPageState extends State<MyCardsBankAccountPage>
 
   //DELETE USER POST END//
 
+  void onCreditCardModelChange(CreditCardModel? creditCardModel) {
+    setState(() {
+      cardNumber = creditCardModel!.cardNumber;
+      expiryDate = creditCardModel.expiryDate;
+      cardHolderName = creditCardModel.cardHolderName;
+      cvvCode = creditCardModel.cvvCode;
+      isCvvFocused = creditCardModel.isCvvFocused;
+    });
+  }
+
+  @override
+  void initState() {
+    authController.getUserCards();
+    border = OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.grey.withOpacity(0.7),
+        width: 2.0,
+      ),
+    );
+    super.initState();
+  }
+
   @override
   bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SizedBox(
-        width: mediaQueryData.size.width,
-        child: SingleChildScrollView(
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: mediaQueryData.size.width,
           child: Column(
             children: [
-              SizedBox(height: 28.v),
+              SizedBox(height: 15.v),
               Column(
                 children: [
                   showBankInfo == false
-                      ? GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 16.h),
-                            padding: EdgeInsets.all(20.h),
-                            decoration: AppDecoration.outlineOnPrimary.copyWith(
-                                borderRadius:
-                                    BorderRadiusStyle.roundedBorder16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomIconButton(
-                                  height: 40.adaptSize,
-                                  width: 40.adaptSize,
-                                  margin: EdgeInsets.only(bottom: 26.v),
-                                  padding: EdgeInsets.all(10.h),
-                                  decoration:
-                                      IconButtonStyleHelper.fillPurpleTL20,
-                                  child: CustomImageView(
-                                      svgPath: ImageConstant.imgOutlinebank),
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 16.h, bottom: 2.v),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Name of the Bank",
-                                          style: theme.textTheme.titleSmall),
-                                      SizedBox(height: 5.v),
-                                      SizedBox(
-                                          width: 161.h,
-                                          child: RichText(
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                      text: "Routing No.",
-                                                      style: theme
-                                                          .textTheme.bodySmall),
-                                                  TextSpan(text: " "),
-                                                  TextSpan(
-                                                      text: "123456789\n",
-                                                      style: CustomTextStyles
-                                                          .labelLargeOnPrimarySemiBold_2),
-                                                  TextSpan(
-                                                      text: "Account No.",
-                                                      style: theme
-                                                          .textTheme.bodySmall),
-                                                  TextSpan(text: " "),
-                                                  TextSpan(
-                                                      text: "000123456789",
-                                                      style: CustomTextStyles
-                                                          .labelLargeOnPrimarySemiBold_2)
-                                                ],
-                                              ),
-                                              textAlign: TextAlign.left))
-                                    ],
-                                  ),
-                                ),
-                                Spacer(),
-                                GestureDetector(
-                                  onTap: () {
-                                    _deleteDialog();
-                                  },
-                                  child: CustomImageView(
-                                    svgPath: ImageConstant.imgCar,
-                                    height: 20.adaptSize,
-                                    width: 20.adaptSize,
-                                    margin: EdgeInsets.only(bottom: 46.v),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ))
-                      : SizedBox(height: 42.v),
+                      ? Container(
+                          width: size.width * .8,
+                          height: size.height * .59,
+                          child: Stack(
+                            children: <Widget>[
+                              Positioned(
+                                top: 20,
+                                left: 0,
+                                right: 0,
+                                bottom: 10,
+                                child: Obx(() => ListView.builder(
+                                      shrinkWrap: true,
+                                      itemBuilder: (ctx, i) {
+                                        String cardNumber = '';
+                                        String expiryDate = '';
+                                        String cardHolderName = '';
+                                        String cvvCode = '';
+
+                                        try {
+                                          cardNumber = authController
+                                              .userCards.value[i]
+                                              .get('number');
+                                        } catch (e) {
+                                          cardNumber = '';
+                                        }
+
+                                        try {
+                                          expiryDate = authController
+                                              .userCards.value[i]
+                                              .get('expiry');
+                                        } catch (e) {
+                                          expiryDate = '';
+                                        }
+
+                                        try {
+                                          cardHolderName = authController
+                                              .userCards.value[i]
+                                              .get('name');
+                                        } catch (e) {
+                                          cardHolderName = '';
+                                        }
+
+                                        try {
+                                          cvvCode = authController
+                                              .userCards.value[i]
+                                              .get('cvv');
+                                        } catch (e) {
+                                          cvvCode = '';
+                                        }
+
+                                        return CreditCardWidget(
+                                          cardBgColor: const Color(0x6236FF),
+                                          cardNumber: cardNumber,
+                                          expiryDate: expiryDate,
+                                          cardHolderName: cardHolderName,
+                                          cvvCode: cvvCode,
+                                          bankName: '',
+                                          showBackView: isCvvFocused,
+                                          obscureCardNumber: true,
+                                          obscureCardCvv: true,
+                                          isHolderNameVisible: true,
+                                          isSwipeGestureEnabled: true,
+                                          onCreditCardWidgetChange:
+                                              (CreditCardBrand
+                                                  creditCardBrand) {},
+                                        );
+                                      },
+                                      itemCount:
+                                          authController.userCards.length,
+                                    )),
+                              ),
+                            ],
+                          ),
+                        )
+                      : SizedBox(height: 22.v),
                   SizedBox(
                     height: 122.v,
                     width: double.maxFinite,
@@ -206,10 +247,10 @@ class MyCardsBankAccountPageState extends State<MyCardsBankAccountPage>
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 25),
+                          padding: EdgeInsets.only(top: 1.v),
                           child: CustomElevatedButton(
                               width: 319.h,
-                              text: "Add Bank Account",
+                              text: "Add Debit Card",
                               buttonStyle:
                                   CustomButtonStyles.outlineOnPrimaryTL121,
                               leftIcon: Container(
@@ -225,7 +266,7 @@ class MyCardsBankAccountPageState extends State<MyCardsBankAccountPage>
                       ],
                     ),
                   ),
-                  SizedBox(height: 42.v),
+                  /* SizedBox(height: 10.v),
                   Opacity(
                     opacity: 0.25,
                     child: CustomImageView(
@@ -233,7 +274,7 @@ class MyCardsBankAccountPageState extends State<MyCardsBankAccountPage>
                         height: 226.v,
                         width: 269.h),
                   ),
-                  SizedBox(height: 41.v),
+                  SizedBox(height: 41.v), */
                 ],
               )
             ],
@@ -249,6 +290,10 @@ class MyCardsBankAccountPageState extends State<MyCardsBankAccountPage>
   /// When the action is triggered, this function uses the [Navigator] widget
   /// to push the named route for the myCardsBankAccountAddBankAccountFiveScreen.
   onTapAddbank(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.userState);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const AddDebitCardScreen(),
+      ),
+    );
   }
 }

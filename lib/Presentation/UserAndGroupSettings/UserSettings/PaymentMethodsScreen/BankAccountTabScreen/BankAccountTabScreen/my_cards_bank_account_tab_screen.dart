@@ -26,7 +26,7 @@ class MyCardsBankAccountTabScreenState
   @override
   void initState() {
     super.initState();
-    tabviewController = TabController(length: 2, vsync: this);
+    tabviewController = TabController(length: 1, vsync: this);
   }
 
   @override
@@ -40,53 +40,63 @@ class MyCardsBankAccountTabScreenState
           alignment: Alignment.bottomCenter,
           children: [
             Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 12.v),
-                    decoration: AppDecoration.fillPrimary,
-                    child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      CustomAppBar(
-                          height: 26.v,
-                          leadingWidth: 52.h,
-                          leading: AppbarImage1(
-                              svgPath:
-                                  ImageConstant.imgArrowleftPrimarycontainer,
-                              margin: EdgeInsets.only(left: 28.h, bottom: 2.v),
-                              onTap: () {
-                                onTapArrowleftone(context);
-                              }),
-                          centerTitle: true,
-                          title: AppbarSubtitle3(text: "My Cards")),
-                      Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 5.h, vertical: 10.v),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.h, vertical: 5.v),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadiusStyle.roundedBorder12),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(height: 2.v),
-                                SizedBox(
-                                    width: 333.h,
-                                    child: Text(
-                                        "We use Stripe to make sure you get paid, and\nto keep your personal and bank details secure.",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                        style: CustomTextStyles
-                                            .titleSmallPrimaryContainer_1
-                                            .copyWith(height: 1.70)))
-                              ]))
-                    ]))),
+              alignment: Alignment.topCenter,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 12.v),
+                decoration: AppDecoration.fillPrimary,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomAppBar(
+                      height: 26.v,
+                      leadingWidth: 52.h,
+                      leading: AppbarImage1(
+                          svgPath: ImageConstant.imgArrowleftPrimarycontainer,
+                          margin: EdgeInsets.only(left: 28.h, bottom: 2.v),
+                          onTap: () {
+                            onTapArrowleftone(context);
+                          }),
+                      centerTitle: true,
+                      title: AppbarSubtitle3(text: "My Cards"),
+                    ),
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 5.h, vertical: 10.v),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.h, vertical: 5.v),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadiusStyle.roundedBorder12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 2.v),
+                          SizedBox(
+                            width: 333.h,
+                            child: Text(
+                              "We use Stripe to make sure you get paid, and\nto keep your personal and bank details secure.",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles
+                                  .titleSmallPrimaryContainer_1
+                                  .copyWith(height: 1.70),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
                 decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: fs.Svg(ImageConstant.imgGroup47),
-                        fit: BoxFit.cover)),
+                  image: DecorationImage(
+                      image: fs.Svg(ImageConstant.imgGroup47),
+                      fit: BoxFit.cover),
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -101,8 +111,8 @@ class MyCardsBankAccountTabScreenState
                             unselectedLabelColor:
                                 appTheme.cyan700.withOpacity(0.5),
                             tabs: const [
-                              Tab(child: Text("Bank Account")),
                               Tab(child: Text("Debit Card"))
+                              /* Tab(child: Text("Bank Account")), */
                             ])),
                     SizedBox(
                       height: 565.v,
@@ -110,7 +120,7 @@ class MyCardsBankAccountTabScreenState
                         controller: tabviewController,
                         children: const [
                           MyCardsBankAccountPage(),
-                          MyCardsDebitCardPage(), // MyCardsDebitCardPage()
+                          // MyCardsDebitCardPage()
                         ],
                       ),
                     )

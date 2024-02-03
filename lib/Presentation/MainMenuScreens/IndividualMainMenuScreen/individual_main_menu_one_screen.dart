@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:pie_menu/pie_menu.dart';
 import 'package:ying_3_3/Presentation/GigFeedScreens/GroupGigFeedScreen/AdminView/group_profile_admin_view_profile_screen/group_profile_admin_view_profile_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/BankAccountTabScreen/my_cards_bank_account_tab_screen.dart';
-import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/my_cards_bank_account_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/my_cards_bank_account_page.dart';
 import 'package:ying_3_3/core/app_export.dart';
 import 'package:ying_3_3/user_group_state.dart';
