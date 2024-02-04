@@ -469,7 +469,7 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Text(
-              '',
+              '\n Gig Feed',
               maxLines: 2,
               style: TextStyle(
                 fontSize: 30.0, // Adjust the font size as needed
@@ -579,12 +579,12 @@ class _GigFeed1FeedScreenState extends State<GigFeed1FeedScreen>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            const Text("Gig Feed",
+                            /* const Text("Gig Feed",
                                 style: TextStyle(
                                   fontFamily: REGULAR_FONT,
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
-                                )),
+                                )), */
                             Text(
                               numberOfGigs < 2
                                   ? "$numberOfGigs new gig has been added"

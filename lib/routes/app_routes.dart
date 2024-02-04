@@ -6,7 +6,6 @@ import 'package:ying_3_3/Presentation/MainMenuScreens/IndividualMainMenuScreen/i
 import 'package:ying_3_3/Presentation/ForgotPasswordPage/forgot_password_screen.dart';
 
 import 'package:ying_3_3/Presentation/PostTaskScreens/IndividualPostTaskScreen/individual_post_a_taks_1_screen.dart';
-import 'package:ying_3_3/Presentation/PostTaskScreens/IndividualPostTaskScreen/individual_post_a_taks_1_screen_2.dart';
 import 'package:ying_3_3/Presentation/PostTaskScreens/IndividualPostTaskScreen/post_a_task_one_screen.dart';
 import 'package:ying_3_3/Presentation/PostTaskScreens/IndividualPostTaskScreen/post_a_task_two_screen.dart';
 
@@ -20,7 +19,6 @@ import 'package:ying_3_3/Presentation/SignUpPage/VerifyScreen/successfully_verif
 import 'package:ying_3_3/Presentation/SignUpPage/register_individual_one_screen.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/setup_g_account_one_screen.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/VerifyScreen/setup_g_account_verify_email_screen.dart';
-import 'package:ying_3_3/Presentation/SignUpPage/VerifyScreen/register_individual_verify_email_screen1.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/SetUpGroupScreens/GroupSetUpSkillsOffering/setup_g_account_offering_screen.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/SetUpGroupScreens/GroupSetUpSkillsAvaiable/setup_g_account_skills_screen.dart';
 import 'package:ying_3_3/Presentation/SignUpPage/SetUpGroupScreens/GroupSetUpProfilePicture/setup_g_account_g_upload_profile_pic_screen.dart';
@@ -213,8 +211,7 @@ accountSettingsScreen:(context) => const AccountSettingsScreen(),
 
 // Individual Post Task Screen Start//
     individualPostTask1Screen: (context) => const IndividualPostATask1Screen(),
-    individualPostTask1Screen2: (context) =>
-        const IndividualPostATask1Screen_2(),
+
     postATaskOneScreen: (context) => const PostATaskOneScreen(),
     postATaskTwoScreen: (context) => const PostATaskTwoScreen(),
     // Individual Post Task Screen End //

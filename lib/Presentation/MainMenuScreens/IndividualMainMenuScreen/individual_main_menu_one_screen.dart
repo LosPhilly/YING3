@@ -205,7 +205,8 @@ class _IndividualMainMenuOneScreenState
                                   alignment: Alignment.centerLeft,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Navigator.pop(context);
+                                      Navigator.pushNamed(
+                                          context, AppRoutes.userState);
                                     },
                                     child: Image.asset(
                                         'assets/images/img_menu_gig_button.png'),
@@ -264,7 +265,7 @@ class _IndividualMainMenuOneScreenState
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Padding(
-                              padding: EdgeInsets.only(bottom: 108.v),
+                              padding: EdgeInsets.only(bottom: 358.v),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -284,13 +285,13 @@ class _IndividualMainMenuOneScreenState
                                           padding: EdgeInsets.only(
                                               left: 20.h, top: 3.v),
                                           child: Text(
-                                            "My Groups",
+                                            "My Groups \n (coming soon)",
                                             style: CustomTextStyles
                                                 .titleSmallPrimaryContainer_3,
                                           ),
                                         ),
                                       ]),
-                                      SizedBox(height: 29.v),
+                                      /* SizedBox(height: 29.v),
                                       Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -316,7 +317,7 @@ class _IndividualMainMenuOneScreenState
                                             ),
                                           ),
                                         ],
-                                      ),
+                                      ), */
                                       SizedBox(height: 27.v),
                                       GestureDetector(
                                         onTap: () {
@@ -343,7 +344,7 @@ class _IndividualMainMenuOneScreenState
                                           ),
                                         ]),
                                       ),
-                                      SizedBox(height: 29.v),
+                                      /* SizedBox(height: 29.v),
                                       Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -369,8 +370,8 @@ class _IndividualMainMenuOneScreenState
                                             ),
                                           ),
                                         ],
-                                      ),
-                                      SizedBox(height: 27.v),
+                                      ), */
+                                      /* SizedBox(height: 27.v),
                                       Row(children: [
                                         CustomImageView(
                                           svgPath: ImageConstant
@@ -403,7 +404,7 @@ class _IndividualMainMenuOneScreenState
                                                 .titleSmallPrimaryContainer_3,
                                           ),
                                         ),
-                                      ]),
+                                      ]), */
                                       SizedBox(height: 28.v),
                                       GestureDetector(
                                         onTap: () {

@@ -98,6 +98,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   bool isLiked = false;
+  List skills = [];
 
 //JOB DETAILS VARIABLES//
 
@@ -220,17 +221,18 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             DateFormat('MMMM dd, yyyy').format(startDateTime!);
         startDateString = formattedDateTime;
         startDateTimeString = formattedTime;
-        dynamic skillsData = taskDatabase.get('skillsNeeded');
-        buttonIndex.add(taskDatabase.get('skillsNeeded'));
+        //dynamic skillsData = taskDatabase.get('skillsNeeded');
+        //buttonIndex.add(taskDatabase.get('skillsNeeded'));
         print(formattedDateTime);
+        skills = (taskDatabase.get("skillsNeeded") as List);
 
         isLiked = likes.contains(userDisplayName);
 
-        if (skillsData is List<dynamic>) {
+        /* if (skillsData is List<dynamic>) {
           buttonList = skillsData
               .map<String>((dynamic skillSet) => skillSet.toString())
               .toList();
-        }
+        } */
 
         var postDate = postedDateTimeStamp!.toDate();
 
@@ -1082,79 +1084,61 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                   padding: const EdgeInsets.all(2),
                                   width: MediaQuery.of(context).size.width,
                                   height: 60,
-                                  child: buttonList.isEmpty
-                                      ? Text('No Skills Uploaded')
-                                      : GestureDetector(
-                                          onLongPress: () {
-                                            showModalBottomSheet(
-                                              showDragHandle: true,
-                                              elevation: 8,
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(20),
-                                                  topRight: Radius.circular(20),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                          height: skills.isEmpty ? 0 : 47.v),
+                                      skills.isEmpty
+                                          ? Text("No Skills Declared",
+                                              style: theme.textTheme.titleLarge
+                                                  ?.copyWith(
+                                                      fontFamily: 'Poppins'))
+                                          : const SizedBox(),
+                                      SizedBox(height: 16.v),
+                                      Wrap(
+                                        runSpacing: 5.0,
+                                        spacing: 8.0,
+                                        crossAxisAlignment:
+                                            WrapCrossAlignment.start,
+                                        clipBehavior: Clip.hardEdge,
+                                        children: [
+                                          for (var i in skills)
+                                            UnicornOutlineButton(
+                                              strokeWidth: 2,
+                                              radius: 12,
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  appTheme.purple50,
+                                                  appTheme.purple400
+                                                ],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                              ),
+                                              onPressed: () {},
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 6,
+                                                        horizontal: 16),
+                                                child: Text(
+                                                  i.toString(),
+                                                  style: theme
+                                                      .textTheme.bodyLarge!
+                                                      .copyWith(
+                                                    fontSize: 12,
+                                                    color: appTheme.black900,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
                                               ),
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: SizedBox(
-                                                    height: 852.v,
-                                                    child: ListView.builder(
-                                                      itemCount: Persistent
-                                                          .categoryDefinitions
-                                                          .length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        final key = Persistent
-                                                            .categoryDefinitions
-                                                            .keys
-                                                            .elementAt(index);
-                                                        final String? value =
-                                                            Persistent
-                                                                    .categoryDefinitions[
-                                                                key];
-                                                        return ListTile(
-                                                          title: Text(
-                                                            key,
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                          subtitle:
-                                                              Text(value!),
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          },
-                                          child: CustomRadioButton(
-                                            buttonLables: buttonList,
-                                            buttonValues: buttonList,
-                                            radioButtonValue: (value, index) {
-                                              print("Button value " +
-                                                  value.toString());
-                                              print("Integer value " +
-                                                  index.toString());
-                                            },
-                                            horizontal: true,
-                                            enableShape: true,
-                                            buttonSpace: 5,
-                                            buttonColor: Colors.white,
-                                            selectedColor: Colors.cyan,
-                                          ),
-                                        ),
-                                ),
+                                            ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 47.v),
+                                    ],
+                                    //SizedBox(height: 16.v),
+                                  ),
+                                )
                               ],
                             ),
                           ),
@@ -1730,4 +1714,93 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   onTapRequest(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.userState);
   }
+}
+
+class UnicornOutlineButton extends StatelessWidget {
+  final _GradientPainter _painter;
+  final Widget _child;
+  final VoidCallback _callback;
+  final double _radius;
+
+  UnicornOutlineButton({
+    required double strokeWidth,
+    required double radius,
+    required Gradient gradient,
+    required Widget child,
+    required VoidCallback onPressed,
+  })  : this._painter = _GradientPainter(
+            strokeWidth: strokeWidth, radius: radius, gradient: gradient),
+        this._child = child,
+        this._callback = onPressed,
+        this._radius = radius;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _painter,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: _callback,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(_radius),
+          onTap: _callback,
+          child: Container(
+            constraints: BoxConstraints(minWidth: 88, minHeight: 38),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: theme.colorScheme.primary.withOpacity(.30),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _child,
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GradientPainter extends CustomPainter {
+  final Paint _paint = Paint();
+  final double radius;
+  final double strokeWidth;
+  final Gradient gradient;
+
+  _GradientPainter(
+      {required double strokeWidth,
+      required double radius,
+      required Gradient gradient})
+      : this.strokeWidth = strokeWidth,
+        this.radius = radius,
+        this.gradient = gradient;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // create outer rectangle equals size
+    Rect outerRect = Offset.zero & size;
+    var outerRRect =
+        RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+
+    // create inner rectangle smaller by strokeWidth
+    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
+        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
+    var innerRRect = RRect.fromRectAndRadius(
+        innerRect, Radius.circular(radius - strokeWidth));
+
+    // apply gradient shader
+    _paint.shader = gradient.createShader(outerRect);
+
+    // create difference between outer and inner paths and draw it
+    Path path1 = Path()..addRRect(outerRRect);
+    Path path2 = Path()..addRRect(innerRRect);
+    var path = Path.combine(PathOperation.difference, path1, path2);
+    canvas.drawPath(path, _paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
 }

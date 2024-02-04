@@ -9,29 +9,16 @@ import 'package:ying_3_3/Presentation/GigFeedScreens/GroupGigFeedScreen/AdminVie
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/AccountSettingsScreen/account_settings_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PaymentMethodsScreen/BankAccountTabScreen/BankAccountTabScreen/my_cards_bank_account_tab_screen.dart';
 import 'package:ying_3_3/Presentation/UserAndGroupSettings/UserSettings/PersonalDataScreen/user_profile_settings_data_screen.dart';
-import 'package:ying_3_3/core/utils/image_constant.dart';
-import 'package:ying_3_3/core/utils/size_utils.dart';
-import 'package:ying_3_3/routes/app_routes.dart';
 import 'package:ying_3_3/theme/custom_button_style.dart';
-import 'package:ying_3_3/theme/custom_text_style.dart';
-import 'package:ying_3_3/widgets/app_bar/appbar_button.dart';
-import 'package:ying_3_3/widgets/app_bar/appbar_circleimage_1.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_iconbutton.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_subtitle_1.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_subtitle_7.dart';
 import 'package:ying_3_3/widgets/app_bar/custom_app_bar.dart';
 import 'package:ying_3_3/widgets/custom_elevated_button.dart';
-import 'package:ying_3_3/widgets/custom_icon_button.dart';
+
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 import 'package:ying_3_3/core/app_export.dart';
-import 'package:ying_3_3/Presentation/SearchScreens/IndividualSearchScreens/search_page.dart';
-import 'package:ying_3_3/widgets/app_bar/appbar_circleimage_1.dart';
-import 'package:ying_3_3/widgets/app_bar/appbar_subtitle_1.dart';
-import 'package:ying_3_3/widgets/app_bar/appbar_subtitle_7.dart';
-import 'package:ying_3_3/widgets/app_bar/custom_app_bar.dart';
-import 'package:ying_3_3/widgets/custom_bottom_app_bar.dart';
-import 'package:ying_3_3/widgets/custom_elevated_button.dart';
-import 'package:ying_3_3/widgets/custom_icon_button.dart';
+
 import 'package:ying_3_3/widgets/settings_menu.dart';
 
 // ignore_for_file: must_be_immutable
@@ -53,17 +40,17 @@ class _UserProfileSettingsMainScreenState
   String? name;
   String email = '';
   List<List> intrestList = [];
-  String imageUrl = '';
-  String uid = '';
-  String joinedAt = '';
-  bool _isLoading = false;
+  String? imageUrl = '';
+  String? uid = '';
+  String? joinedAt = '';
+  //bool _isLoading = false;
   bool _isSameUser = false;
 
   @override
   void initState() {
+    getUserData();
     // TODO: implement initState
     super.initState();
-    getUserData();
   }
 
   @override
@@ -71,48 +58,49 @@ class _UserProfileSettingsMainScreenState
     super.dispose();
   }
 
-  getUserData() async {
+  void getUserData() async {
     try {
-      _isLoading = true;
+      //_isLoading = true;
+      User? user = _auth.currentUser;
+      final _uid = user!.uid;
+
       final DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(widget.userId)
           .get();
 
-      if (userDoc == null) {
-        return CircularProgressIndicator();
-      } else {
-        setState(() {
-          name = userDoc.get('name');
-          email = userDoc.get('email');
-          imageUrl = userDoc.get('userImage');
-          uid = userDoc.get('id');
-          Timestamp joinedAtTimeStamp = userDoc.get('createdAt');
+      setState(() {
+        name = userDoc.get('name');
+        email = userDoc.get('email');
+        imageUrl = userDoc.get('userImage');
+        uid = userDoc.get('id');
+        Timestamp joinedAtTimeStamp = userDoc.get('createdAt');
 
-          dynamic intrestData = userDoc.get('interest');
-          intrestList.add(intrestData);
+        dynamic intrestData = userDoc.get('interest');
+        intrestList.add(intrestData);
 
-          var joinedDate = joinedAtTimeStamp.toDate();
-          joinedAt =
-              '${joinedDate.year} - ${joinedDate.month} - ${joinedDate.day}';
-        });
+        var joinedDate = joinedAtTimeStamp.toDate();
+        joinedAt =
+            '${joinedDate.year} - ${joinedDate.month} - ${joinedDate.day}';
 
-        User? user = _auth.currentUser;
-        final _uid = user!.uid;
-        setState(() {
-          _isSameUser = _uid == widget.userId;
-        });
-      }
+        _isSameUser = _uid == widget.userId;
+      });
+
+      /* print(name);
+      print(email);
+      print(imageUrl);
+      print(uid);
+      print(joinedAt); */
+
       // ignore: empty_catches
-    } catch (error) {
-    } finally {
+    } catch (error) {} /* finally {
       _isLoading = false;
-    }
+    } */
   }
 
   /// to navigate back to the previous screen.
   void onTapArrowleftone(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.userState);
+    Navigator.pop(context);
   }
 
   onTapAccountSettings(BuildContext context) {
@@ -169,12 +157,12 @@ class _UserProfileSettingsMainScreenState
                     child: CustomAppBar(
                       height: 77.v,
                       leadingWidth: 76.h,
-                      leading: imageUrl.isEmpty
-                          ? const CircularProgressIndicator()
-                          : CircleAvatar(
+                      leading: imageUrl!.isNotEmpty
+                          ? CircleAvatar(
                               radius: 55,
-                              backgroundImage: NetworkImage(imageUrl),
-                            ),
+                              backgroundImage: NetworkImage(imageUrl!),
+                            )
+                          : const CircularProgressIndicator(),
                       title: Padding(
                         padding: EdgeInsets.only(left: 12.h),
                         child: Column(
@@ -283,7 +271,7 @@ class _UserProfileSettingsMainScreenState
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => UserProfileSettingsDataScreen(
           userId:
-              uid), // Replace YourNewPage with the actual page you want to navigate to
+              uid!), // Replace YourNewPage with the actual page you want to navigate to
     ));
   }
 

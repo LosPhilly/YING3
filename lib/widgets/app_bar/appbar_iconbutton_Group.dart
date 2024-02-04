@@ -4,8 +4,8 @@ import 'package:ying_3_3/widgets/custom_icon_button.dart';
 import 'package:ying_3_3/widgets/custom_image_view.dart';
 
 // ignore: must_be_immutable
-class AppbarIconbutton3 extends StatelessWidget {
-  AppbarIconbutton3({
+class AppbarIconbuttonGroup extends StatelessWidget {
+  AppbarIconbuttonGroup({
     Key? key,
     this.imagePath,
     this.svgPath,
@@ -36,7 +36,7 @@ class AppbarIconbutton3 extends StatelessWidget {
           width: 40.adaptSize,
           padding: EdgeInsets.all(10.h),
           child: CustomImageView(
-            color: theme.colorScheme.primary,
+            color: Colors.white,
             svgPath: svgPath,
             imagePath: imagePath,
           ),

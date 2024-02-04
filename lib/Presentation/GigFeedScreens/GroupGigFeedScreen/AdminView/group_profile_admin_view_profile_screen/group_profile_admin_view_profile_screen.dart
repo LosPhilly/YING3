@@ -15,6 +15,7 @@ import 'package:ying_3_3/theme/custom_text_style.dart';
 import 'package:ying_3_3/theme/theme_helper.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_iconbutton_3.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_iconbutton_4.dart';
+import 'package:ying_3_3/widgets/app_bar/appbar_iconbutton_Group.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_image_1.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_image_2.dart';
 import 'package:ying_3_3/widgets/app_bar/appbar_subtitle.dart';
@@ -589,7 +590,10 @@ class _GroupProfileAdminViewProfileScreenState
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 groupImageDisplayUrl!.isEmpty
-                    ? const CircularProgressIndicator()
+                    ? const Text(
+                        'Group picture not set',
+                        style: TextStyle(color: Colors.white),
+                      )
                     : CircleAvatar(
                         radius: 35,
                         backgroundImage: NetworkImage(groupImageDisplayUrl!),
@@ -603,7 +607,7 @@ class _GroupProfileAdminViewProfileScreenState
                       fontFamily: 'PoppinsRegular',
                       color: Colors.white),
                 ),
-                AppbarIconbutton3(
+                AppbarIconbuttonGroup(
                     svgPath: ImageConstant.imgOutlinesettingsOnprimary,
                     margin: EdgeInsets.only(
                       top: 5.v,

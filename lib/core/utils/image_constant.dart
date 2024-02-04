@@ -662,6 +662,12 @@ class ImageConstant {
 
   static String imgSlotmachineamico = '$imagePath/img_slotmachineamico.svg';
 
+  static String edit = '$imagePath/Edit.svg';
+
+  static String start = '$imagePath/Star.svg';
+
+  static String fillStart = '$imagePath/Star-filled.svg';
+
   static String imgFrame398 = '$imagePath/img_frame398.png';
   static String camera = '$imagePath/Camera.png';
   static String etprofilefemale = '$imagePath/et_profile-female.png';

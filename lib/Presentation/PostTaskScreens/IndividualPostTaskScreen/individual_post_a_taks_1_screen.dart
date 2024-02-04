@@ -211,7 +211,10 @@ class _IndividualPostATask1ScreenState
                                                     Text("Request Skill",
                                                         style: CustomTextStyles
                                                             .titleMediumPrimary18),
-                                                    SizedBox(height: 2.v)
+                                                    SizedBox(height: 2.v),
+                                                    Text("(coming soon)",
+                                                        style: CustomTextStyles
+                                                            .titleSmallPrimary_1)
                                                   ],
                                                 ),
                                               ),
@@ -249,7 +252,10 @@ class _IndividualPostATask1ScreenState
                                                     Text("Request Skill",
                                                         style: CustomTextStyles
                                                             .titleMediumOnPrimary18_1),
-                                                    SizedBox(height: 2.v)
+                                                    SizedBox(height: 2.v),
+                                                    Text("(coming soon)",
+                                                        style: CustomTextStyles
+                                                            .titleSmallPrimary),
                                                   ],
                                                 ),
                                               ),
